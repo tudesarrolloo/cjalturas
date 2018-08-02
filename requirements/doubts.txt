@@ -2,3 +2,5 @@
 - Nivel de formación, es al que me quiero inscribir o el que tengo actualmente ?
 - El sector económico, es de la empresa en la que laboró o es la propia del aprendiz?
 - Un reentrenamiento, sería unico o habrian varios según el nivel para el que se esté haciendo el reentrenamiento
+- La firma del entrenador es una imagen digital?
+- Que es licencia SST?
