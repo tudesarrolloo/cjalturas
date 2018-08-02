@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableCoach" header="CoachData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{coachView.data}" var="coach"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{coach.idCoach}" sortBy="#{coach.idCoach}" >
+										 <f:facet name="header">
+										<h:outputText value="idCoach"/>
+										</f:facet>
+										 <h:outputText value="#{coach.idCoach}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{coach.charge}" sortBy="#{coach.charge}" >
+										 <f:facet name="header">
+										<h:outputText value="Charge"/>
+										</f:facet>
+										 <h:outputText value="#{coach.charge}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{coach.licenseSst}" sortBy="#{coach.licenseSst}" >
+										 <f:facet name="header">
+										<h:outputText value="LicenseSst"/>
+										</f:facet>
+										 <h:outputText value="#{coach.licenseSst}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{coach.sign}" sortBy="#{coach.sign}" >
+										 <f:facet name="header">
+										<h:outputText value="Sign"/>
+										</f:facet>
+										 <h:outputText value="#{coach.sign}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{coach.idPerson_Person}" sortBy="#{coach.idPerson_Person}" >
+										 <f:facet name="header">
+										<h:outputText value="IdPerson_Person"/>
+										</f:facet>
+										 <h:outputText value="#{coach.idPerson_Person}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogCoach"
+										actionListener="#{coachView.action_edit}">
+										<f:attribute name="selectedCoach" value="#{coach}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{coachView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedCoach" value="#{coach}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{coachView.action_new()}" update=":dialogCoach" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogCoach" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{coachView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelCoach" header="Coach">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdCoach" value="IdCoach"/>
+									 <p:inputText id="txtIdCoach" binding="#{coachView.txtIdCoach}">
+									 <p:ajax update=":dialogCoach" listener="#{coachView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCharge" value=" Charge"/>
+									<p:inputText id="txtCharge" disabled="true" binding="#{coachView.txtCharge}"/>
+																		<h:outputText id="msgLicenseSst" value=" LicenseSst"/>
+									<p:inputText id="txtLicenseSst" disabled="true" binding="#{coachView.txtLicenseSst}"/>
+																		<h:outputText id="msgSign" value=" Sign"/>
+									<p:inputText id="txtSign" disabled="true" binding="#{coachView.txtSign}"/>
+																		<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
+									<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{coachView.txtIdPerson_Person}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{coachView.btnSave}" value="Save" action="#{coachView.action_save()}" update=":dialogCoach :frm:panelDataTableCoach" />
+									<p:commandButton id="btnClear" value="Clear" action="#{coachView.action_clear()}" update=":dialogCoach" />
+									<p:commandButton id="btnExit" value="Exit" action="#{coachView.action_closeDialog()}" update=":dialogCoach" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="com.cjalturas.model.Rol" table="rol" catalog="cjalturas" optimistic-lock="version">
+        <id name="codeRol" type="java.lang.String">
+            <column name="code_rol" length="5" />
+            <generator class="assigned" />
+        </id>
+        <property name="rol" type="java.lang.String">
+            <column name="rol" length="20" not-null="true">
+                <comment>Descripci&#243;n del usuario de la aplicaci&#243;n</comment>
+            </column>
+        </property>
+        <set name="permits" table="permit" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="code_rol" length="5" not-null="true">
+                    <comment>C&#243;digo del rol al que se le est&#225; otorgando el permiso</comment>
+                </column>
+            </key>
+            <one-to-many class="com.cjalturas.model.Permit" />
+        </set>
+        <set name="users" table="user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="code_rol" length="5" not-null="true" />
+            </key>
+            <one-to-many class="com.cjalturas.model.User" />
+        </set>
+    </class>
+</hibernate-mapping>

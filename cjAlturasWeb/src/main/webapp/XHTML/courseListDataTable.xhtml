@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableCourse" header="CourseData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{courseView.data}" var="course"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{course.idCourse}" sortBy="#{course.idCourse}" >
+										 <f:facet name="header">
+										<h:outputText value="idCourse"/>
+										</f:facet>
+										 <h:outputText value="#{course.idCourse}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{course.course}" sortBy="#{course.course}" >
+										 <f:facet name="header">
+										<h:outputText value="Course"/>
+										</f:facet>
+										 <h:outputText value="#{course.course}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogCourse"
+										actionListener="#{courseView.action_edit}">
+										<f:attribute name="selectedCourse" value="#{course}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{courseView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedCourse" value="#{course}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{courseView.action_new()}" update=":dialogCourse" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogCourse" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{courseView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelCourse" header="Course">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdCourse" value="IdCourse"/>
+									 <p:inputText id="txtIdCourse" binding="#{courseView.txtIdCourse}">
+									 <p:ajax update=":dialogCourse" listener="#{courseView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgCourse" value=" Course"/>
+									<p:inputText id="txtCourse" disabled="true" binding="#{courseView.txtCourse}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{courseView.btnSave}" value="Save" action="#{courseView.action_save()}" update=":dialogCourse :frm:panelDataTableCourse" />
+									<p:commandButton id="btnClear" value="Clear" action="#{courseView.action_clear()}" update=":dialogCourse" />
+									<p:commandButton id="btnExit" value="Exit" action="#{courseView.action_closeDialog()}" update=":dialogCourse" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

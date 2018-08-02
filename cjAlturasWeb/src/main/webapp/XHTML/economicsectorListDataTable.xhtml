@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableEconomicsector" header="EconomicsectorData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{economicsectorView.data}" var="economicsector"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{economicsector.idEconomicSector}" sortBy="#{economicsector.idEconomicSector}" >
+										 <f:facet name="header">
+										<h:outputText value="idEconomicSector"/>
+										</f:facet>
+										 <h:outputText value="#{economicsector.idEconomicSector}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{economicsector.economicSector}" sortBy="#{economicsector.economicSector}" >
+										 <f:facet name="header">
+										<h:outputText value="EconomicSector"/>
+										</f:facet>
+										 <h:outputText value="#{economicsector.economicSector}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogEconomicsector"
+										actionListener="#{economicsectorView.action_edit}">
+										<f:attribute name="selectedEconomicsector" value="#{economicsector}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{economicsectorView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedEconomicsector" value="#{economicsector}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{economicsectorView.action_new()}" update=":dialogEconomicsector" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogEconomicsector" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{economicsectorView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelEconomicsector" header="Economicsector">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdEconomicSector" value="IdEconomicSector"/>
+									 <p:inputText id="txtIdEconomicSector" binding="#{economicsectorView.txtIdEconomicSector}">
+									 <p:ajax update=":dialogEconomicsector" listener="#{economicsectorView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgEconomicSector" value=" EconomicSector"/>
+									<p:inputText id="txtEconomicSector" disabled="true" binding="#{economicsectorView.txtEconomicSector}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{economicsectorView.btnSave}" value="Save" action="#{economicsectorView.action_save()}" update=":dialogEconomicsector :frm:panelDataTableEconomicsector" />
+									<p:commandButton id="btnClear" value="Clear" action="#{economicsectorView.action_clear()}" update=":dialogEconomicsector" />
+									<p:commandButton id="btnExit" value="Exit" action="#{economicsectorView.action_closeDialog()}" update=":dialogEconomicsector" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

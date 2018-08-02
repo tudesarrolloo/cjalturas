@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableEnterprise" header="EnterpriseData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{enterpriseView.data}" var="enterprise"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{enterprise.idEnterprise}" sortBy="#{enterprise.idEnterprise}" >
+										 <f:facet name="header">
+										<h:outputText value="idEnterprise"/>
+										</f:facet>
+										 <h:outputText value="#{enterprise.idEnterprise}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{enterprise.contactName}" sortBy="#{enterprise.contactName}" >
+										 <f:facet name="header">
+										<h:outputText value="ContactName"/>
+										</f:facet>
+										 <h:outputText value="#{enterprise.contactName}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{enterprise.name}" sortBy="#{enterprise.name}" >
+										 <f:facet name="header">
+										<h:outputText value="Name"/>
+										</f:facet>
+										 <h:outputText value="#{enterprise.name}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{enterprise.nit}" sortBy="#{enterprise.nit}" >
+										 <f:facet name="header">
+										<h:outputText value="Nit"/>
+										</f:facet>
+										 <h:outputText value="#{enterprise.nit}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{enterprise.phone}" sortBy="#{enterprise.phone}" >
+										 <f:facet name="header">
+										<h:outputText value="Phone"/>
+										</f:facet>
+										 <h:outputText value="#{enterprise.phone}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogEnterprise"
+										actionListener="#{enterpriseView.action_edit}">
+										<f:attribute name="selectedEnterprise" value="#{enterprise}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{enterpriseView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedEnterprise" value="#{enterprise}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{enterpriseView.action_new()}" update=":dialogEnterprise" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogEnterprise" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{enterpriseView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelEnterprise" header="Enterprise">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdEnterprise" value="IdEnterprise"/>
+									 <p:inputText id="txtIdEnterprise" binding="#{enterpriseView.txtIdEnterprise}">
+									 <p:ajax update=":dialogEnterprise" listener="#{enterpriseView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgContactName" value=" ContactName"/>
+									<p:inputText id="txtContactName" disabled="true" binding="#{enterpriseView.txtContactName}"/>
+																		<h:outputText id="msgName" value=" Name"/>
+									<p:inputText id="txtName" disabled="true" binding="#{enterpriseView.txtName}"/>
+																		<h:outputText id="msgNit" value=" Nit"/>
+									<p:inputText id="txtNit" disabled="true" binding="#{enterpriseView.txtNit}"/>
+																		<h:outputText id="msgPhone" value=" Phone"/>
+									<p:inputText id="txtPhone" disabled="true" binding="#{enterpriseView.txtPhone}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{enterpriseView.btnSave}" value="Save" action="#{enterpriseView.action_save()}" update=":dialogEnterprise :frm:panelDataTableEnterprise" />
+									<p:commandButton id="btnClear" value="Clear" action="#{enterpriseView.action_clear()}" update=":dialogEnterprise" />
+									<p:commandButton id="btnExit" value="Exit" action="#{enterpriseView.action_closeDialog()}" update=":dialogEnterprise" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

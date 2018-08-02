@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableUser" header="UserData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{userView.data}" var="user"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{user.idUser}" sortBy="#{user.idUser}" >
+										 <f:facet name="header">
+										<h:outputText value="idUser"/>
+										</f:facet>
+										 <h:outputText value="#{user.idUser}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{user.enabled}" sortBy="#{user.enabled}" >
+										 <f:facet name="header">
+										<h:outputText value="Enabled"/>
+										</f:facet>
+										 <h:outputText value="#{user.enabled}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{user.password}" sortBy="#{user.password}" >
+										 <f:facet name="header">
+										<h:outputText value="Password"/>
+										</f:facet>
+										 <h:outputText value="#{user.password}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{user.username}" sortBy="#{user.username}" >
+										 <f:facet name="header">
+										<h:outputText value="Username"/>
+										</f:facet>
+										 <h:outputText value="#{user.username}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{user.idPerson_Person}" sortBy="#{user.idPerson_Person}" >
+										 <f:facet name="header">
+										<h:outputText value="IdPerson_Person"/>
+										</f:facet>
+										 <h:outputText value="#{user.idPerson_Person}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{user.codeRol_Rol}" sortBy="#{user.codeRol_Rol}" >
+										 <f:facet name="header">
+										<h:outputText value="CodeRol_Rol"/>
+										</f:facet>
+										 <h:outputText value="#{user.codeRol_Rol}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogUser"
+										actionListener="#{userView.action_edit}">
+										<f:attribute name="selectedUser" value="#{user}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{userView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedUser" value="#{user}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{userView.action_new()}" update=":dialogUser" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogUser" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{userView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelUser" header="User">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdUser" value="IdUser"/>
+									 <p:inputText id="txtIdUser" binding="#{userView.txtIdUser}">
+									 <p:ajax update=":dialogUser" listener="#{userView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgEnabled" value=" Enabled"/>
+									<p:inputText id="txtEnabled" disabled="true" binding="#{userView.txtEnabled}"/>
+																		<h:outputText id="msgPassword" value=" Password"/>
+									<p:inputText id="txtPassword" disabled="true" binding="#{userView.txtPassword}"/>
+																		<h:outputText id="msgUsername" value=" Username"/>
+									<p:inputText id="txtUsername" disabled="true" binding="#{userView.txtUsername}"/>
+																		<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
+									<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{userView.txtIdPerson_Person}"/>
+																		<h:outputText id="msgCodeRol_Rol" value=" CodeRol_Rol"/>
+									<p:inputText id="txtCodeRol_Rol" disabled="true" binding="#{userView.txtCodeRol_Rol}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{userView.btnSave}" value="Save" action="#{userView.action_save()}" update=":dialogUser :frm:panelDataTableUser" />
+									<p:commandButton id="btnClear" value="Clear" action="#{userView.action_clear()}" update=":dialogUser" />
+									<p:commandButton id="btnExit" value="Exit" action="#{userView.action_closeDialog()}" update=":dialogUser" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

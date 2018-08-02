@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="com.cjalturas.model.Permit" table="permit" catalog="cjalturas" optimistic-lock="version">
+        <id name="idPermit" type="java.lang.Integer">
+            <column name="id_permit" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="rol" class="com.cjalturas.model.Rol" fetch="select">
+            <column name="code_rol" length="5" not-null="true">
+                <comment>C&#243;digo del rol al que se le est&#225; otorgando el permiso</comment>
+            </column>
+        </many-to-one>
+        <property name="resource" type="java.lang.String">
+            <column name="resource" length="60" not-null="true">
+                <comment>Recurso de la aplicaci&#243;n al que se le est&#225; otorgando el permiso</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

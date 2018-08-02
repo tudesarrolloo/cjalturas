@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelRol" header="Rol">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgCodeRol" value="CodeRol"/>
+						 	<p:inputText id="txtCodeRol" binding="#{rolView.txtCodeRol}">
+						 		<p:ajax update="panelRol,msg,panelBotones" listener="#{rolView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgRol" value=" Rol"/>
+							<p:inputText id="txtRol" disabled="true" binding="#{rolView.txtRol}"/>
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{rolView.btnSave}" disabled="true" value="Save" action="#{rolView.action_save()}" update="panelRol, msg, panelBotones, men" />
+						<p:commandButton id="btnDelete" binding="#{rolView.btnDelete}" disabled="true" value="Delete" action="#{rolView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelRol, msg, panelBotones, men" />
+						<p:commandButton id="btnClear" value="Clear" action="#{rolView.action_clear()}" update="panelRol, msg, panelBotones, men" />
+					</div>
+				</p:panel>			
+			</h:form>
+			
+  </ui:define>
+</ui:composition>

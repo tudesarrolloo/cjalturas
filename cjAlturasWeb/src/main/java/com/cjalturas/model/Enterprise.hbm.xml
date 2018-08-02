@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="com.cjalturas.model.Enterprise" table="enterprise" catalog="cjalturas" optimistic-lock="version">
+        <id name="idEnterprise" type="java.lang.Integer">
+            <column name="id_enterprise" />
+            <generator class="identity" />
+        </id>
+        <property name="nit" type="java.lang.String">
+            <column name="nit" length="20" not-null="true">
+                <comment>Nit correspondiente a la empresa</comment>
+            </column>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="200" not-null="true">
+                <comment>Nombre o raz&#243;n social de la empresa</comment>
+            </column>
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="phone" length="30">
+                <comment>Tel&#233;fono para contactar con la empresa</comment>
+            </column>
+        </property>
+        <property name="contactName" type="java.lang.String">
+            <column name="contactName" length="60">
+                <comment>Nombre de la persona que es el contacto en la empresa</comment>
+            </column>
+        </property>
+        <set name="learners" table="learner" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_enterprise">
+                    <comment>Empresa en la que labora el aprendiz, podr&#225; ser nula en el caso de que se trate de una persona independiente.</comment>
+                </column>
+            </key>
+            <one-to-many class="com.cjalturas.model.Learner" />
+        </set>
+    </class>
+</hibernate-mapping>

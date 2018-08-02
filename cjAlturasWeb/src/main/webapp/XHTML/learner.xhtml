@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelLearner" header="Learner">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdLearner" value="IdLearner"/>
+						 	<p:inputText id="txtIdLearner" binding="#{learnerView.txtIdLearner}">
+						 		<p:ajax update="panelLearner,msg,panelBotones" listener="#{learnerView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgIdEconomicSector_Economicsector" value=" IdEconomicSector_Economicsector"/>
+							<p:inputText id="txtIdEconomicSector_Economicsector" disabled="true" binding="#{learnerView.txtIdEconomicSector_Economicsector}"/>
+													<h:outputText id="msgIdEnterprise_Enterprise" value=" IdEnterprise_Enterprise"/>
+							<p:inputText id="txtIdEnterprise_Enterprise" disabled="true" binding="#{learnerView.txtIdEnterprise_Enterprise}"/>
+													<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
+							<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{learnerView.txtIdPerson_Person}"/>
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{learnerView.btnSave}" disabled="true" value="Save" action="#{learnerView.action_save()}" update="panelLearner, msg, panelBotones, men" />
+						<p:commandButton id="btnDelete" binding="#{learnerView.btnDelete}" disabled="true" value="Delete" action="#{learnerView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelLearner, msg, panelBotones, men" />
+						<p:commandButton id="btnClear" value="Clear" action="#{learnerView.action_clear()}" update="panelLearner, msg, panelBotones, men" />
+					</div>
+				</p:panel>			
+			</h:form>
+			
+  </ui:define>
+</ui:composition>

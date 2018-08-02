@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelInscription" header="Inscription">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdInscription" value="IdInscription"/>
+						 	<p:inputText id="txtIdInscription" binding="#{inscriptionView.txtIdInscription}">
+						 		<p:ajax update="panelInscription,msg,panelBotones" listener="#{inscriptionView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgIdGroup_Group" value=" IdGroup_Group"/>
+							<p:inputText id="txtIdGroup_Group" disabled="true" binding="#{inscriptionView.txtIdGroup_Group}"/>
+													<h:outputText id="msgIdLearner_Learner" value=" IdLearner_Learner"/>
+							<p:inputText id="txtIdLearner_Learner" disabled="true" binding="#{inscriptionView.txtIdLearner_Learner}"/>
+													<h:outputText id="msgCode_Status" value=" Code_Status"/>
+							<p:inputText id="txtCode_Status" disabled="true" binding="#{inscriptionView.txtCode_Status}"/>
+												
+																				<h:outputText id="msgDateCertification" value=" DateCertification"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{inscriptionView.txtDateCertification}" >
+								<p:ajax event="dateSelect" listener="#{inscriptionView.listener_txtDateCertification}"  />
+							</p:calendar>
+														<h:outputText id="msgDateInscription" value=" DateInscription"/>
+														<p:calendar showOn="button" navigator="true" locale="en" 
+							binding="#{inscriptionView.txtDateInscription}" >
+								<p:ajax event="dateSelect" listener="#{inscriptionView.listener_txtDateInscription}"  />
+							</p:calendar>
+																	   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{inscriptionView.btnSave}" disabled="true" value="Save" action="#{inscriptionView.action_save()}" update="panelInscription, msg, panelBotones, men" />
+						<p:commandButton id="btnDelete" binding="#{inscriptionView.btnDelete}" disabled="true" value="Delete" action="#{inscriptionView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelInscription, msg, panelBotones, men" />
+						<p:commandButton id="btnClear" value="Clear" action="#{inscriptionView.action_clear()}" update="panelInscription, msg, panelBotones, men" />
+					</div>
+				</p:panel>			
+			</h:form>
+			
+  </ui:define>
+</ui:composition>

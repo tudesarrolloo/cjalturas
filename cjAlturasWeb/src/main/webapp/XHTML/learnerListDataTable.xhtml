@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTableLearner" header="LearnerData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{learnerView.data}" var="learner"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{learner.idLearner}" sortBy="#{learner.idLearner}" >
+										 <f:facet name="header">
+										<h:outputText value="idLearner"/>
+										</f:facet>
+										 <h:outputText value="#{learner.idLearner}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{learner.idEconomicSector_Economicsector}" sortBy="#{learner.idEconomicSector_Economicsector}" >
+										 <f:facet name="header">
+										<h:outputText value="IdEconomicSector_Economicsector"/>
+										</f:facet>
+										 <h:outputText value="#{learner.idEconomicSector_Economicsector}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{learner.idEnterprise_Enterprise}" sortBy="#{learner.idEnterprise_Enterprise}" >
+										 <f:facet name="header">
+										<h:outputText value="IdEnterprise_Enterprise"/>
+										</f:facet>
+										 <h:outputText value="#{learner.idEnterprise_Enterprise}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{learner.idPerson_Person}" sortBy="#{learner.idPerson_Person}" >
+										 <f:facet name="header">
+										<h:outputText value="IdPerson_Person"/>
+										</f:facet>
+										 <h:outputText value="#{learner.idPerson_Person}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogLearner"
+										actionListener="#{learnerView.action_edit}">
+										<f:attribute name="selectedLearner" value="#{learner}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{learnerView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedLearner" value="#{learner}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{learnerView.action_new()}" update=":dialogLearner" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogLearner" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{learnerView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelLearner" header="Learner">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdLearner" value="IdLearner"/>
+									 <p:inputText id="txtIdLearner" binding="#{learnerView.txtIdLearner}">
+									 <p:ajax update=":dialogLearner" listener="#{learnerView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgIdEconomicSector_Economicsector" value=" IdEconomicSector_Economicsector"/>
+									<p:inputText id="txtIdEconomicSector_Economicsector" disabled="true" binding="#{learnerView.txtIdEconomicSector_Economicsector}"/>
+																		<h:outputText id="msgIdEnterprise_Enterprise" value=" IdEnterprise_Enterprise"/>
+									<p:inputText id="txtIdEnterprise_Enterprise" disabled="true" binding="#{learnerView.txtIdEnterprise_Enterprise}"/>
+																		<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
+									<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{learnerView.txtIdPerson_Person}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{learnerView.btnSave}" value="Save" action="#{learnerView.action_save()}" update=":dialogLearner :frm:panelDataTableLearner" />
+									<p:commandButton id="btnClear" value="Clear" action="#{learnerView.action_clear()}" update=":dialogLearner" />
+									<p:commandButton id="btnExit" value="Exit" action="#{learnerView.action_closeDialog()}" update=":dialogLearner" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

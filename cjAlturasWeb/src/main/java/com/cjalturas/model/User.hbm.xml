@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="com.cjalturas.model.User" table="user" catalog="cjalturas" optimistic-lock="version">
+        <id name="idUser" type="java.lang.Integer">
+            <column name="id_user" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="person" class="com.cjalturas.model.Person" fetch="select">
+            <column name="id_person" not-null="true">
+                <comment>Persona popietaria del usuario</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="rol" class="com.cjalturas.model.Rol" fetch="select">
+            <column name="code_rol" length="5" not-null="true" />
+        </many-to-one>
+        <property name="username" type="java.lang.String">
+            <column name="username" length="60" not-null="true">
+                <comment>Nombre del usuario que se usar&#225; para acceder a la aplicaci&#243;n</comment>
+            </column>
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="password" length="20" not-null="true">
+                <comment>Contrase&#241;a para acceder al sisitema</comment>
+            </column>
+        </property>
+        <property name="enabled" type="java.lang.String">
+            <column name="enabled" not-null="true">
+                <comment>Determina si el usuario se encuentra activo para ingresar a la aplicaci&#243;n, por defecto siempre estar&#225; activo</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

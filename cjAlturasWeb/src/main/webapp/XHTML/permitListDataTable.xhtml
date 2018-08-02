@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">		
+
+					
+		  			<h:form id="frm">								  		
+						
+						<p:panel id="panelDataTablePermit" header="PermitData">
+							<p:growl id="men"/>				
+							<p:dataTable value="#{permitView.data}" var="permit"
+								paginator="true" rows="5">
+																										<p:column filterBy="#{permit.idPermit}" sortBy="#{permit.idPermit}" >
+										 <f:facet name="header">
+										<h:outputText value="idPermit"/>
+										</f:facet>
+										 <h:outputText value="#{permit.idPermit}"/>
+										 </p:column>
+			                    																									
+										<p:column filterBy="#{permit.resource}" sortBy="#{permit.resource}" >
+										 <f:facet name="header">
+										<h:outputText value="Resource"/>
+										</f:facet>
+										 <h:outputText value="#{permit.resource}"/>
+										</p:column>   
+			                    									
+										<p:column filterBy="#{permit.codeRol_Rol}" sortBy="#{permit.codeRol_Rol}" >
+										 <f:facet name="header">
+										<h:outputText value="CodeRol_Rol"/>
+										</f:facet>
+										 <h:outputText value="#{permit.codeRol_Rol}"/>
+										</p:column>   
+			                    			                    
+								<p:column headerText="Options">
+									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
+										update=":dialogPermit"
+										actionListener="#{permitView.action_edit}">
+										<f:attribute name="selectedPermit" value="#{permit}" />
+									</p:commandButton>
+									<p:commandButton id="btnDelete"									
+										title="Delete" actionListener="#{permitView.action_delete_datatable}"
+										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+										icon="ui-icon-trash" update="@form">
+										<f:attribute name="selectedPermit" value="#{permit}" />
+									</p:commandButton>
+								</p:column>									                    
+							</p:dataTable>	
+						</p:panel>
+						<p:panel id="panelBoton">
+							<div align="center">
+								<p:commandButton id="btnNew" value="New"
+									action="#{permitView.action_new()}" update=":dialogPermit" />
+							</div>
+						</p:panel>						
+		   			</h:form>
+					<p:dialog id="dialogPermit" appendTo="@(body)" draggable="true"
+						closable="false" visible="#{permitView.showDialog}" resizable="false"
+						modal="true" width="500">
+						<h:form id="formDialog">
+							<p:messages id="msg" />
+							<p:panel id="panelPermit" header="Permit">							
+							    <h:panelGrid columns="2" id="panelGrid" >
+																		 <h:outputText id="msgIdPermit" value="IdPermit"/>
+									 <p:inputText id="txtIdPermit" binding="#{permitView.txtIdPermit}">
+									 <p:ajax update=":dialogPermit" listener="#{permitView.listener_txtId}"/>
+									 </p:inputText>	
+																											
+																		<h:outputText id="msgResource" value=" Resource"/>
+									<p:inputText id="txtResource" disabled="true" binding="#{permitView.txtResource}"/>
+																		<h:outputText id="msgCodeRol_Rol" value=" CodeRol_Rol"/>
+									<p:inputText id="txtCodeRol_Rol" disabled="true" binding="#{permitView.txtCodeRol_Rol}"/>
+																		
+																    </h:panelGrid>
+							</p:panel>						   
+							<p:panel id="panelBotones">
+								<div align="center">					
+									<p:commandButton id="btnSave" binding="#{permitView.btnSave}" value="Save" action="#{permitView.action_save()}" update=":dialogPermit :frm:panelDataTablePermit" />
+									<p:commandButton id="btnClear" value="Clear" action="#{permitView.action_clear()}" update=":dialogPermit" />
+									<p:commandButton id="btnExit" value="Exit" action="#{permitView.action_closeDialog()}" update=":dialogPermit" />
+								</div>
+				</p:panel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

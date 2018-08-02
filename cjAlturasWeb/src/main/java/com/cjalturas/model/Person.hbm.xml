@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="com.cjalturas.model.Person" table="person" catalog="cjalturas" optimistic-lock="version">
+        <id name="idPerson" type="java.lang.Integer">
+            <column name="id_person" />
+            <generator class="identity" />
+        </id>
+        <property name="documentType" type="java.lang.String">
+            <column name="documentType" length="20" not-null="true">
+                <comment>Tipo de documento de la persona puede ser: C&#233;dula de Ciudadan&#237;a, C&#233;dula Extranjer&#237;a, Pasaporte, Tarjeta de Identidad</comment>
+            </column>
+        </property>
+        <property name="document" type="java.lang.String">
+            <column name="document" length="20" not-null="true">
+                <comment>N&#250;mero del documento de la persona</comment>
+            </column>
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="60" not-null="true">
+                <comment>Nombre de la persona</comment>
+            </column>
+        </property>
+        <property name="lastname" type="java.lang.String">
+            <column name="lastname" length="60" not-null="true">
+                <comment>Apellidos de la persona</comment>
+            </column>
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="phone" length="20">
+                <comment>Tel&#233;fono de contacto de la persona</comment>
+            </column>
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="email" length="60">
+                <comment>Direcci&#243;n de correo electr&#243;nico de la persona</comment>
+            </column>
+        </property>
+        <set name="coaches" table="coach" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_person" not-null="true">
+                    <comment>Direcci&#243;n de correo electr&#243;nico del instructor</comment>
+                </column>
+            </key>
+            <one-to-many class="com.cjalturas.model.Coach" />
+        </set>
+        <set name="users" table="user" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_person" not-null="true">
+                    <comment>Persona popietaria del usuario</comment>
+                </column>
+            </key>
+            <one-to-many class="com.cjalturas.model.User" />
+        </set>
+        <set name="learners" table="learner" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_person" not-null="true" />
+            </key>
+            <one-to-many class="com.cjalturas.model.Learner" />
+        </set>
+    </class>
+</hibernate-mapping>

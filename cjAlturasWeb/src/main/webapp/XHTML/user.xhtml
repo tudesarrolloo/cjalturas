@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+		 
+	<ui:define name="content">	
+			
+			
+			<h:form id="formDialog">
+				<p:messages id="msg" />
+				<p:growl id="men"/>
+					<p:panel id="panelUser" header="User">							
+						<h:panelGrid columns="2" id="panelGrid" >
+												 	<h:outputText id="msgIdUser" value="IdUser"/>
+						 	<p:inputText id="txtIdUser" binding="#{userView.txtIdUser}">
+						 		<p:ajax update="panelUser,msg,panelBotones" listener="#{userView.listener_txtId}"/>
+						 	</p:inputText>	
+																		
+													<h:outputText id="msgEnabled" value=" Enabled"/>
+							<p:inputText id="txtEnabled" disabled="true" binding="#{userView.txtEnabled}"/>
+													<h:outputText id="msgPassword" value=" Password"/>
+							<p:inputText id="txtPassword" disabled="true" binding="#{userView.txtPassword}"/>
+													<h:outputText id="msgUsername" value=" Username"/>
+							<p:inputText id="txtUsername" disabled="true" binding="#{userView.txtUsername}"/>
+													<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
+							<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{userView.txtIdPerson_Person}"/>
+													<h:outputText id="msgCodeRol_Rol" value=" CodeRol_Rol"/>
+							<p:inputText id="txtCodeRol_Rol" disabled="true" binding="#{userView.txtCodeRol_Rol}"/>
+												
+										   </h:panelGrid>
+				</p:panel>
+	   			<p:panel id="panelBotones">
+					<div align="center">					
+						<p:commandButton id="btnSave" binding="#{userView.btnSave}" disabled="true" value="Save" action="#{userView.action_save()}" update="panelUser, msg, panelBotones, men" />
+						<p:commandButton id="btnDelete" binding="#{userView.btnDelete}" disabled="true" value="Delete" action="#{userView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelUser, msg, panelBotones, men" />
+						<p:commandButton id="btnClear" value="Clear" action="#{userView.action_clear()}" update="panelUser, msg, panelBotones, men" />
+					</div>
+				</p:panel>			
+			</h:form>
+			
+  </ui:define>
+</ui:composition>
