@@ -1,54 +1,85 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ps="http://primefaces.org/sentinel"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ps="http://primefaces.org/sentinel"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui">
 
 
-	
 
-		<h:form id="menuform">
-							
-								<p:menubar toggleable="true">
-								
-									<p:submenu label="Master" icon="ui-icon-pencil">  
-							            
-							            	 								                    <p:menuitem value="Master Coach" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/coach.xhtml" />  
-											 								                    <p:menuitem value="Master Course" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/course.xhtml" />  
-											 								                    <p:menuitem value="Master Economicsector" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/economicsector.xhtml" />  
-											 								                    <p:menuitem value="Master Enterprise" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/enterprise.xhtml" />  
-											 								                    <p:menuitem value="Master Group" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/group.xhtml" />  
-											 								                    <p:menuitem value="Master Inscription" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/inscription.xhtml" />  
-											 								                    <p:menuitem value="Master Learner" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/learner.xhtml" />  
-											 								                    <p:menuitem value="Master Permit" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/permit.xhtml" />  
-											 								                    <p:menuitem value="Master Person" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/person.xhtml" />  
-											 								                    <p:menuitem value="Master Rol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rol.xhtml" />  
-											 								                    <p:menuitem value="Master Status" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/status.xhtml" />  
-											 								                    <p:menuitem value="Master User" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/user.xhtml" />  
-											 							        </p:submenu>  
-															
-															
-							  
-							        <p:submenu label="Data Table" icon="ui-icon-document">
-							                								                    <p:menuitem value="Coach" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/coachListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Course" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/courseListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Economicsector" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/economicsectorListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Enterprise" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/enterpriseListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Group" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/groupListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Inscription" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/inscriptionListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Learner" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/learnerListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Permit" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/permitListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Person" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/personListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Rol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rolListDataTable.xhtml" />  
-											 								                    <p:menuitem value="Status" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/statusListDataTable.xhtml" />  
-											 								                    <p:menuitem value="User" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/userListDataTable.xhtml" />  
-											 							        </p:submenu>  
-							  
-						        	<p:menuitem value="Logout"
-										url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/j_spring_security_logout"
-										icon="ui-icon-close" /> 
-						    
-			</p:menubar>
-		</h:form>
+
+  <h:form id="menuform">
+
+    <p:menubar toggleable="true">
+
+      <p:submenu label="Master" icon="ui-icon-pencil">
+
+        <p:menuitem value="Master Coach"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/coach.xhtml" />
+        <p:menuitem value="Master Course"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/course.xhtml" />
+        <p:menuitem value="Master Economicsector"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/economicsector.xhtml" />
+        <p:menuitem value="Master Enterprise"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/enterprise.xhtml" />
+        <p:menuitem value="Master Group"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/group.xhtml" />
+        <p:menuitem value="Master Inscription"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/inscription.xhtml" />
+        <p:menuitem value="Master Learner"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/learner.xhtml" />
+        <p:menuitem value="Master Permit"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/permit.xhtml" />
+        <p:menuitem value="Master Person"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/person.xhtml" />
+        <p:menuitem value="Master Rol"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rol.xhtml" />
+        <p:menuitem value="Master Status"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/status.xhtml" />
+        <p:menuitem value="Master User"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/user.xhtml" />
+      </p:submenu>
+
+
+
+      <p:submenu label="Data Table" icon="ui-icon-document">
+        <p:menuitem value="Coach"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/coachListDataTable.xhtml" />
+        <p:menuitem value="Course"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/courseListDataTable.xhtml" />
+        <p:menuitem value="Economicsector"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/economicsectorListDataTable.xhtml" />
+        <p:menuitem value="Enterprise"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/enterpriseListDataTable.xhtml" />
+        <p:menuitem value="Group"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/groupListDataTable.xhtml" />
+        <p:menuitem value="Inscription"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/inscriptionListDataTable.xhtml" />
+        <p:menuitem value="Learner"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/learnerListDataTable.xhtml" />
+        <p:menuitem value="Permit"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/permitListDataTable.xhtml" />
+        <p:menuitem value="Person"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/personListDataTable.xhtml" />
+        <p:menuitem value="Rol"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rolListDataTable.xhtml" />
+        <p:menuitem value="Status"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/statusListDataTable.xhtml" />
+        <p:menuitem value="User"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/userListDataTable.xhtml" />
+      </p:submenu>
+      
+     <p:submenu label="Administración" icon="ui-icon-pencil">
+        <p:menuitem value="Cursos de formación"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/page/course2.xhtml" />
+     
+     </p:submenu>
+
+
+      <p:menuitem value="Logout"
+        url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/j_spring_security_logout"
+        icon="ui-icon-close" />
+
+    </p:menubar>
+  </h:form>
 </ui:composition>

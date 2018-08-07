@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="formDialog">
+      <p:messages id="msg" />
+      <p:growl id="men" />
+      <p:panel id="panelCourse" header="Course">
+        <h:panelGrid columns="2" id="panelGrid">
+          <h:outputText id="msgIdCourse" value="IdCourse" />
+          <p:inputText id="txtIdCourse"
+            binding="#{courseView.txtIdCourse}">
+            <p:ajax update="panelCourse,msg,panelBotones"
+              listener="#{courseView.listener_txtId}" />
+          </p:inputText>
+
+          <h:outputText id="msgCourse" value=" Course" />
+          <p:inputText id="txtCourse" disabled="true"
+            binding="#{courseView.txtCourse}" />
+
+        </h:panelGrid>
+      </p:panel>
+      <p:panel id="panelBotones">
+        <div align="center">
+          <p:commandButton id="btnSave" binding="#{courseView.btnSave}"
+            disabled="true" value="Save"
+            action="#{courseView.action_save()}"
+            update="panelCourse, msg, panelBotones, men" />
+          <p:commandButton id="btnDelete"
+            binding="#{courseView.btnDelete}" disabled="true"
+            value="Delete" action="#{courseView.action_delete_master()}"
+            onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+            update="panelCourse, msg, panelBotones, men" />
+          <p:commandButton id="btnClear" value="Clear"
+            action="#{courseView.action_clear()}"
+            update="panelCourse, msg, panelBotones, men" />
+        </div>
+      </p:panel>
+    </h:form>
+
+  </ui:define>
+</ui:composition>
