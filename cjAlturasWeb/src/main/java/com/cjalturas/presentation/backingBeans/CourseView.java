@@ -12,7 +12,7 @@ import com.cjalturas.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
+import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.event.RowEditEvent;
 
 import org.slf4j.Logger;
@@ -51,6 +51,7 @@ public class CourseView implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(CourseView.class);
     private InputText txtCourse;
     private InputText txtIdCourse;
+    private OutputLabel lblIdCourse;
     private CommandButton btnSave;
     private CommandButton btnModify;
     private CommandButton btnDelete;
@@ -130,8 +131,12 @@ public class CourseView implements Serializable {
                                          .get("selectedCourse"));
         txtCourse.setValue(selectedCourse.getCourse());
         txtCourse.setDisabled(false);
-        txtIdCourse.setValue(selectedCourse.getIdCourse());
-        txtIdCourse.setDisabled(true);
+//        txtIdCourse.setValue(selectedCourse.getIdCourse());
+//        txtIdCourse.setDisabled(true);
+        
+      txtIdCourse.setRendered(false);
+//      lblIdCourse.setRendered(false);
+        
         btnSave.setDisabled(false);
         setShowDialog(true);
 
@@ -266,8 +271,18 @@ public class CourseView implements Serializable {
     public void setTxtIdCourse(InputText txtIdCourse) {
         this.txtIdCourse = txtIdCourse;
     }
+    
+    
 
-    public List<CourseDTO> getData() {
+    public OutputLabel getLblIdCourse() {
+		return lblIdCourse;
+	}
+
+	public void setLblIdCourse(OutputLabel lblIdCourse) {
+		this.lblIdCourse = lblIdCourse;
+	}
+
+	public List<CourseDTO> getData() {
         try {
             if (data == null) {
                 data = businessDelegatorView.getDataCourse();
@@ -342,5 +357,9 @@ public class CourseView implements Serializable {
 
     public void setShowDialog(boolean showDialog) {
         this.showDialog = showDialog;
+    }
+    
+    public boolean isIdVisible() {
+    	return this.txtIdCourse.isRendered();
     }
 }

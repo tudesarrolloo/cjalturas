@@ -9,12 +9,13 @@
 
     <h:form id="frm">
 
-      <p:panel id="panelDataTableCourse" header="Administración de cursos">
+      <p:panel id="panelDataTableCourse"
+        header="Administración de cursos">
         <p:growl id="men" />
         <p:dataTable value="#{courseView.data}" var="course"
-          paginator="true" paginatorPosition="bottom" rows="8" >
+          paginator="true" paginatorPosition="bottom" rows="8">
 
-          <p:column filterBy="#{course.course}"
+          <p:column width="90%" filterBy="#{course.course}"
             sortBy="#{course.course}">
             <f:facet name="header">
               <h:outputText value="Curso" />
@@ -22,7 +23,7 @@
             <h:outputText value="#{course.course}" />
           </p:column>
 
-          <p:column headerText="Options">
+          <p:column headerText="Acciones">
             <p:commandButton id="btnEdit" icon="ui-icon-pencil"
               update=":dialogCourse"
               actionListener="#{courseView.action_edit}">
@@ -46,26 +47,27 @@
     </h:form>
     <p:dialog id="dialogCourse" appendTo="@(body)" draggable="true"
       closable="false" visible="#{courseView.showDialog}"
-      resizable="false" modal="true" width="500">
+      resizable="false" modal="true" width="350" header="Información del curso">
       <h:form id="formDialog">
         <p:messages id="msg" />
-        <p:panel id="panelCourse" header="Course">
-          <h:panelGrid columns="2" id="panelGrid">
-            <h:outputText id="msgIdCourse" value="IdCourse" />
-            <p:inputText id="txtIdCourse"
+<!--         <p:panel id="panelCourse" header="Course"> -->
+          <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
+<!--             <h:outputText id="msgIdCourse" value="IdCourse" /> -->
+             <p:outputLabel id="lblIdCourse" for="txtIdCourse" value="idd curso" rendered="#{courseView.idVisible}" />
+            <p:inputText id="txtIdCourse" label="Aqui curso"
               binding="#{courseView.txtIdCourse}">
               <p:ajax update=":dialogCourse"
                 listener="#{courseView.listener_txtId}" />
             </p:inputText>
 
-            <h:outputText id="msgCourse" value=" Course" />
+            <h:outputText id="msgCourse" value="Nombre del curso" />
             <p:inputText id="txtCourse" disabled="true"
               binding="#{courseView.txtCourse}" />
 
           </h:panelGrid>
-        </p:panel>
-        <p:panel id="panelBotones">
-          <div align="center">
+<!--         </p:panel> -->
+<!--         <p:panel id="panelBotones"> -->
+          <div align="center" class="panel-boton">
             <p:commandButton id="btnSave"
               binding="#{courseView.btnSave}" value="Save"
               action="#{courseView.action_save()}"
@@ -77,7 +79,7 @@
               action="#{courseView.action_closeDialog()}"
               update=":dialogCourse" />
           </div>
-        </p:panel>
+<!--         </p:panel> -->
       </h:form>
     </p:dialog>
   </ui:define>

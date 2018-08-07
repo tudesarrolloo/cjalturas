@@ -1,4 +1,4 @@
-/* MENU BAR */
+* MENU BAR */
 .layout-menubar{float:left; padding-top:55px; background-color: #3D3D3D; position:relative; z-index: 998;}
 
 
@@ -660,4 +660,8 @@ body {
 	   color:#fff;
 	   text-decoration:none;
 	   border:0px;
+	}
+	
+	.panel-boton{
+		margin: 15px 0px 10px;
 	}
