@@ -213,4 +213,6 @@ public interface Dao<T, PK extends Serializable> {
      * @return
      */
     public List<T> findByCriteria(String whereCondition);
+    
+    public void evict(Object object);
 }

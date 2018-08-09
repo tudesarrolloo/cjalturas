@@ -97,5 +97,13 @@ public class ZMessManager extends RuntimeException {
 			super("There was an exception trying to find " + info);
 		}
 	}
+	
+	public class DuplicateException extends ZMessManager {
+		private static final long serialVersionUID = 1L;
+
+		public DuplicateException(String message) {
+			super(message);
+		}
+	}
 
 }

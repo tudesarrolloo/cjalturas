@@ -10,4 +10,6 @@ import com.cjalturas.model.Course;
 *
 */
 public interface ICourseDAO extends Dao<Course, Integer> {
+	
+	public Course findByCourseName(String courseName);
 }

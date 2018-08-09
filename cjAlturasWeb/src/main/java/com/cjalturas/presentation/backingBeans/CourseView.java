@@ -1,7 +1,7 @@
 package com.cjalturas.presentation.backingBeans;
 
 import com.cjalturas.exceptions.*;
-
+import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.*;
 import com.cjalturas.model.dto.CourseDTO;
 
@@ -50,7 +50,7 @@ public class CourseView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(CourseView.class);
     private InputText txtCourse;
-    private InputText txtIdCourse;
+//    private InputText txtIdCourse;
     private OutputLabel lblIdCourse;
     private CommandButton btnSave;
     private CommandButton btnModify;
@@ -79,19 +79,19 @@ public class CourseView implements Serializable {
         entity = null;
         selectedCourse = null;
 
-        if (txtCourse != null) {
-            txtCourse.setValue(null);
-            txtCourse.setDisabled(true);
-        }
+//        if (txtCourse != null) {
+//            txtCourse.setValue(null);
+//            txtCourse.setDisabled(true);
+//        }
 
-        if (txtIdCourse != null) {
-            txtIdCourse.setValue(null);
-            txtIdCourse.setDisabled(false);
-        }
+//        if (txtIdCourse != null) {
+//            txtIdCourse.setValue(null);
+//            txtIdCourse.setDisabled(false);
+//        }
 
-        if (btnSave != null) {
-            btnSave.setDisabled(true);
-        }
+//        if (btnSave != null) {
+//            btnSave.setDisabled(true);
+//        }
 
         if (btnDelete != null) {
             btnDelete.setDisabled(true);
@@ -100,31 +100,31 @@ public class CourseView implements Serializable {
         return "";
     }
 
-    public void listener_txtId() {
-        try {
-            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
-            entity = (idCourse != null)
-                ? businessDelegatorView.getCourse(idCourse) : null;
-        } catch (Exception e) {
-            entity = null;
-        }
-
-        if (entity == null) {
-            txtCourse.setDisabled(false);
-            txtIdCourse.setDisabled(false);
-            btnSave.setDisabled(false);
-        } else {
-            txtCourse.setValue(entity.getCourse());
-            txtCourse.setDisabled(false);
-            txtIdCourse.setValue(entity.getIdCourse());
-            txtIdCourse.setDisabled(true);
-            btnSave.setDisabled(false);
-
-            if (btnDelete != null) {
-                btnDelete.setDisabled(false);
-            }
-        }
-    }
+//    public void listener_txtId() {
+//        try {
+//            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
+//            entity = (idCourse != null)
+//                ? businessDelegatorView.getCourse(idCourse) : null;
+//        } catch (Exception e) {
+//            entity = null;
+//        }
+//
+//        if (entity == null) {
+//            txtCourse.setDisabled(false);
+//            txtIdCourse.setDisabled(false);
+//            btnSave.setDisabled(false);
+//        } else {
+//            txtCourse.setValue(entity.getCourse());
+//            txtCourse.setDisabled(false);
+//            txtIdCourse.setValue(entity.getIdCourse());
+//            txtIdCourse.setDisabled(true);
+//            btnSave.setDisabled(false);
+//
+//            if (btnDelete != null) {
+//                btnDelete.setDisabled(false);
+//            }
+//        }
+//    }
 
     public String action_edit(ActionEvent evt) {
         selectedCourse = (CourseDTO) (evt.getComponent().getAttributes()
@@ -134,7 +134,6 @@ public class CourseView implements Serializable {
 //        txtIdCourse.setValue(selectedCourse.getIdCourse());
 //        txtIdCourse.setDisabled(true);
         
-      txtIdCourse.setRendered(false);
 //      lblIdCourse.setRendered(false);
         
         btnSave.setDisabled(false);
@@ -160,13 +159,16 @@ public class CourseView implements Serializable {
     }
 
     public String action_create() {
+
+    	
+    	
         try {
             entity = new Course();
 
-            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
+//            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
 
             entity.setCourse(FacesUtils.checkString(txtCourse));
-            entity.setIdCourse(idCourse);
+//            entity.setIdCourse(idCourse);
             businessDelegatorView.saveCourse(entity);
             FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
@@ -211,17 +213,17 @@ public class CourseView implements Serializable {
         return "";
     }
 
-    public String action_delete_master() {
-        try {
-            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
-            entity = businessDelegatorView.getCourse(idCourse);
-            action_delete();
-        } catch (Exception e) {
-            FacesUtils.addErrorMessage(e.getMessage());
-        }
-
-        return "";
-    }
+//    public String action_delete_master() {
+//        try {
+//            Integer idCourse = FacesUtils.checkInteger(txtIdCourse);
+//            entity = businessDelegatorView.getCourse(idCourse);
+//            action_delete();
+//        } catch (Exception e) {
+//            FacesUtils.addErrorMessage(e.getMessage());
+//        }
+//
+//        return "";
+//    }
 
     public void action_delete() throws Exception {
         try {
@@ -264,13 +266,13 @@ public class CourseView implements Serializable {
         this.txtCourse = txtCourse;
     }
 
-    public InputText getTxtIdCourse() {
-        return txtIdCourse;
-    }
-
-    public void setTxtIdCourse(InputText txtIdCourse) {
-        this.txtIdCourse = txtIdCourse;
-    }
+//    public InputText getTxtIdCourse() {
+//        return txtIdCourse;
+//    }
+//
+//    public void setTxtIdCourse(InputText txtIdCourse) {
+//        this.txtIdCourse = txtIdCourse;
+//    }
     
     
 
@@ -359,7 +361,4 @@ public class CourseView implements Serializable {
         this.showDialog = showDialog;
     }
     
-    public boolean isIdVisible() {
-    	return this.txtIdCourse.isRendered();
-    }
 }

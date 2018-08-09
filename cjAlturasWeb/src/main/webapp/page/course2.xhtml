@@ -47,21 +47,21 @@
     </h:form>
     <p:dialog id="dialogCourse" appendTo="@(body)" draggable="true"
       closable="false" visible="#{courseView.showDialog}"
-      resizable="false" modal="true" width="350" header="Información del curso">
+      resizable="false" modal="true" width="380" header="Información del curso">
       <h:form id="formDialog">
         <p:messages id="msg" />
 <!--         <p:panel id="panelCourse" header="Course"> -->
           <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
 <!--             <h:outputText id="msgIdCourse" value="IdCourse" /> -->
-             <p:outputLabel id="lblIdCourse" for="txtIdCourse" value="idd curso" rendered="#{courseView.idVisible}" />
-            <p:inputText id="txtIdCourse" label="Aqui curso"
-              binding="#{courseView.txtIdCourse}">
-              <p:ajax update=":dialogCourse"
-                listener="#{courseView.listener_txtId}" />
-            </p:inputText>
+<!--              <p:outputLabel id="lblIdCourse" for="txtIdCourse" value="idd curso" rendered="#{courseView.idVisible}" /> -->
+<!--             <p:inputText id="txtIdCourse" label="Aqui curso" -->
+<!--               binding="#{courseView.txtIdCourse}"> -->
+<!--               <p:ajax update=":dialogCourse" -->
+<!--                 listener="#{courseView.listener_txtId}" /> -->
+<!--             </p:inputText> -->
 
             <h:outputText id="msgCourse" value="Nombre del curso" />
-            <p:inputText id="txtCourse" disabled="true"
+            <p:inputText id="txtCourse"
               binding="#{courseView.txtCourse}" />
 
           </h:panelGrid>

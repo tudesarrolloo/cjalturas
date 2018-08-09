@@ -378,4 +378,10 @@ public class HibernateDaoImpl<T, PK extends Serializable> implements Dao<T, PK> 
             throw re;
         }
     }
+
+		@Override
+		public void evict(Object object) {
+			getSession().evict(object);
+		}
+    
 }

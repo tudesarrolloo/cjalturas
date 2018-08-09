@@ -1,33 +1,18 @@
 package com.cjalturas.dataaccess.dao;
 
-import com.cjalturas.dataaccess.api.HibernateDaoImpl;
-
-import com.cjalturas.model.Course;
-
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-
-import org.hibernate.criterion.Example;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import org.springframework.stereotype.Repository;
-
-import java.math.BigDecimal;
-
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
+
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+
+import com.cjalturas.dataaccess.api.HibernateDaoImpl;
+import com.cjalturas.model.Course;
 
 
 /**
@@ -51,4 +36,16 @@ public class CourseDAO extends HibernateDaoImpl<Course, Integer>
     public static ICourseDAO getFromApplicationContext(ApplicationContext ctx) {
         return (ICourseDAO) ctx.getBean("CourseDAO");
     }
+
+	@Override
+	public Course findByCourseName(String courseName) {
+		List<Course> listCourses = findByProperty("course", courseName);
+		if (listCourses.isEmpty()) {
+			return null;
+		} else if (listCourses.size() > 1) {
+			log.error("Se encontró más de un curso con el nombre: " + courseName);
+			throw new RuntimeException("Se encontró más de un curso con el nombre: " + courseName);
+		}
+		return (Course) listCourses.get(0);
+	}
 }

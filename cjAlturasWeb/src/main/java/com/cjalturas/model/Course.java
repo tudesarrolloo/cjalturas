@@ -1,16 +1,17 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -22,7 +23,8 @@ import javax.validation.constraints.*;
 @Table(name = "course", schema = "${schema}")
 public class Course implements java.io.Serializable {
     @Id
-    @NotNull
+//    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idCourse;
     @NotNull
     @NotEmpty
