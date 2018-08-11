@@ -78,25 +78,8 @@ public class CourseView implements Serializable {
     public String action_clear() {
         entity = null;
         selectedCourse = null;
-
-//        if (txtCourse != null) {
-//            txtCourse.setValue(null);
-//            txtCourse.setDisabled(true);
-//        }
-
-//        if (txtIdCourse != null) {
-//            txtIdCourse.setValue(null);
-//            txtIdCourse.setDisabled(false);
-//        }
-
-//        if (btnSave != null) {
-//            btnSave.setDisabled(true);
-//        }
-
-        if (btnDelete != null) {
-            btnDelete.setDisabled(true);
-        }
-
+        PageUtils.clearTextBox(txtCourse);
+        PageUtils.disableButton(btnDelete);
         return "";
     }
 
@@ -130,15 +113,7 @@ public class CourseView implements Serializable {
         selectedCourse = (CourseDTO) (evt.getComponent().getAttributes()
                                          .get("selectedCourse"));
         txtCourse.setValue(selectedCourse.getCourse());
-        txtCourse.setDisabled(false);
-//        txtIdCourse.setValue(selectedCourse.getIdCourse());
-//        txtIdCourse.setDisabled(true);
-        
-//      lblIdCourse.setRendered(false);
-        
-        btnSave.setDisabled(false);
         setShowDialog(true);
-
         return "";
     }
 
@@ -170,7 +145,8 @@ public class CourseView implements Serializable {
             entity.setCourse(FacesUtils.checkString(txtCourse));
 //            entity.setIdCourse(idCourse);
             businessDelegatorView.saveCourse(entity);
-            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+            ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("course.save.success"));
+//            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
             action_clear();
         } catch (Exception e) {
             entity = null;

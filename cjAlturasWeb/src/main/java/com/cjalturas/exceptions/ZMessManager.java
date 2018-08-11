@@ -1,5 +1,8 @@
 package com.cjalturas.exceptions;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,5 +108,14 @@ public class ZMessManager extends RuntimeException {
 			super(message);
 		}
 	}
+
+  /**
+   * Crea mensaje debido al guardado existoso para una entidad.
+   * 
+   * @param string
+   */
+  public static void addSaveMessage(String message) {
+    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
+  }
 
 }

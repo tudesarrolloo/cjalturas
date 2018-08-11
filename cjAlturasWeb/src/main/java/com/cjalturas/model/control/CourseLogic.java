@@ -74,9 +74,9 @@ public class CourseLogic implements ICourseLogic {
 
 			Course courseFinded = courseDAO.findByCourseName(course.getCourse());
 			if (courseFinded != null) {
-				if (Integer.compare(courseFinded.getIdCourse(), course.getIdCourse()) != 0) {
+				if (course.getIdCourse() ==null || Integer.compare(courseFinded.getIdCourse(), course.getIdCourse()) != 0) {
 					throw new ZMessManager().new DuplicateException(
-							ApplicationMessages.getInstance().getMessage("error.duplicate.courseName"));
+							ApplicationMessages.getInstance().getMessage("course.error.duplicate.name"));
 				}
 				courseDAO.evict(courseFinded);
 			}

@@ -8,11 +8,17 @@
 
 
     <h:form id="frm">
-
-      <p:panel id="panelDataTableCourse"
-        header="Administración de cursos">
+      <p:panel id="panelDataTableCourse">
+        
+        <f:facet name="header">
+        <p:outputLabel>Administración de cursos</p:outputLabel>
+        <p:commandButton id="btnNew" value="Crear curso" style="float:right;"
+            action="#{courseView.action_new()}" update=":dialogCourse" />
+                            </f:facet>
+        
         <p:growl id="men" />
         <p:dataTable value="#{courseView.data}" var="course"
+          selectionMode="single" selection="#{courseView.selectedCourse}" rowKey="#{course.idCourse}"
           paginator="true" paginatorPosition="bottom" rows="8">
 
           <p:column width="90%" filterBy="#{course.course}"
@@ -24,26 +30,39 @@
           </p:column>
 
           <p:column headerText="Acciones">
-            <p:commandButton id="btnEdit" icon="ui-icon-pencil"
+          	 <p:commandLink id="btnEdit"  title="Editar" 
               update=":dialogCourse"
-              actionListener="#{courseView.action_edit}">
+              actionListener="#{courseView.action_edit}"> 
               <f:attribute name="selectedCourse" value="#{course}" />
-            </p:commandButton>
-            <p:commandButton id="btnDelete" title="Delete"
-              actionListener="#{courseView.action_delete_datatable}"
-              onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-              icon="ui-icon-trash" update="@form">
-              <f:attribute name="selectedCourse" value="#{course}" />
-            </p:commandButton>
+              <h:graphicImage value="../images/icon/edit-icon.png" styleClass="icon-table border" />
+            </p:commandLink>
+            
+            <p:commandLink id="btnDelete" title="Eliminar"
+            	actionListener="#{courseView.action_delete_datatable}" 
+            	update="@form">
+		        <p:confirm header="Confirmation" message="#{msg['course.delete.confirm']}" icon="ui-icon-alert" />
+		        <f:attribute name="selectedCourse" value="#{course}" />
+		        <h:graphicImage value="../images/icon/delete-icon.png" styleClass="icon-table" />
+		    </p:commandLink>
+          
+<!--             <p:commandButton id="btnEdit" title="Editar"  -->
+<!--               icon="ui-icon-pencil" update=":dialogCourse" -->
+<!--               actionListener="#{courseView.action_edit}"> -->
+<!--               <f:attribute name="selectedCourse" value="#{course}" /> -->
+<!--             </p:commandButton> -->
+<!--             <p:commandButton id="btnDelete" title="Eliminar"  -->
+<!--             	actionListener="#{courseView.action_delete_datatable}"  -->
+<!--             	icon="ui-icon-trash" update="@form"> -->
+<!-- 		        <p:confirm header="Confirmation" message="#{msg['course.delete.confirm']}" icon="ui-icon-alert" /> -->
+<!-- 		        <f:attribute name="selectedCourse" value="#{course}" /> -->
+<!-- 		    </p:commandButton> -->
+            
           </p:column>
         </p:dataTable>
       </p:panel>
-      <p:panel id="panelBoton">
-        <div align="center">
-          <p:commandButton id="btnNew" value="Crear nuevo curso"
-            action="#{courseView.action_new()}" update=":dialogCourse" />
-        </div>
-      </p:panel>
+    
+      
+    
     </h:form>
     <p:dialog id="dialogCourse" appendTo="@(body)" draggable="true"
       closable="false" visible="#{courseView.showDialog}"
@@ -69,19 +88,24 @@
 <!--         <p:panel id="panelBotones"> -->
           <div align="center" class="panel-boton">
             <p:commandButton id="btnSave"
-              binding="#{courseView.btnSave}" value="Save"
+              binding="#{courseView.btnSave}" value="Guardar"
               action="#{courseView.action_save()}"
               update=":dialogCourse :frm:panelDataTableCourse" />
-            <p:commandButton id="btnClear" value="Clear"
+            <p:commandButton id="btnClear" value="Limpiar"
               action="#{courseView.action_clear()}"
               update=":dialogCourse" />
-            <p:commandButton id="btnExit" value="Exit"
+            <p:commandButton id="btnExit" value="Salir"
               action="#{courseView.action_closeDialog()}"
               update=":dialogCourse" />
-          </div>
+          </div>	
 <!--         </p:panel> -->
       </h:form>
     </p:dialog>
+    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
   </ui:define>
 </ui:composition>
 

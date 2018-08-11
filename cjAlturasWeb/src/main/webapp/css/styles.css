@@ -27,6 +27,8 @@ footer{
    line-height:25px;
    padding:10px 0px 10px 0px;
    bottom: 0px;
+   position: fixed;
+   width: 100%;
 }
 
 footer a{
@@ -664,4 +666,14 @@ body {
 	
 	.panel-boton{
 		margin: 15px 0px 10px;
+	}
+	
+	.icon-table{
+		margin-right: 5px;
+	    padding-right: 5px;
+	}
+	
+	.icon-table.border{
+		border-width: 0px 1px 0px 0px;
+	    border-style: groove;	    
 	}
