@@ -3,23 +3,25 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
 <hibernate-mapping>
-    <class name="com.cjalturas.model.Economicsector" table="economicsector" catalog="cjalturas" optimistic-lock="version">
-        <id name="idEconomicSector" type="java.lang.Integer">
-            <column name="id_economicSector" />
-            <generator class="identity" />
-        </id>
-        <property name="economicSector" type="java.lang.String">
-            <column name="economicSector" length="20" not-null="true">
-                <comment>Descripci&#243;n del sector econ&#243;mico</comment>
-            </column>
-        </property>
-        <set name="learners" table="learner" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_economicSector">
-                    <comment>Sector econ&#243;mico al que pertenece el aprendiz.</comment>
-                </column>
-            </key>
-            <one-to-many class="com.cjalturas.model.Learner" />
-        </set>
-    </class>
+  <class name="com.cjalturas.model.Economicsector" table="economicsector"
+    catalog="cjalturas" optimistic-lock="version">
+    <id name="idEconomicSector" type="java.lang.Integer">
+      <column name="id_economicSector" />
+      <generator class="identity" />
+    </id>
+    <property name="economicSector" type="java.lang.String">
+      <column name="economicSector" length="20" not-null="true">
+        <comment>Descripci&#243;n del sector econ&#243;mico</comment>
+      </column>
+    </property>
+    <set name="learners" table="learner" inverse="true" lazy="true"
+      fetch="select">
+      <key>
+        <column name="id_economicSector">
+          <comment>Sector econ&#243;mico al que pertenece el aprendiz.</comment>
+        </column>
+      </key>
+      <one-to-many class="com.cjalturas.model.Learner" />
+    </set>
+  </class>
 </hibernate-mapping>

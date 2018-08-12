@@ -1,126 +1,144 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">		
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-					
-		  			<h:form id="frm">								  		
-						
-						<p:panel id="panelDataTablePerson" header="PersonData">
-							<p:growl id="men"/>				
-							<p:dataTable value="#{personView.data}" var="person"
-								paginator="true" rows="5">
-																										<p:column filterBy="#{person.idPerson}" sortBy="#{person.idPerson}" >
-										 <f:facet name="header">
-										<h:outputText value="idPerson"/>
-										</f:facet>
-										 <h:outputText value="#{person.idPerson}"/>
-										 </p:column>
-			                    																									
-										<p:column filterBy="#{person.document}" sortBy="#{person.document}" >
-										 <f:facet name="header">
-										<h:outputText value="Document"/>
-										</f:facet>
-										 <h:outputText value="#{person.document}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{person.documentType}" sortBy="#{person.documentType}" >
-										 <f:facet name="header">
-										<h:outputText value="DocumentType"/>
-										</f:facet>
-										 <h:outputText value="#{person.documentType}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{person.email}" sortBy="#{person.email}" >
-										 <f:facet name="header">
-										<h:outputText value="Email"/>
-										</f:facet>
-										 <h:outputText value="#{person.email}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{person.lastname}" sortBy="#{person.lastname}" >
-										 <f:facet name="header">
-										<h:outputText value="Lastname"/>
-										</f:facet>
-										 <h:outputText value="#{person.lastname}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{person.name}" sortBy="#{person.name}" >
-										 <f:facet name="header">
-										<h:outputText value="Name"/>
-										</f:facet>
-										 <h:outputText value="#{person.name}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{person.phone}" sortBy="#{person.phone}" >
-										 <f:facet name="header">
-										<h:outputText value="Phone"/>
-										</f:facet>
-										 <h:outputText value="#{person.phone}"/>
-										</p:column>   
-			                    			                    
-								<p:column headerText="Options">
-									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
-										update=":dialogPerson"
-										actionListener="#{personView.action_edit}">
-										<f:attribute name="selectedPerson" value="#{person}" />
-									</p:commandButton>
-									<p:commandButton id="btnDelete"									
-										title="Delete" actionListener="#{personView.action_delete_datatable}"
-										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-										icon="ui-icon-trash" update="@form">
-										<f:attribute name="selectedPerson" value="#{person}" />
-									</p:commandButton>
-								</p:column>									                    
-							</p:dataTable>	
-						</p:panel>
-						<p:panel id="panelBoton">
-							<div align="center">
-								<p:commandButton id="btnNew" value="New"
-									action="#{personView.action_new()}" update=":dialogPerson" />
-							</div>
-						</p:panel>						
-		   			</h:form>
-					<p:dialog id="dialogPerson" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{personView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
-							<p:messages id="msg" />
-							<p:panel id="panelPerson" header="Person">							
-							    <h:panelGrid columns="2" id="panelGrid" >
-																		 <h:outputText id="msgIdPerson" value="IdPerson"/>
-									 <p:inputText id="txtIdPerson" binding="#{personView.txtIdPerson}">
-									 <p:ajax update=":dialogPerson" listener="#{personView.listener_txtId}"/>
-									 </p:inputText>	
-																											
-																		<h:outputText id="msgDocument" value=" Document"/>
-									<p:inputText id="txtDocument" disabled="true" binding="#{personView.txtDocument}"/>
-																		<h:outputText id="msgDocumentType" value=" DocumentType"/>
-									<p:inputText id="txtDocumentType" disabled="true" binding="#{personView.txtDocumentType}"/>
-																		<h:outputText id="msgEmail" value=" Email"/>
-									<p:inputText id="txtEmail" disabled="true" binding="#{personView.txtEmail}"/>
-																		<h:outputText id="msgLastname" value=" Lastname"/>
-									<p:inputText id="txtLastname" disabled="true" binding="#{personView.txtLastname}"/>
-																		<h:outputText id="msgName" value=" Name"/>
-									<p:inputText id="txtName" disabled="true" binding="#{personView.txtName}"/>
-																		<h:outputText id="msgPhone" value=" Phone"/>
-									<p:inputText id="txtPhone" disabled="true" binding="#{personView.txtPhone}"/>
-																		
-																    </h:panelGrid>
-							</p:panel>						   
-							<p:panel id="panelBotones">
-								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{personView.btnSave}" value="Save" action="#{personView.action_save()}" update=":dialogPerson :frm:panelDataTablePerson" />
-									<p:commandButton id="btnClear" value="Clear" action="#{personView.action_clear()}" update=":dialogPerson" />
-									<p:commandButton id="btnExit" value="Exit" action="#{personView.action_closeDialog()}" update=":dialogPerson" />
-								</div>
-				</p:panel>
-			</h:form>
-		</p:dialog>
-	</ui:define>
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTablePerson" header="PersonData">
+        <p:growl id="men" />
+        <p:dataTable value="#{personView.data}" var="person"
+          paginator="true" rows="5">
+          <p:column filterBy="#{person.idPerson}"
+            sortBy="#{person.idPerson}">
+            <f:facet name="header">
+              <h:outputText value="idPerson" />
+            </f:facet>
+            <h:outputText value="#{person.idPerson}" />
+          </p:column>
+
+          <p:column filterBy="#{person.document}"
+            sortBy="#{person.document}">
+            <f:facet name="header">
+              <h:outputText value="Document" />
+            </f:facet>
+            <h:outputText value="#{person.document}" />
+          </p:column>
+
+          <p:column filterBy="#{person.documentType}"
+            sortBy="#{person.documentType}">
+            <f:facet name="header">
+              <h:outputText value="DocumentType" />
+            </f:facet>
+            <h:outputText value="#{person.documentType}" />
+          </p:column>
+
+          <p:column filterBy="#{person.email}" sortBy="#{person.email}">
+            <f:facet name="header">
+              <h:outputText value="Email" />
+            </f:facet>
+            <h:outputText value="#{person.email}" />
+          </p:column>
+
+          <p:column filterBy="#{person.lastname}"
+            sortBy="#{person.lastname}">
+            <f:facet name="header">
+              <h:outputText value="Lastname" />
+            </f:facet>
+            <h:outputText value="#{person.lastname}" />
+          </p:column>
+
+          <p:column filterBy="#{person.name}" sortBy="#{person.name}">
+            <f:facet name="header">
+              <h:outputText value="Name" />
+            </f:facet>
+            <h:outputText value="#{person.name}" />
+          </p:column>
+
+          <p:column filterBy="#{person.phone}" sortBy="#{person.phone}">
+            <f:facet name="header">
+              <h:outputText value="Phone" />
+            </f:facet>
+            <h:outputText value="#{person.phone}" />
+          </p:column>
+
+          <p:column headerText="Options">
+            <p:commandButton id="btnEdit" icon="ui-icon-pencil"
+              update=":dialogPerson"
+              actionListener="#{personView.action_edit}">
+              <f:attribute name="selectedPerson" value="#{person}" />
+            </p:commandButton>
+            <p:commandButton id="btnDelete" title="Delete"
+              actionListener="#{personView.action_delete_datatable}"
+              onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+              icon="ui-icon-trash" update="@form">
+              <f:attribute name="selectedPerson" value="#{person}" />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="panelBoton">
+        <div align="center">
+          <p:commandButton id="btnNew" value="New"
+            action="#{personView.action_new()}" update=":dialogPerson" />
+        </div>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogPerson" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{personView.showDialog}"
+      resizable="false" modal="true" width="500">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <p:panel id="panelPerson" header="Person">
+          <h:panelGrid columns="2" id="panelGrid">
+            <h:outputText id="msgIdPerson" value="IdPerson" />
+            <p:inputText id="txtIdPerson"
+              binding="#{personView.txtIdPerson}">
+              <p:ajax update=":dialogPerson"
+                listener="#{personView.listener_txtId}" />
+            </p:inputText>
+
+            <h:outputText id="msgDocument" value=" Document" />
+            <p:inputText id="txtDocument" disabled="true"
+              binding="#{personView.txtDocument}" />
+            <h:outputText id="msgDocumentType" value=" DocumentType" />
+            <p:inputText id="txtDocumentType" disabled="true"
+              binding="#{personView.txtDocumentType}" />
+            <h:outputText id="msgEmail" value=" Email" />
+            <p:inputText id="txtEmail" disabled="true"
+              binding="#{personView.txtEmail}" />
+            <h:outputText id="msgLastname" value=" Lastname" />
+            <p:inputText id="txtLastname" disabled="true"
+              binding="#{personView.txtLastname}" />
+            <h:outputText id="msgName" value=" Name" />
+            <p:inputText id="txtName" disabled="true"
+              binding="#{personView.txtName}" />
+            <h:outputText id="msgPhone" value=" Phone" />
+            <p:inputText id="txtPhone" disabled="true"
+              binding="#{personView.txtPhone}" />
+
+          </h:panelGrid>
+        </p:panel>
+        <p:panel id="panelBotones">
+          <div align="center">
+            <p:commandButton id="btnSave"
+              binding="#{personView.btnSave}" value="Save"
+              action="#{personView.action_save()}"
+              update=":dialogPerson :frm:panelDataTablePerson" />
+            <p:commandButton id="btnClear" value="Clear"
+              action="#{personView.action_clear()}"
+              update=":dialogPerson" />
+            <p:commandButton id="btnExit" value="Exit"
+              action="#{personView.action_closeDialog()}"
+              update=":dialogPerson" />
+          </div>
+        </p:panel>
+      </h:form>
+    </p:dialog>
+  </ui:define>
 </ui:composition>
 

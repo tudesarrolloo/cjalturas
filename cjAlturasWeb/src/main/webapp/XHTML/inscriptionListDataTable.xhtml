@@ -1,123 +1,148 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">		
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-					
-		  			<h:form id="frm">								  		
-						
-						<p:panel id="panelDataTableInscription" header="InscriptionData">
-							<p:growl id="men"/>				
-							<p:dataTable value="#{inscriptionView.data}" var="inscription"
-								paginator="true" rows="5">
-																										<p:column filterBy="#{inscription.idInscription}" sortBy="#{inscription.idInscription}" >
-										 <f:facet name="header">
-										<h:outputText value="idInscription"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.idInscription}"/>
-										 </p:column>
-			                    																									
-										<p:column filterBy="#{inscription.dateCertification}" sortBy="#{inscription.dateCertification}" >
-										 <f:facet name="header">
-										<h:outputText value="DateCertification"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.dateCertification}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{inscription.dateInscription}" sortBy="#{inscription.dateInscription}" >
-										 <f:facet name="header">
-										<h:outputText value="DateInscription"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.dateInscription}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{inscription.idGroup_Group}" sortBy="#{inscription.idGroup_Group}" >
-										 <f:facet name="header">
-										<h:outputText value="IdGroup_Group"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.idGroup_Group}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{inscription.idLearner_Learner}" sortBy="#{inscription.idLearner_Learner}" >
-										 <f:facet name="header">
-										<h:outputText value="IdLearner_Learner"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.idLearner_Learner}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{inscription.code_Status}" sortBy="#{inscription.code_Status}" >
-										 <f:facet name="header">
-										<h:outputText value="Code_Status"/>
-										</f:facet>
-										 <h:outputText value="#{inscription.code_Status}"/>
-										</p:column>   
-			                    			                    
-								<p:column headerText="Options">
-									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
-										update=":dialogInscription"
-										actionListener="#{inscriptionView.action_edit}">
-										<f:attribute name="selectedInscription" value="#{inscription}" />
-									</p:commandButton>
-									<p:commandButton id="btnDelete"									
-										title="Delete" actionListener="#{inscriptionView.action_delete_datatable}"
-										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-										icon="ui-icon-trash" update="@form">
-										<f:attribute name="selectedInscription" value="#{inscription}" />
-									</p:commandButton>
-								</p:column>									                    
-							</p:dataTable>	
-						</p:panel>
-						<p:panel id="panelBoton">
-							<div align="center">
-								<p:commandButton id="btnNew" value="New"
-									action="#{inscriptionView.action_new()}" update=":dialogInscription" />
-							</div>
-						</p:panel>						
-		   			</h:form>
-					<p:dialog id="dialogInscription" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{inscriptionView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
-							<p:messages id="msg" />
-							<p:panel id="panelInscription" header="Inscription">							
-							    <h:panelGrid columns="2" id="panelGrid" >
-																		 <h:outputText id="msgIdInscription" value="IdInscription"/>
-									 <p:inputText id="txtIdInscription" binding="#{inscriptionView.txtIdInscription}">
-									 <p:ajax update=":dialogInscription" listener="#{inscriptionView.listener_txtId}"/>
-									 </p:inputText>	
-																											
-																		<h:outputText id="msgIdGroup_Group" value=" IdGroup_Group"/>
-									<p:inputText id="txtIdGroup_Group" disabled="true" binding="#{inscriptionView.txtIdGroup_Group}"/>
-																		<h:outputText id="msgIdLearner_Learner" value=" IdLearner_Learner"/>
-									<p:inputText id="txtIdLearner_Learner" disabled="true" binding="#{inscriptionView.txtIdLearner_Learner}"/>
-																		<h:outputText id="msgCode_Status" value=" Code_Status"/>
-									<p:inputText id="txtCode_Status" disabled="true" binding="#{inscriptionView.txtCode_Status}"/>
-																		
-																													<h:outputText id="msgDateCertification" value=" DateCertification"/>
-																				<p:calendar showOn="button" navigator="true" locale="en" 
-										binding="#{inscriptionView.txtDateCertification}" >
-										<p:ajax event="dateSelect" listener="#{inscriptionView.listener_txtDateCertification}" />
-										</p:calendar>
-																				<h:outputText id="msgDateInscription" value=" DateInscription"/>
-																				<p:calendar showOn="button" navigator="true" locale="en" 
-										binding="#{inscriptionView.txtDateInscription}" >
-										<p:ajax event="dateSelect" listener="#{inscriptionView.listener_txtDateInscription}" />
-										</p:calendar>
-																										    </h:panelGrid>
-							</p:panel>						   
-							<p:panel id="panelBotones">
-								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{inscriptionView.btnSave}" value="Save" action="#{inscriptionView.action_save()}" update=":dialogInscription :frm:panelDataTableInscription" />
-									<p:commandButton id="btnClear" value="Clear" action="#{inscriptionView.action_clear()}" update=":dialogInscription" />
-									<p:commandButton id="btnExit" value="Exit" action="#{inscriptionView.action_closeDialog()}" update=":dialogInscription" />
-								</div>
-				</p:panel>
-			</h:form>
-		</p:dialog>
-	</ui:define>
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableInscription" header="InscriptionData">
+        <p:growl id="men" />
+        <p:dataTable value="#{inscriptionView.data}" var="inscription"
+          paginator="true" rows="5">
+          <p:column filterBy="#{inscription.idInscription}"
+            sortBy="#{inscription.idInscription}">
+            <f:facet name="header">
+              <h:outputText value="idInscription" />
+            </f:facet>
+            <h:outputText value="#{inscription.idInscription}" />
+          </p:column>
+
+          <p:column filterBy="#{inscription.dateCertification}"
+            sortBy="#{inscription.dateCertification}">
+            <f:facet name="header">
+              <h:outputText value="DateCertification" />
+            </f:facet>
+            <h:outputText value="#{inscription.dateCertification}" />
+          </p:column>
+
+          <p:column filterBy="#{inscription.dateInscription}"
+            sortBy="#{inscription.dateInscription}">
+            <f:facet name="header">
+              <h:outputText value="DateInscription" />
+            </f:facet>
+            <h:outputText value="#{inscription.dateInscription}" />
+          </p:column>
+
+          <p:column filterBy="#{inscription.idGroup_Group}"
+            sortBy="#{inscription.idGroup_Group}">
+            <f:facet name="header">
+              <h:outputText value="IdGroup_Group" />
+            </f:facet>
+            <h:outputText value="#{inscription.idGroup_Group}" />
+          </p:column>
+
+          <p:column filterBy="#{inscription.idLearner_Learner}"
+            sortBy="#{inscription.idLearner_Learner}">
+            <f:facet name="header">
+              <h:outputText value="IdLearner_Learner" />
+            </f:facet>
+            <h:outputText value="#{inscription.idLearner_Learner}" />
+          </p:column>
+
+          <p:column filterBy="#{inscription.code_Status}"
+            sortBy="#{inscription.code_Status}">
+            <f:facet name="header">
+              <h:outputText value="Code_Status" />
+            </f:facet>
+            <h:outputText value="#{inscription.code_Status}" />
+          </p:column>
+
+          <p:column headerText="Options">
+            <p:commandButton id="btnEdit" icon="ui-icon-pencil"
+              update=":dialogInscription"
+              actionListener="#{inscriptionView.action_edit}">
+              <f:attribute name="selectedInscription"
+                value="#{inscription}" />
+            </p:commandButton>
+            <p:commandButton id="btnDelete" title="Delete"
+              actionListener="#{inscriptionView.action_delete_datatable}"
+              onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+              icon="ui-icon-trash" update="@form">
+              <f:attribute name="selectedInscription"
+                value="#{inscription}" />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="panelBoton">
+        <div align="center">
+          <p:commandButton id="btnNew" value="New"
+            action="#{inscriptionView.action_new()}"
+            update=":dialogInscription" />
+        </div>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogInscription" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{inscriptionView.showDialog}"
+      resizable="false" modal="true" width="500">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <p:panel id="panelInscription" header="Inscription">
+          <h:panelGrid columns="2" id="panelGrid">
+            <h:outputText id="msgIdInscription" value="IdInscription" />
+            <p:inputText id="txtIdInscription"
+              binding="#{inscriptionView.txtIdInscription}">
+              <p:ajax update=":dialogInscription"
+                listener="#{inscriptionView.listener_txtId}" />
+            </p:inputText>
+
+            <h:outputText id="msgIdGroup_Group" value=" IdGroup_Group" />
+            <p:inputText id="txtIdGroup_Group" disabled="true"
+              binding="#{inscriptionView.txtIdGroup_Group}" />
+            <h:outputText id="msgIdLearner_Learner"
+              value=" IdLearner_Learner" />
+            <p:inputText id="txtIdLearner_Learner" disabled="true"
+              binding="#{inscriptionView.txtIdLearner_Learner}" />
+            <h:outputText id="msgCode_Status" value=" Code_Status" />
+            <p:inputText id="txtCode_Status" disabled="true"
+              binding="#{inscriptionView.txtCode_Status}" />
+
+            <h:outputText id="msgDateCertification"
+              value=" DateCertification" />
+            <p:calendar showOn="button" navigator="true" locale="en"
+              binding="#{inscriptionView.txtDateCertification}">
+              <p:ajax event="dateSelect"
+                listener="#{inscriptionView.listener_txtDateCertification}" />
+            </p:calendar>
+            <h:outputText id="msgDateInscription"
+              value=" DateInscription" />
+            <p:calendar showOn="button" navigator="true" locale="en"
+              binding="#{inscriptionView.txtDateInscription}">
+              <p:ajax event="dateSelect"
+                listener="#{inscriptionView.listener_txtDateInscription}" />
+            </p:calendar>
+          </h:panelGrid>
+        </p:panel>
+        <p:panel id="panelBotones">
+          <div align="center">
+            <p:commandButton id="btnSave"
+              binding="#{inscriptionView.btnSave}" value="Save"
+              action="#{inscriptionView.action_save()}"
+              update=":dialogInscription :frm:panelDataTableInscription" />
+            <p:commandButton id="btnClear" value="Clear"
+              action="#{inscriptionView.action_clear()}"
+              update=":dialogInscription" />
+            <p:commandButton id="btnExit" value="Exit"
+              action="#{inscriptionView.action_closeDialog()}"
+              update=":dialogInscription" />
+          </div>
+        </p:panel>
+      </h:form>
+    </p:dialog>
+  </ui:define>
 </ui:composition>
 

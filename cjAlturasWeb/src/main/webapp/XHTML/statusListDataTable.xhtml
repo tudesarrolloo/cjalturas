@@ -1,81 +1,90 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">		
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-					
-		  			<h:form id="frm">								  		
-						
-						<p:panel id="panelDataTableStatus" header="StatusData">
-							<p:growl id="men"/>				
-							<p:dataTable value="#{statusView.data}" var="status"
-								paginator="true" rows="5">
-																										<p:column filterBy="#{status.code}" sortBy="#{status.code}" >
-										 <f:facet name="header">
-										<h:outputText value="code"/>
-										</f:facet>
-										 <h:outputText value="#{status.code}"/>
-										 </p:column>
-			                    																									
-										<p:column filterBy="#{status.status}" sortBy="#{status.status}" >
-										 <f:facet name="header">
-										<h:outputText value="Status"/>
-										</f:facet>
-										 <h:outputText value="#{status.status}"/>
-										</p:column>   
-			                    			                    
-								<p:column headerText="Options">
-									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
-										update=":dialogStatus"
-										actionListener="#{statusView.action_edit}">
-										<f:attribute name="selectedStatus" value="#{status}" />
-									</p:commandButton>
-									<p:commandButton id="btnDelete"									
-										title="Delete" actionListener="#{statusView.action_delete_datatable}"
-										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-										icon="ui-icon-trash" update="@form">
-										<f:attribute name="selectedStatus" value="#{status}" />
-									</p:commandButton>
-								</p:column>									                    
-							</p:dataTable>	
-						</p:panel>
-						<p:panel id="panelBoton">
-							<div align="center">
-								<p:commandButton id="btnNew" value="New"
-									action="#{statusView.action_new()}" update=":dialogStatus" />
-							</div>
-						</p:panel>						
-		   			</h:form>
-					<p:dialog id="dialogStatus" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{statusView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
-							<p:messages id="msg" />
-							<p:panel id="panelStatus" header="Status">							
-							    <h:panelGrid columns="2" id="panelGrid" >
-																		 <h:outputText id="msgCode" value="Code"/>
-									 <p:inputText id="txtCode" binding="#{statusView.txtCode}">
-									 <p:ajax update=":dialogStatus" listener="#{statusView.listener_txtId}"/>
-									 </p:inputText>	
-																											
-																		<h:outputText id="msgStatus" value=" Status"/>
-									<p:inputText id="txtStatus" disabled="true" binding="#{statusView.txtStatus}"/>
-																		
-																    </h:panelGrid>
-							</p:panel>						   
-							<p:panel id="panelBotones">
-								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{statusView.btnSave}" value="Save" action="#{statusView.action_save()}" update=":dialogStatus :frm:panelDataTableStatus" />
-									<p:commandButton id="btnClear" value="Clear" action="#{statusView.action_clear()}" update=":dialogStatus" />
-									<p:commandButton id="btnExit" value="Exit" action="#{statusView.action_closeDialog()}" update=":dialogStatus" />
-								</div>
-				</p:panel>
-			</h:form>
-		</p:dialog>
-	</ui:define>
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableStatus" header="StatusData">
+        <p:growl id="men" />
+        <p:dataTable value="#{statusView.data}" var="status"
+          paginator="true" rows="5">
+          <p:column filterBy="#{status.code}" sortBy="#{status.code}">
+            <f:facet name="header">
+              <h:outputText value="code" />
+            </f:facet>
+            <h:outputText value="#{status.code}" />
+          </p:column>
+
+          <p:column filterBy="#{status.status}"
+            sortBy="#{status.status}">
+            <f:facet name="header">
+              <h:outputText value="Status" />
+            </f:facet>
+            <h:outputText value="#{status.status}" />
+          </p:column>
+
+          <p:column headerText="Options">
+            <p:commandButton id="btnEdit" icon="ui-icon-pencil"
+              update=":dialogStatus"
+              actionListener="#{statusView.action_edit}">
+              <f:attribute name="selectedStatus" value="#{status}" />
+            </p:commandButton>
+            <p:commandButton id="btnDelete" title="Delete"
+              actionListener="#{statusView.action_delete_datatable}"
+              onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+              icon="ui-icon-trash" update="@form">
+              <f:attribute name="selectedStatus" value="#{status}" />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="panelBoton">
+        <div align="center">
+          <p:commandButton id="btnNew" value="New"
+            action="#{statusView.action_new()}" update=":dialogStatus" />
+        </div>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogStatus" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{statusView.showDialog}"
+      resizable="false" modal="true" width="500">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <p:panel id="panelStatus" header="Status">
+          <h:panelGrid columns="2" id="panelGrid">
+            <h:outputText id="msgCode" value="Code" />
+            <p:inputText id="txtCode" binding="#{statusView.txtCode}">
+              <p:ajax update=":dialogStatus"
+                listener="#{statusView.listener_txtId}" />
+            </p:inputText>
+
+            <h:outputText id="msgStatus" value=" Status" />
+            <p:inputText id="txtStatus" disabled="true"
+              binding="#{statusView.txtStatus}" />
+
+          </h:panelGrid>
+        </p:panel>
+        <p:panel id="panelBotones">
+          <div align="center">
+            <p:commandButton id="btnSave"
+              binding="#{statusView.btnSave}" value="Save"
+              action="#{statusView.action_save()}"
+              update=":dialogStatus :frm:panelDataTableStatus" />
+            <p:commandButton id="btnClear" value="Clear"
+              action="#{statusView.action_clear()}"
+              update=":dialogStatus" />
+            <p:commandButton id="btnExit" value="Exit"
+              action="#{statusView.action_closeDialog()}"
+              update=":dialogStatus" />
+          </div>
+        </p:panel>
+      </h:form>
+    </p:dialog>
+  </ui:define>
 </ui:composition>
 

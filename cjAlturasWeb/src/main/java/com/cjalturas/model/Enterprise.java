@@ -14,86 +14,89 @@ import javax.validation.constraints.*;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Entity
 @Table(name = "enterprise", schema = "${schema}")
 public class Enterprise implements java.io.Serializable {
-    @Id
-    @NotNull
-    private Integer idEnterprise;
-    private String contactName;
-    @NotNull
-    @NotEmpty
-    @Size(max = 200)
-    private String name;
-    @NotNull
-    @NotEmpty
-    @Size(max = 20)
-    private String nit;
-    private String phone;
-    private Set<Learner> learners = new HashSet<Learner>(0);
+  @Id
+  @NotNull
+  private Integer idEnterprise;
 
-    public Enterprise() {
-    }
+  private String contactName;
 
-    public Enterprise(Integer idEnterprise, String contactName,
-        Set<Learner> learners, String name, String nit, String phone) {
-        this.idEnterprise = idEnterprise;
-        this.contactName = contactName;
-        this.name = name;
-        this.nit = nit;
-        this.phone = phone;
-        this.learners = learners;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 200)
+  private String name;
 
-    public Integer getIdEnterprise() {
-        return this.idEnterprise;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 20)
+  private String nit;
 
-    public void setIdEnterprise(Integer idEnterprise) {
-        this.idEnterprise = idEnterprise;
-    }
+  private String phone;
 
-    public String getContactName() {
-        return this.contactName;
-    }
+  private Set<Learner> learners = new HashSet<Learner>(0);
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
+  public Enterprise() {
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public Enterprise(Integer idEnterprise, String contactName, Set<Learner> learners, String name, String nit, String phone) {
+    this.idEnterprise = idEnterprise;
+    this.contactName = contactName;
+    this.name = name;
+    this.nit = nit;
+    this.phone = phone;
+    this.learners = learners;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public Integer getIdEnterprise() {
+    return this.idEnterprise;
+  }
 
-    public String getNit() {
-        return this.nit;
-    }
+  public void setIdEnterprise(Integer idEnterprise) {
+    this.idEnterprise = idEnterprise;
+  }
 
-    public void setNit(String nit) {
-        this.nit = nit;
-    }
+  public String getContactName() {
+    return this.contactName;
+  }
 
-    public String getPhone() {
-        return this.phone;
-    }
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
+  }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public Set<Learner> getLearners() {
-        return this.learners;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setLearners(Set<Learner> learners) {
-        this.learners = learners;
-    }
+  public String getNit() {
+    return this.nit;
+  }
+
+  public void setNit(String nit) {
+    this.nit = nit;
+  }
+
+  public String getPhone() {
+    return this.phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public Set<Learner> getLearners() {
+    return this.learners;
+  }
+
+  public void setLearners(Set<Learner> learners) {
+    this.learners = learners;
+  }
 }

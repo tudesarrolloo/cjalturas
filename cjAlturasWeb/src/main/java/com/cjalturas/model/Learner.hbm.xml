@@ -3,31 +3,37 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
 <hibernate-mapping>
-    <class name="com.cjalturas.model.Learner" table="learner" catalog="cjalturas" optimistic-lock="version">
-        <id name="idLearner" type="java.lang.Integer">
-            <column name="id_learner" />
-            <generator class="identity" />
-        </id>
-        <many-to-one name="economicsector" class="com.cjalturas.model.Economicsector" fetch="select">
-            <column name="id_economicSector">
-                <comment>Sector econ&#243;mico al que pertenece el aprendiz.</comment>
-            </column>
-        </many-to-one>
-        <many-to-one name="enterprise" class="com.cjalturas.model.Enterprise" fetch="select">
-            <column name="id_enterprise">
-                <comment>Empresa en la que labora el aprendiz, podr&#225; ser nula en el caso de que se trate de una persona independiente.</comment>
-            </column>
-        </many-to-one>
-        <many-to-one name="person" class="com.cjalturas.model.Person" fetch="select">
-            <column name="id_person" not-null="true" />
-        </many-to-one>
-        <set name="inscriptions" table="inscription" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_learner" not-null="true">
-                    <comment>Aprendiz que realiz&#243; la inscripci&#243;n</comment>
-                </column>
-            </key>
-            <one-to-many class="com.cjalturas.model.Inscription" />
-        </set>
-    </class>
+  <class name="com.cjalturas.model.Learner" table="learner"
+    catalog="cjalturas" optimistic-lock="version">
+    <id name="idLearner" type="java.lang.Integer">
+      <column name="id_learner" />
+      <generator class="identity" />
+    </id>
+    <many-to-one name="economicsector" class="com.cjalturas.model.Economicsector"
+      fetch="select">
+      <column name="id_economicSector">
+        <comment>Sector econ&#243;mico al que pertenece el aprendiz.</comment>
+      </column>
+    </many-to-one>
+    <many-to-one name="enterprise" class="com.cjalturas.model.Enterprise"
+      fetch="select">
+      <column name="id_enterprise">
+        <comment>Empresa en la que labora el aprendiz, podr&#225; ser
+          nula en el caso de que se trate de una persona independiente.</comment>
+      </column>
+    </many-to-one>
+    <many-to-one name="person" class="com.cjalturas.model.Person"
+      fetch="select">
+      <column name="id_person" not-null="true" />
+    </many-to-one>
+    <set name="inscriptions" table="inscription" inverse="true"
+      lazy="true" fetch="select">
+      <key>
+        <column name="id_learner" not-null="true">
+          <comment>Aprendiz que realiz&#243; la inscripci&#243;n</comment>
+        </column>
+      </key>
+      <one-to-many class="com.cjalturas.model.Inscription" />
+    </set>
+  </class>
 </hibernate-mapping>

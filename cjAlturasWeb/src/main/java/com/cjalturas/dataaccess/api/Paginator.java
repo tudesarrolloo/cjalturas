@@ -1,9 +1,9 @@
 package com.cjalturas.dataaccess.api;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
 
 
 /**
@@ -15,43 +15,46 @@ import java.io.Serializable;
  *
  */
 public class Paginator implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(Paginator.class);
-    private int firstResult;
-    private int maxResults;
+  private static final long serialVersionUID = 1L;
 
-    // a separated comma order properties: +=ASC, -=DESC, for example: +id,-processName
-    private String sort;
+  private static final Logger log = LoggerFactory.getLogger(Paginator.class);
 
-    public Paginator(int firstResult, int maxResults, String sort) {
-        super();
-        this.firstResult = firstResult;
-        this.maxResults = maxResults;
-        this.sort = sort;
-    }
+  private int firstResult;
 
-    public Paginator(int firstResult, int maxResults) {
-        this.firstResult = firstResult;
-        this.maxResults = maxResults;
-    }
+  private int maxResults;
 
-    public static Paginator createPaginator() {
-        return new Paginator(-1, -1);
-    }
+  // a separated comma order properties: +=ASC, -=DESC, for example: +id,-processName
+  private String sort;
 
-    public int getFirstResult() {
-        return firstResult;
-    }
+  public Paginator(int firstResult, int maxResults, String sort) {
+    super();
+    this.firstResult = firstResult;
+    this.maxResults = maxResults;
+    this.sort = sort;
+  }
 
-    public int getMaxResults() {
-        return maxResults;
-    }
+  public Paginator(int firstResult, int maxResults) {
+    this.firstResult = firstResult;
+    this.maxResults = maxResults;
+  }
 
-    public String getSort() {
-        return sort;
-    }
+  public static Paginator createPaginator() {
+    return new Paginator(-1, -1);
+  }
 
-    public static Paginator getDefault() {
-        return new Paginator(0, 1000);
-    }
+  public int getFirstResult() {
+    return firstResult;
+  }
+
+  public int getMaxResults() {
+    return maxResults;
+  }
+
+  public String getSort() {
+    return sort;
+  }
+
+  public static Paginator getDefault() {
+    return new Paginator(0, 1000);
+  }
 }

@@ -1,111 +1,127 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">		
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
 
-					
-		  			<h:form id="frm">								  		
-						
-						<p:panel id="panelDataTableGroup" header="GroupData">
-							<p:growl id="men"/>				
-							<p:dataTable value="#{groupView.data}" var="group"
-								paginator="true" rows="5">
-																										<p:column filterBy="#{group.idGroup}" sortBy="#{group.idGroup}" >
-										 <f:facet name="header">
-										<h:outputText value="idGroup"/>
-										</f:facet>
-										 <h:outputText value="#{group.idGroup}"/>
-										 </p:column>
-			                    																									
-										<p:column filterBy="#{group.dateStart}" sortBy="#{group.dateStart}" >
-										 <f:facet name="header">
-										<h:outputText value="DateStart"/>
-										</f:facet>
-										 <h:outputText value="#{group.dateStart}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{group.observations}" sortBy="#{group.observations}" >
-										 <f:facet name="header">
-										<h:outputText value="Observations"/>
-										</f:facet>
-										 <h:outputText value="#{group.observations}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{group.idCoach_Coach}" sortBy="#{group.idCoach_Coach}" >
-										 <f:facet name="header">
-										<h:outputText value="IdCoach_Coach"/>
-										</f:facet>
-										 <h:outputText value="#{group.idCoach_Coach}"/>
-										</p:column>   
-			                    									
-										<p:column filterBy="#{group.idCourse_Course}" sortBy="#{group.idCourse_Course}" >
-										 <f:facet name="header">
-										<h:outputText value="IdCourse_Course"/>
-										</f:facet>
-										 <h:outputText value="#{group.idCourse_Course}"/>
-										</p:column>   
-			                    			                    
-								<p:column headerText="Options">
-									<p:commandButton id="btnEdit" icon="ui-icon-pencil"
-										update=":dialogGroup"
-										actionListener="#{groupView.action_edit}">
-										<f:attribute name="selectedGroup" value="#{group}" />
-									</p:commandButton>
-									<p:commandButton id="btnDelete"									
-										title="Delete" actionListener="#{groupView.action_delete_datatable}"
-										onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-										icon="ui-icon-trash" update="@form">
-										<f:attribute name="selectedGroup" value="#{group}" />
-									</p:commandButton>
-								</p:column>									                    
-							</p:dataTable>	
-						</p:panel>
-						<p:panel id="panelBoton">
-							<div align="center">
-								<p:commandButton id="btnNew" value="New"
-									action="#{groupView.action_new()}" update=":dialogGroup" />
-							</div>
-						</p:panel>						
-		   			</h:form>
-					<p:dialog id="dialogGroup" appendTo="@(body)" draggable="true"
-						closable="false" visible="#{groupView.showDialog}" resizable="false"
-						modal="true" width="500">
-						<h:form id="formDialog">
-							<p:messages id="msg" />
-							<p:panel id="panelGroup" header="Group">							
-							    <h:panelGrid columns="2" id="panelGrid" >
-																		 <h:outputText id="msgIdGroup" value="IdGroup"/>
-									 <p:inputText id="txtIdGroup" binding="#{groupView.txtIdGroup}">
-									 <p:ajax update=":dialogGroup" listener="#{groupView.listener_txtId}"/>
-									 </p:inputText>	
-																											
-																		<h:outputText id="msgObservations" value=" Observations"/>
-									<p:inputText id="txtObservations" disabled="true" binding="#{groupView.txtObservations}"/>
-																		<h:outputText id="msgIdCoach_Coach" value=" IdCoach_Coach"/>
-									<p:inputText id="txtIdCoach_Coach" disabled="true" binding="#{groupView.txtIdCoach_Coach}"/>
-																		<h:outputText id="msgIdCourse_Course" value=" IdCourse_Course"/>
-									<p:inputText id="txtIdCourse_Course" disabled="true" binding="#{groupView.txtIdCourse_Course}"/>
-																		
-																													<h:outputText id="msgDateStart" value=" DateStart"/>
-																				<p:calendar showOn="button" navigator="true" locale="en" 
-										binding="#{groupView.txtDateStart}" >
-										<p:ajax event="dateSelect" listener="#{groupView.listener_txtDateStart}" />
-										</p:calendar>
-																										    </h:panelGrid>
-							</p:panel>						   
-							<p:panel id="panelBotones">
-								<div align="center">					
-									<p:commandButton id="btnSave" binding="#{groupView.btnSave}" value="Save" action="#{groupView.action_save()}" update=":dialogGroup :frm:panelDataTableGroup" />
-									<p:commandButton id="btnClear" value="Clear" action="#{groupView.action_clear()}" update=":dialogGroup" />
-									<p:commandButton id="btnExit" value="Exit" action="#{groupView.action_closeDialog()}" update=":dialogGroup" />
-								</div>
-				</p:panel>
-			</h:form>
-		</p:dialog>
-	</ui:define>
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableGroup" header="GroupData">
+        <p:growl id="men" />
+        <p:dataTable value="#{groupView.data}" var="group"
+          paginator="true" rows="5">
+          <p:column filterBy="#{group.idGroup}"
+            sortBy="#{group.idGroup}">
+            <f:facet name="header">
+              <h:outputText value="idGroup" />
+            </f:facet>
+            <h:outputText value="#{group.idGroup}" />
+          </p:column>
+
+          <p:column filterBy="#{group.dateStart}"
+            sortBy="#{group.dateStart}">
+            <f:facet name="header">
+              <h:outputText value="DateStart" />
+            </f:facet>
+            <h:outputText value="#{group.dateStart}" />
+          </p:column>
+
+          <p:column filterBy="#{group.observations}"
+            sortBy="#{group.observations}">
+            <f:facet name="header">
+              <h:outputText value="Observations" />
+            </f:facet>
+            <h:outputText value="#{group.observations}" />
+          </p:column>
+
+          <p:column filterBy="#{group.idCoach_Coach}"
+            sortBy="#{group.idCoach_Coach}">
+            <f:facet name="header">
+              <h:outputText value="IdCoach_Coach" />
+            </f:facet>
+            <h:outputText value="#{group.idCoach_Coach}" />
+          </p:column>
+
+          <p:column filterBy="#{group.idCourse_Course}"
+            sortBy="#{group.idCourse_Course}">
+            <f:facet name="header">
+              <h:outputText value="IdCourse_Course" />
+            </f:facet>
+            <h:outputText value="#{group.idCourse_Course}" />
+          </p:column>
+
+          <p:column headerText="Options">
+            <p:commandButton id="btnEdit" icon="ui-icon-pencil"
+              update=":dialogGroup"
+              actionListener="#{groupView.action_edit}">
+              <f:attribute name="selectedGroup" value="#{group}" />
+            </p:commandButton>
+            <p:commandButton id="btnDelete" title="Delete"
+              actionListener="#{groupView.action_delete_datatable}"
+              onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+              icon="ui-icon-trash" update="@form">
+              <f:attribute name="selectedGroup" value="#{group}" />
+            </p:commandButton>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+      <p:panel id="panelBoton">
+        <div align="center">
+          <p:commandButton id="btnNew" value="New"
+            action="#{groupView.action_new()}" update=":dialogGroup" />
+        </div>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogGroup" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{groupView.showDialog}"
+      resizable="false" modal="true" width="500">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <p:panel id="panelGroup" header="Group">
+          <h:panelGrid columns="2" id="panelGrid">
+            <h:outputText id="msgIdGroup" value="IdGroup" />
+            <p:inputText id="txtIdGroup"
+              binding="#{groupView.txtIdGroup}">
+              <p:ajax update=":dialogGroup"
+                listener="#{groupView.listener_txtId}" />
+            </p:inputText>
+
+            <h:outputText id="msgObservations" value=" Observations" />
+            <p:inputText id="txtObservations" disabled="true"
+              binding="#{groupView.txtObservations}" />
+            <h:outputText id="msgIdCoach_Coach" value=" IdCoach_Coach" />
+            <p:inputText id="txtIdCoach_Coach" disabled="true"
+              binding="#{groupView.txtIdCoach_Coach}" />
+            <h:outputText id="msgIdCourse_Course"
+              value=" IdCourse_Course" />
+            <p:inputText id="txtIdCourse_Course" disabled="true"
+              binding="#{groupView.txtIdCourse_Course}" />
+
+            <h:outputText id="msgDateStart" value=" DateStart" />
+            <p:calendar showOn="button" navigator="true" locale="en"
+              binding="#{groupView.txtDateStart}">
+              <p:ajax event="dateSelect"
+                listener="#{groupView.listener_txtDateStart}" />
+            </p:calendar>
+          </h:panelGrid>
+        </p:panel>
+        <p:panel id="panelBotones">
+          <div align="center">
+            <p:commandButton id="btnSave" binding="#{groupView.btnSave}"
+              value="Save" action="#{groupView.action_save()}"
+              update=":dialogGroup :frm:panelDataTableGroup" />
+            <p:commandButton id="btnClear" value="Clear"
+              action="#{groupView.action_clear()}" update=":dialogGroup" />
+            <p:commandButton id="btnExit" value="Exit"
+              action="#{groupView.action_closeDialog()}"
+              update=":dialogGroup" />
+          </div>
+        </p:panel>
+      </h:form>
+    </p:dialog>
+  </ui:define>
 </ui:composition>
 

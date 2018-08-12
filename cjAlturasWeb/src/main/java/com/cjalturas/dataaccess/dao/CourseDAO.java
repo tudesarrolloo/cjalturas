@@ -16,36 +16,33 @@ import com.cjalturas.model.Course;
 
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Course entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * A data access object (DAO) providing persistence and search support for Course entities. Transaction control of the save(), update() and delete() operations
+ * can directly support Spring container-managed transactions or they can be augmented to handle user-managed Spring transactions. Each of these methods
+ * provides additional information for how to configure it for the desired type of transaction control.
  *
  * @see lidis.Course
  */
 @Scope("singleton")
 @Repository("CourseDAO")
-public class CourseDAO extends HibernateDaoImpl<Course, Integer>
-    implements ICourseDAO {
-    private static final Logger log = LoggerFactory.getLogger(CourseDAO.class);
-    @Resource
-    private SessionFactory sessionFactory;
+public class CourseDAO extends HibernateDaoImpl<Course, Integer> implements ICourseDAO {
+  private static final Logger log = LoggerFactory.getLogger(CourseDAO.class);
 
-    public static ICourseDAO getFromApplicationContext(ApplicationContext ctx) {
-        return (ICourseDAO) ctx.getBean("CourseDAO");
+  @Resource
+  private SessionFactory sessionFactory;
+
+  public static ICourseDAO getFromApplicationContext(ApplicationContext ctx) {
+    return (ICourseDAO) ctx.getBean("CourseDAO");
+  }
+
+  @Override
+  public Course findByCourseName(String courseName) {
+    List<Course> listCourses = findByProperty("course", courseName);
+    if (listCourses.isEmpty()) {
+      return null;
+    } else if (listCourses.size() > 1) {
+      log.error("Se encontró más de un curso con el nombre: " + courseName);
+      throw new RuntimeException("Se encontró más de un curso con el nombre: " + courseName);
     }
-
-	@Override
-	public Course findByCourseName(String courseName) {
-		List<Course> listCourses = findByProperty("course", courseName);
-		if (listCourses.isEmpty()) {
-			return null;
-		} else if (listCourses.size() > 1) {
-			log.error("Se encontró más de un curso con el nombre: " + courseName);
-			throw new RuntimeException("Se encontró más de un curso con el nombre: " + courseName);
-		}
-		return (Course) listCourses.get(0);
-	}
+    return (Course) listCourses.get(0);
+  }
 }

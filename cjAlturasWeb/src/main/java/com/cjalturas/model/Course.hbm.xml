@@ -3,23 +3,25 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
 <hibernate-mapping>
-    <class name="com.cjalturas.model.Course" table="course" catalog="cjalturas" optimistic-lock="version">
-        <id name="idCourse" type="java.lang.Integer">
-            <column name="id_course" />
-            <generator class="identity" />
-        </id>
-        <property name="course" type="java.lang.String">
-            <column name="course" length="20" not-null="true">
-                <comment>Nombre del curso de formaci&#243;n</comment>
-            </column>
-        </property>
-        <set name="groups" table="group" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_course" not-null="true">
-                    <comment>Curso que se dictar&#225; para el grupo</comment>
-                </column>
-            </key>
-            <one-to-many class="com.cjalturas.model.Group" />
-        </set>
-    </class>
+  <class name="com.cjalturas.model.Course" table="course" catalog="cjalturas"
+    optimistic-lock="version">
+    <id name="idCourse" type="java.lang.Integer">
+      <column name="id_course" />
+      <generator class="identity" />
+    </id>
+    <property name="course" type="java.lang.String">
+      <column name="course" length="20" not-null="true">
+        <comment>Nombre del curso de formaci&#243;n</comment>
+      </column>
+    </property>
+    <set name="groups" table="group" inverse="true" lazy="true"
+      fetch="select">
+      <key>
+        <column name="id_course" not-null="true">
+          <comment>Curso que se dictar&#225; para el grupo</comment>
+        </column>
+      </key>
+      <one-to-many class="com.cjalturas.model.Group" />
+    </set>
+  </class>
 </hibernate-mapping>

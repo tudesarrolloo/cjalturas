@@ -1,42 +1,55 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
-		 
-	<ui:define name="content">	
-			
-			
-			<h:form id="formDialog">
-				<p:messages id="msg" />
-				<p:growl id="men"/>
-					<p:panel id="panelCoach" header="Coach">							
-						<h:panelGrid columns="2" id="panelGrid" >
-												 	<h:outputText id="msgIdCoach" value="IdCoach"/>
-						 	<p:inputText id="txtIdCoach" binding="#{coachView.txtIdCoach}">
-						 		<p:ajax update="panelCoach,msg,panelBotones" listener="#{coachView.listener_txtId}"/>
-						 	</p:inputText>	
-																		
-													<h:outputText id="msgCharge" value=" Charge"/>
-							<p:inputText id="txtCharge" disabled="true" binding="#{coachView.txtCharge}"/>
-													<h:outputText id="msgLicenseSst" value=" LicenseSst"/>
-							<p:inputText id="txtLicenseSst" disabled="true" binding="#{coachView.txtLicenseSst}"/>
-													<h:outputText id="msgSign" value=" Sign"/>
-							<p:inputText id="txtSign" disabled="true" binding="#{coachView.txtSign}"/>
-													<h:outputText id="msgIdPerson_Person" value=" IdPerson_Person"/>
-							<p:inputText id="txtIdPerson_Person" disabled="true" binding="#{coachView.txtIdPerson_Person}"/>
-												
-										   </h:panelGrid>
-				</p:panel>
-	   			<p:panel id="panelBotones">
-					<div align="center">					
-						<p:commandButton id="btnSave" binding="#{coachView.btnSave}" disabled="true" value="Save" action="#{coachView.action_save()}" update="panelCoach, msg, panelBotones, men" />
-						<p:commandButton id="btnDelete" binding="#{coachView.btnDelete}" disabled="true" value="Delete" action="#{coachView.action_delete_master()}" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" update="panelCoach, msg, panelBotones, men" />
-						<p:commandButton id="btnClear" value="Clear" action="#{coachView.action_clear()}" update="panelCoach, msg, panelBotones, men" />
-					</div>
-				</p:panel>			
-			</h:form>
-			
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="formDialog">
+      <p:messages id="msg" />
+      <p:growl id="men" />
+      <p:panel id="panelCoach" header="Coach">
+        <h:panelGrid columns="2" id="panelGrid">
+          <h:outputText id="msgIdCoach" value="IdCoach" />
+          <p:inputText id="txtIdCoach" binding="#{coachView.txtIdCoach}">
+            <p:ajax update="panelCoach,msg,panelBotones"
+              listener="#{coachView.listener_txtId}" />
+          </p:inputText>
+
+          <h:outputText id="msgCharge" value=" Charge" />
+          <p:inputText id="txtCharge" disabled="true"
+            binding="#{coachView.txtCharge}" />
+          <h:outputText id="msgLicenseSst" value=" LicenseSst" />
+          <p:inputText id="txtLicenseSst" disabled="true"
+            binding="#{coachView.txtLicenseSst}" />
+          <h:outputText id="msgSign" value=" Sign" />
+          <p:inputText id="txtSign" disabled="true"
+            binding="#{coachView.txtSign}" />
+          <h:outputText id="msgIdPerson_Person" value=" IdPerson_Person" />
+          <p:inputText id="txtIdPerson_Person" disabled="true"
+            binding="#{coachView.txtIdPerson_Person}" />
+
+        </h:panelGrid>
+      </p:panel>
+      <p:panel id="panelBotones">
+        <div align="center">
+          <p:commandButton id="btnSave" binding="#{coachView.btnSave}"
+            disabled="true" value="Save"
+            action="#{coachView.action_save()}"
+            update="panelCoach, msg, panelBotones, men" />
+          <p:commandButton id="btnDelete"
+            binding="#{coachView.btnDelete}" disabled="true"
+            value="Delete" action="#{coachView.action_delete_master()}"
+            onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
+            update="panelCoach, msg, panelBotones, men" />
+          <p:commandButton id="btnClear" value="Clear"
+            action="#{coachView.action_clear()}"
+            update="panelCoach, msg, panelBotones, men" />
+        </div>
+      </p:panel>
+    </h:form>
+
   </ui:define>
 </ui:composition>
