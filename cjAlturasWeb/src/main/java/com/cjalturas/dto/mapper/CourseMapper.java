@@ -1,30 +1,22 @@
 package com.cjalturas.dto.mapper;
 
-import com.cjalturas.model.*;
-import com.cjalturas.model.Course;
-import com.cjalturas.model.control.*;
-import com.cjalturas.model.dto.CourseDTO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.Scope;
-
-import org.springframework.stereotype.Component;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cjalturas.model.Course;
+import com.cjalturas.model.dto.CourseDTO;
+
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * Mapea el resultado de la entidad Curso a su equivalente en dto.
+ * @author Edison
+ */
 @Component
 @Scope("singleton")
 public class CourseMapper implements ICourseMapper {
@@ -41,7 +33,8 @@ public class CourseMapper implements ICourseMapper {
 
             return courseDTO;
         } catch (Exception e) {
-            throw e;
+        	log.error("Error convirtiendo curso a su equivalente en dto");
+          throw e;
         }
     }
 
@@ -57,6 +50,7 @@ public class CourseMapper implements ICourseMapper {
 
             return course;
         } catch (Exception e) {
+        		log.error("Error convirtiendo dto a su equivalente en curso");
             throw e;
         }
     }
@@ -75,6 +69,7 @@ public class CourseMapper implements ICourseMapper {
 
             return courseDTOs;
         } catch (Exception e) {
+        	log.error("Error convirtiendo lista de cursos a su equivalente en lista de cursos dto");
             throw e;
         }
     }
@@ -93,6 +88,7 @@ public class CourseMapper implements ICourseMapper {
 
             return listCourse;
         } catch (Exception e) {
+        	log.error("Error convirtiendo lista de cursos dto a su equivalente en lista de cursos");
             throw e;
         }
     }

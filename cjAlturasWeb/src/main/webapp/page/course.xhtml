@@ -7,41 +7,81 @@
   <ui:define name="content">
 
 
-    <h:form id="formDialog">
-      <p:messages id="msg" />
-      <p:growl id="men" />
-      <p:panel id="panelCourse" header="Course">
-        <h:panelGrid columns="2" id="panelGrid">
-          <h:outputText id="msgIdCourse" value="IdCourse" />
-          <p:inputText id="txtIdCourse"
-            binding="#{courseView.txtIdCourse}">
-            <p:ajax update="panelCourse,msg,panelBotones"
-              listener="#{courseView.listener_txtId}" />
-          </p:inputText>
+    <h:form id="frm">
+      <p:panel id="panelDataTableCourse">
 
-          <h:outputText id="msgCourse" value=" Course" />
-          <p:inputText id="txtCourse" disabled="true"
-            binding="#{courseView.txtCourse}" />
+        <f:facet name="header">
+          <p:outputLabel>Administración de cursos</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear curso"
+            style="float:right;" action="#{courseView.action_new()}"
+            update=":dialogCourse" />
+        </f:facet>
 
-        </h:panelGrid>
-      </p:panel>
-      <p:panel id="panelBotones">
-        <div align="center">
-          <p:commandButton id="btnSave" binding="#{courseView.btnSave}"
-            disabled="true" value="Save"
-            action="#{courseView.action_save()}"
-            update="panelCourse, msg, panelBotones, men" />
-          <p:commandButton id="btnDelete"
-            binding="#{courseView.btnDelete}" disabled="true"
-            value="Delete" action="#{courseView.action_delete_master()}"
-            onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}"
-            update="panelCourse, msg, panelBotones, men" />
-          <p:commandButton id="btnClear" value="Clear"
-            action="#{courseView.action_clear()}"
-            update="panelCourse, msg, panelBotones, men" />
-        </div>
+        <p:growl id="men" />
+        <p:dataTable value="#{courseView.data}" var="course"
+          selectionMode="single"
+          selection="#{courseView.selectedCourse}"
+          rowKey="#{course.idCourse}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{course.course}"
+            sortBy="#{course.course}">
+            <f:facet name="header">
+              <h:outputText value="Curso" />
+            </f:facet>
+            <h:outputText value="#{course.course}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogCourse"
+              actionListener="#{courseView.action_edit}">
+              <f:attribute name="selectedCourse" value="#{course}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{courseView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['course.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedCourse" value="#{course}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
       </p:panel>
     </h:form>
+    <p:dialog id="dialogCourse" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{courseView.showDialog}"
+      resizable="false" modal="true" width="380"
+      header="Información del curso">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
+          <h:outputText id="msgCourse" value="Nombre del curso" />
+          <p:inputText id="txtCourse" binding="#{courseView.txtCourse}" />
+        </h:panelGrid>
+        <div align="center" class="panel-boton">
+          <p:commandButton id="btnSave" binding="#{courseView.btnSave}"
+            value="Guardar" action="#{courseView.action_save()}"
+            update=":dialogCourse :frm:panelDataTableCourse" />
+          <p:commandButton id="btnClear" value="Limpiar"
+            action="#{courseView.action_clear()}" update=":dialogCourse" />
+          <p:commandButton id="btnExit" value="Salir"
+            action="#{courseView.action_closeDialog()}"
+            update=":dialogCourse" />
+        </div>
+      </h:form>
+    </p:dialog>
 
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
   </ui:define>
 </ui:composition>
+

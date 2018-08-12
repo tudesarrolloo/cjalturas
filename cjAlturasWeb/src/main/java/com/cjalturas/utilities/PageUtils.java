@@ -5,7 +5,6 @@ import org.primefaces.component.inputtext.InputText;
 
 /**
  * Utilidades para ayudar en las acciones sobre las páginas.
- * 
  * @author Edison
  */
 public class PageUtils {

@@ -13,17 +13,17 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * Entidad que mapea con la tabla de cursos en la base de datos.
+ * @author Edison
+ */
 @Entity
 @Table(name = "course", schema = "${schema}")
 public class Course implements java.io.Serializable {
-    @Id
-//    @NotNull
+	
+	private static final long serialVersionUID = 6102448183847092098L;
+	
+		@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idCourse;
     @NotNull

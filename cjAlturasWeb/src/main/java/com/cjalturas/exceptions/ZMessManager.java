@@ -3,19 +3,13 @@ package com.cjalturas.exceptions;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * @author Zathura Code Generator http://zathuracode.org/
- * www.zathuracode.org
- * 
+ * Administra todos los mensajes que son mostrados en las páginas de la aplicación.
+ * @author Edison
  */
 public class ZMessManager extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger log = LoggerFactory.getLogger(ZMessManager.class);
-
 	public final static String ALL = "All ";
 	public final static String ENTCHILD = "related tables(childs)";
 	public final static String FOREIGNDATA = "foreign classes data: ";
@@ -111,11 +105,42 @@ public class ZMessManager extends RuntimeException {
 
   /**
    * Crea mensaje debido al guardado existoso para una entidad.
-   * 
-   * @param string
+   * @param message Mensaje a mostrar
    */
   public static void addSaveMessage(String message) {
-    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
+  	addInfoMessage(message);
   }
+
+  /**
+   * Crea mensaje debido a la modificación existosa para una entidad.
+   * @param message Mensaje a mostrar
+   */
+	public static void addEditMessage(String message) {
+		addInfoMessage(message);
+	}
+
+	/**
+   * Crea mensaje debido a la eliminació  existosa para una entidad.
+   * @param message Mensaje a mostrar
+   */
+	public static void addDeleteMessage(String message) {
+		addInfoMessage(message);
+	}
+
+	/**
+	 * Se crea un mensaje de información para una pantalla.
+	 * @param message mensaje informativo que se va a mostrar.
+	 */
+	private static void addInfoMessage(String message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, message));
+	}
+	
+	/**
+	 * Se crea un mensaje de error para una pantalla.
+	 * @param message mensaje de error a mostrar.
+	 */
+	public static void addErrorMessage(String message) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message));
+	}
 
 }

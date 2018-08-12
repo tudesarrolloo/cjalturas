@@ -1,18 +1,27 @@
 package com.cjalturas.messages;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.cjalturas.model.control.CourseLogic;
+
+/**
+ * Administra los mensajes cargados desde un archivo de propiedades.
+ * @author Edison
+ */
 public class ApplicationMessages {
 
 	private static ApplicationMessages applicationMessages;
 	
 	private static Properties propertiesMessages;
 	
-
+	private static final Logger log = LoggerFactory.getLogger(CourseLogic.class);
+	
 	private ApplicationMessages() {
 		loadMessagesProperties();
 	}
@@ -29,38 +38,24 @@ public class ApplicationMessages {
 		InputStream input = null;
 
 		try {
-
-//			input = new FileInputStream("messages.properties");
-			
 			input = getClass().getClassLoader().getResourceAsStream("messages.properties");
-
-			// load a properties file
 			propertiesMessages.load(input);
-
-			// get the property value and print it out
-			System.out.println(propertiesMessages.getProperty("welcome"));
-			
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		} catch (IOException e) {
+			log.error("Error cargando el archivo de propiedades de la aplicación",e);
 		} finally {
 			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error("Error cerrando el archivo de propiedades de la aplicación",e);
 				}
 			}
 		}
 
 	}
 	
-//	public String getMessage(String messageProperty) {
-//		return propertiesMessages.getProperty(messageProperty);
-//	}
-	
 	public String getMessage(String messageProperty, Object ... params) {
 		return  MessageFormat.format(propertiesMessages.getProperty(messageProperty), params);
 	}
-	
 
 }

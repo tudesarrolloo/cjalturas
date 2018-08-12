@@ -6,9 +6,9 @@ import com.cjalturas.model.Course;
 
 
 /**
-* Interface for   CourseDAO.
-*
-*/
+ * Interfaz DAO para las acciones relacionadas con los cursos.
+ * @author Edison
+ */
 public interface ICourseDAO extends Dao<Course, Integer> {
 	
 	public Course findByCourseName(String courseName);

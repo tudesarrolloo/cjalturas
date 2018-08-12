@@ -7,10 +7,9 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * Interfaz del mapeador de las entidades de curso.
+ * @author Edison
+ */
 public interface ICourseMapper {
     public CourseDTO courseToCourseDTO(Course course) throws Exception;
 

@@ -27,8 +27,8 @@ import com.cjalturas.model.dto.CourseDTO;
 import com.cjalturas.utilities.Utilities;
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Lógica de negocio relacionada con la gestión de cursos.
+ * @author Edison
  */
 @Scope("singleton")
 @Service("CourseLogic")
@@ -37,7 +37,6 @@ public class CourseLogic implements ICourseLogic {
 
 	/**
 	 * DAO injected by Spring that manages Course entities
-	 *
 	 */
 	@Autowired
 	private ICourseDAO courseDAO;
@@ -48,30 +47,28 @@ public class CourseLogic implements ICourseLogic {
 
 	/**
 	 * DAO injected by Spring that manages Group entities
-	 *
 	 */
 	@Autowired
 	private IGroupDAO groupDAO;
 
+	/**
+	 * Valida la información de un curso.
+	 */
 	public void validateCourse(Course course) throws Exception {
 		try {
 			Set<ConstraintViolation<Course>> constraintViolations = validator.validate(course);
-
 			if (constraintViolations.size() > 0) {
 				StringBuilder strMessage = new StringBuilder();
-
 				for (ConstraintViolation<Course> constraintViolation : constraintViolations) {
 					strMessage.append(constraintViolation.getPropertyPath().toString());
 					strMessage.append(" - ");
 					strMessage.append(constraintViolation.getMessage());
 					strMessage.append(". \n");
 				}
-
 				throw new Exception(strMessage.toString());
 			}
 
 			log.debug("Se incicia validación no existencia de curso con el mismo nombre.");
-
 			Course courseFinded = courseDAO.findByCourseName(course.getCourse());
 			if (courseFinded != null) {
 				if (course.getIdCourse() ==null || Integer.compare(courseFinded.getIdCourse(), course.getIdCourse()) != 0) {
@@ -80,17 +77,8 @@ public class CourseLogic implements ICourseLogic {
 				}
 				courseDAO.evict(courseFinded);
 			}
-
-			// try {
-			// entity = courseDAO.findById(idCourse);
-			// } catch (Exception e) {
-			// log.error("get Course failed", e);
-			// throw new ZMessManager().new FindingException("Course");
-			// } finally {
-			// }
-
-			// return entity;
 		} catch (Exception e) {
+			log.error("Falló la validación de la información del curso", e);
 			throw e;
 		}
 	}
@@ -98,17 +86,13 @@ public class CourseLogic implements ICourseLogic {
 	@Transactional(readOnly = true)
 	public List<Course> getCourse() throws Exception {
 		log.debug("finding all Course instances");
-
 		List<Course> list = new ArrayList<Course>();
-
 		try {
 			list = courseDAO.findAll();
 		} catch (Exception e) {
 			log.error("finding all Course failed", e);
 			throw new ZMessManager().new GettingException(ZMessManager.ALL + "Course");
-		} finally {
 		}
-
 		return list;
 	}
 
@@ -120,20 +104,15 @@ public class CourseLogic implements ICourseLogic {
 			if (entity == null) {
 				throw new ZMessManager().new NullEntityExcepcion("Course");
 			}
-
 			validateCourse(entity);
-
 			if (entity.getIdCourse() != null && getCourse(entity.getIdCourse()) != null) {
 				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
 			}
-
 			courseDAO.save(entity);
-
 			log.debug("save Course successful");
 		} catch (Exception e) {
 			log.error("save Course failed", e);
 			throw e;
-		} finally {
 		}
 	}
 
@@ -144,48 +123,37 @@ public class CourseLogic implements ICourseLogic {
 		if (entity == null) {
 			throw new ZMessManager().new NullEntityExcepcion("Course");
 		}
-
 		if (entity.getIdCourse() == null) {
 			throw new ZMessManager().new EmptyFieldException("idCourse");
 		}
 
 		List<Group> groups = null;
-
 		try {
 			groups = groupDAO.findByProperty("course.idCourse", entity.getIdCourse());
-
 			if (Utilities.validationsList(groups) == true) {
 				throw new ZMessManager().new DeletingException("groups");
 			}
-
 			courseDAO.delete(entity);
-
 			log.debug("delete Course successful");
 		} catch (Exception e) {
 			log.error("delete Course failed", e);
 			throw e;
-		} finally {
 		}
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateCourse(Course entity) throws Exception {
 		log.debug("updating Course instance");
-
 		try {
 			if (entity == null) {
 				throw new ZMessManager().new NullEntityExcepcion("Course");
 			}
-
 			validateCourse(entity);
-
 			courseDAO.update(entity);
-			
 			log.debug("update Course successful");
 		} catch (Exception e) {
 			log.error("update Course failed", e);
 			throw e;
-		} finally {
 		}
 	}
 
@@ -193,16 +161,14 @@ public class CourseLogic implements ICourseLogic {
 	public List<CourseDTO> getDataCourse() throws Exception {
 		try {
 			List<Course> course = courseDAO.findAll();
-
 			List<CourseDTO> courseDTO = new ArrayList<CourseDTO>();
-
 			for (Course courseTmp : course) {
 				CourseDTO courseDTO2 = courseMapper.courseToCourseDTO(courseTmp);
 				courseDTO.add(courseDTO2);
 			}
-
 			return courseDTO;
 		} catch (Exception e) {
+			log.error("Falló el mapeo de la información de los cursos al DTO", e);
 			throw e;
 		}
 	}
@@ -210,17 +176,13 @@ public class CourseLogic implements ICourseLogic {
 	@Transactional(readOnly = true)
 	public Course getCourse(Integer idCourse) throws Exception {
 		log.debug("getting Course instance");
-
 		Course entity = null;
-
 		try {
 			entity = courseDAO.findById(idCourse);
 		} catch (Exception e) {
 			log.error("get Course failed", e);
 			throw new ZMessManager().new FindingException("Course");
-		} finally {
 		}
-
 		return entity;
 	}
 
@@ -228,28 +190,22 @@ public class CourseLogic implements ICourseLogic {
 	public List<Course> findPageCourse(String sortColumnName, boolean sortAscending, int startRow, int maxResults)
 			throws Exception {
 		List<Course> entity = null;
-
 		try {
 			entity = courseDAO.findPage(sortColumnName, sortAscending, startRow, maxResults);
 		} catch (Exception e) {
 			throw new ZMessManager().new FindingException("Course Count");
-		} finally {
 		}
-
 		return entity;
 	}
 
 	@Transactional(readOnly = true)
 	public Long findTotalNumberCourse() throws Exception {
 		Long entity = null;
-
 		try {
 			entity = courseDAO.count();
 		} catch (Exception e) {
 			throw new ZMessManager().new FindingException("Course Count");
-		} finally {
 		}
-
 		return entity;
 	}
 
