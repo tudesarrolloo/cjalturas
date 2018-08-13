@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableEnterprise">
+        <f:facet name="header">
+          <p:outputLabel>Administración de empresas</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear empresa"
+            style="float:right;" action="#{enterpriseView.action_new()}"
+            update=":dialogEnterprise" />
+        </f:facet>
+
+        <p:growl id="men" />
+        <p:dataTable value="#{enterpriseView.data}" var="enterprise"
+          selectionMode="single"
+          selection="#{enterpriseView.selectedEnterprise}"
+          rowKey="#{enterprise.idEnterprise}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{enterprise.nit}"
+            sortBy="#{enterprise.nit}">
+            <f:facet name="header">
+              <h:outputText value="Nit" />
+            </f:facet>
+            <h:outputText value="#{enterprise.nit}" />
+          </p:column>
+
+          <p:column filterBy="#{enterprise.name}"
+            sortBy="#{enterprise.name}">
+            <f:facet name="header">
+              <h:outputText value="Name" />
+            </f:facet>
+            <h:outputText value="#{enterprise.name}" />
+          </p:column>
+
+          <p:column filterBy="#{enterprise.phone}"
+            sortBy="#{enterprise.phone}">
+            <f:facet name="header">
+              <h:outputText value="Phone" />
+            </f:facet>
+            <h:outputText value="#{enterprise.phone}" />
+          </p:column>
+
+          <p:column filterBy="#{enterprise.contactName}"
+            sortBy="#{enterprise.contactName}">
+            <f:facet name="header">
+              <h:outputText value="ContactName" />
+            </f:facet>
+            <h:outputText value="#{enterprise.contactName}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogEnterprise"
+              actionListener="#{enterpriseView.action_edit}">
+              <f:attribute name="selectedEnterprise"
+                value="#{enterprise}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{enterpriseView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['enterprise.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedEnterprise"
+                value="#{enterprise}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogEnterprise" appendTo="@(body)" draggable="true"
+      closable="false" visible="#{enterpriseView.showDialog}"
+      resizable="false" modal="true" width="500"
+      header="Información de la empresa">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
+          <h:outputText id="msgNit" value="NIT" />
+          <p:inputText id="txtNit" disabled="true"
+            binding="#{enterpriseView.txtNit}" />
+
+          <h:outputText id="msgName" value="Nombre" />
+          <p:inputText id="txtName" disabled="true"
+            binding="#{enterpriseView.txtName}" />
+
+          <h:outputText id="msgPhone" value="Teléfono" />
+          <p:inputText id="txtPhone" disabled="true"
+            binding="#{enterpriseView.txtPhone}" />
+
+          <h:outputText id="msgContactName" value="Contacto" />
+          <p:inputText id="txtContactName" disabled="true"
+            binding="#{enterpriseView.txtContactName}" />
+
+          <!--           <h:outputText id="msgIdEnterprise" value="IdEnterprise" /> -->
+          <!--           <p:inputText id="txtIdEnterprise" -->
+          <!--             binding="#{enterpriseView.txtIdEnterprise}"> -->
+          <!--             <p:ajax update=":dialogEnterprise" -->
+          <!--               listener="#{enterpriseView.listener_txtId}" /> -->
+          <!--           </p:inputText> -->
+
+        </h:panelGrid>
+        <div align="center" class="panel-boton">
+          <p:commandButton id="btnSave" binding="#{enterpriseView.btnSave}"
+            value="Guardar" action="#{enterpriseView.action_save()}"
+            update=":dialogEnterprise :frm:panelDataTableEnterprise" />
+          <p:commandButton id="btnClear" value="Limpiar"
+            action="#{enterpriseView.action_clear()}" update=":dialogEnterprise" />
+          <p:commandButton id="btnExit" value="Salir"
+            action="#{enterpriseView.action_closeDialog()}"
+            update=":dialogEnterprise" />
+        </div>
+      </h:form>
+    </p:dialog>
+    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+  </ui:define>
+</ui:composition>
+
