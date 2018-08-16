@@ -33,12 +33,10 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * Lógica de negocio relacionada con la gestión de empresas.
+ * @author Edison
+ */
 @Scope("singleton")
 @Service("EnterpriseLogic")
 public class EnterpriseLogic implements IEnterpriseLogic {

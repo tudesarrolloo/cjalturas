@@ -34,27 +34,16 @@ public class EnterpriseView implements Serializable {
   private static final Logger log = LoggerFactory.getLogger(EnterpriseView.class);
 
   private InputText txtNit;
-
   private InputText txtName;
-
   private InputText txtPhone;
-
   private InputText txtContactName;
-
   private CommandButton btnSave;
-
   private CommandButton btnModify;
-
   private CommandButton btnDelete;
-
   private CommandButton btnClear;
-
   private List<EnterpriseDTO> data;
-
   private EnterpriseDTO selectedEnterprise;
-
   private Enterprise entity;
-
   private boolean showDialog;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
