@@ -1,27 +1,31 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Entidad que mapea con la tabla de empresas en la base de datos.
+ * @author Edison
  */
 @Entity
 @Table(name = "enterprise", schema = "${schema}")
 public class Enterprise implements java.io.Serializable {
+
+  private static final long serialVersionUID = 7543175403908133908L;
+
   @Id
-  @NotNull
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer idEnterprise;
 
   private String contactName;

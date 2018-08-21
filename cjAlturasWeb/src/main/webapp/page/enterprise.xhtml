@@ -83,12 +83,17 @@
       closable="false" visible="#{enterpriseView.showDialog}"
       resizable="false" modal="true" width="500"
       header="Información de la empresa">
+    <p:focus context="dialogEnterprise"/>
       <h:form id="formDialog">
         <p:messages id="msg" />
         <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
           <h:outputText id="msgNit" value="NIT" />
           <p:inputText id="txtNit" disabled="true"
-            binding="#{enterpriseView.txtNit}" />
+            binding="#{enterpriseView.txtNit}">
+            <p:ajax update=":dialogEnterprise"
+              listener="#{enterpriseView.listener_txtNit}" />
+          </p:inputText>
+
 
           <h:outputText id="msgName" value="Nombre" />
           <p:inputText id="txtName" disabled="true"
@@ -111,18 +116,20 @@
 
         </h:panelGrid>
         <div align="center" class="panel-boton">
-          <p:commandButton id="btnSave" binding="#{enterpriseView.btnSave}"
-            value="Guardar" action="#{enterpriseView.action_save()}"
+          <p:commandButton id="btnSave"
+            binding="#{enterpriseView.btnSave}" value="Guardar"
+            action="#{enterpriseView.action_save()}"
             update=":dialogEnterprise :frm:panelDataTableEnterprise" />
           <p:commandButton id="btnClear" value="Limpiar"
-            action="#{enterpriseView.action_clear()}" update=":dialogEnterprise" />
+            action="#{enterpriseView.action_clear()}"
+            update=":dialogEnterprise" />
           <p:commandButton id="btnExit" value="Salir"
             action="#{enterpriseView.action_closeDialog()}"
             update=":dialogEnterprise" />
         </div>
       </h:form>
     </p:dialog>
-    
+
     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
       <p:commandButton value="Yes" type="button"
         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

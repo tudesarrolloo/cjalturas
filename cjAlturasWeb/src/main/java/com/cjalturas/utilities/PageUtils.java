@@ -36,7 +36,9 @@ public class PageUtils {
    * @param button botón a deshabilitar.
    */
   public static void enableButton(CommandButton button) {
-    button.setDisabled(false);
+    if (button != null) {
+      button.setDisabled(false);
+    }
   }
 
   /**

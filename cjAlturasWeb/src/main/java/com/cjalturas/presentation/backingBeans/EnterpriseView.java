@@ -34,16 +34,27 @@ public class EnterpriseView implements Serializable {
   private static final Logger log = LoggerFactory.getLogger(EnterpriseView.class);
 
   private InputText txtNit;
+
   private InputText txtName;
+
   private InputText txtPhone;
+
   private InputText txtContactName;
+
   private CommandButton btnSave;
+
   private CommandButton btnModify;
+
   private CommandButton btnDelete;
+
   private CommandButton btnClear;
+
   private List<EnterpriseDTO> data;
+
   private EnterpriseDTO selectedEnterprise;
+
   private Enterprise entity;
+
   private boolean showDialog;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -67,43 +78,51 @@ public class EnterpriseView implements Serializable {
     PageUtils.clearTextBox(txtName);
     PageUtils.clearTextBox(txtContactName);
     PageUtils.clearTextBox(txtPhone);
+    
+    PageUtils.enableTextbox(txtNit);
+    PageUtils.disableTextbox(txtName);
+    PageUtils.disableTextbox(txtContactName);
+    PageUtils.disableTextbox(txtPhone);
     return "";
   }
 
-  // public void listener_txtNit() {
-  // try {
-  // Integer idEnterprise = FacesUtils.checkInteger(txtIdEnterprise);
-  // entity = (idEnterprise != null)
-  // ? businessDelegatorView.getEnterprise(idEnterprise) : null;
-  // } catch (Exception e) {
-  // entity = null;
-  // }
-  //
-  // if (entity == null) {
-  // txtContactName.setDisabled(false);
-  // txtName.setDisabled(false);
-  // txtNit.setDisabled(false);
-  // txtPhone.setDisabled(false);
-  // txtIdEnterprise.setDisabled(false);
-  // btnSave.setDisabled(false);
-  // } else {
-  // txtContactName.setValue(entity.getContactName());
-  // txtContactName.setDisabled(false);
-  // txtName.setValue(entity.getName());
-  // txtName.setDisabled(false);
-  // txtNit.setValue(entity.getNit());
-  // txtNit.setDisabled(false);
-  // txtPhone.setValue(entity.getPhone());
-  // txtPhone.setDisabled(false);
-  // txtIdEnterprise.setValue(entity.getIdEnterprise());
-  // txtIdEnterprise.setDisabled(true);
-  // btnSave.setDisabled(false);
-  //
-  // if (btnDelete != null) {
-  // btnDelete.setDisabled(false);
-  // }
-  // }
-  // }
+  public void listener_txtNit() {
+    try {
+      String nit = FacesUtils.checkString(txtNit);
+      entity = findEnterpriseByNit(nit);
+    } catch (Exception e) {
+      entity = null;
+    }
+
+    PageUtils.enableTextbox(txtNit);
+    PageUtils.enableTextbox(txtName);
+    PageUtils.enableTextbox(txtPhone);
+    PageUtils.enableTextbox(txtContactName);
+    PageUtils.enableButton(btnSave);
+    if (entity != null) {
+      txtNit.setValue(entity.getNit());
+      txtName.setValue(entity.getName());
+      txtPhone.setValue(entity.getPhone());
+      txtContactName.setValue(entity.getContactName());
+      if (btnDelete != null) {
+        PageUtils.enableButton(btnDelete);
+      }
+    }
+  }
+
+  private Enterprise findEnterpriseByNit(String nit) throws Exception {
+    if (nit != null) {
+      List<Enterprise> listEnterprises = businessDelegatorView.findEnterpriseByProperty("nit", nit);
+      if (listEnterprises.isEmpty()) {
+        return null;
+      } else if (listEnterprises.size() > 1) {
+        log.error("Se encontró más de una empresa con el mismo nit: " + nit);
+        throw new RuntimeException("Se encontró más de una empresa con el mismo nit: " + nit);
+      }
+      return listEnterprises.get(0);
+    }
+    return null;
+  }
 
   public String action_edit(ActionEvent evt) {
     selectedEnterprise = (EnterpriseDTO) (evt.getComponent().getAttributes().get("selectedEnterprise"));
