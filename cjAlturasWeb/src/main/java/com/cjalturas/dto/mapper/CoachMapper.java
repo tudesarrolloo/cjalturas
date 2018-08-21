@@ -21,103 +21,95 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Component
 @Scope("singleton")
 public class CoachMapper implements ICoachMapper {
-    private static final Logger log = LoggerFactory.getLogger(CoachMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(CoachMapper.class);
 
-    /**
-    * Logic injected by Spring that manages Person entities
-    *
-    */
-    @Autowired
-    IPersonLogic logicPerson1;
+  /**
+   * Logic injected by Spring that manages Person entities
+   *
+   */
+  @Autowired
+  IPersonLogic logicPerson1;
 
-    @Transactional(readOnly = true)
-    public CoachDTO coachToCoachDTO(Coach coach) throws Exception {
-        try {
-            CoachDTO coachDTO = new CoachDTO();
+  @Transactional(readOnly = true)
+  public CoachDTO coachToCoachDTO(Coach coach) throws Exception {
+    try {
+      CoachDTO coachDTO = new CoachDTO();
 
-            coachDTO.setIdCoach(coach.getIdCoach());
-            coachDTO.setCharge((coach.getCharge() != null) ? coach.getCharge()
-                                                           : null);
-            coachDTO.setLicenseSst((coach.getLicenseSst() != null)
-                ? coach.getLicenseSst() : null);
-            coachDTO.setSign((coach.getSign() != null) ? coach.getSign() : null);
-            coachDTO.setIdPerson_Person((coach.getPerson().getIdPerson() != null)
-                ? coach.getPerson().getIdPerson() : null);
+      coachDTO.setIdCoach(coach.getIdCoach());
+      coachDTO.setCharge((coach.getCharge() != null) ? coach.getCharge() : null);
+      coachDTO.setLicenseSst((coach.getLicenseSst() != null) ? coach.getLicenseSst() : null);
+      coachDTO.setSign((coach.getSign() != null) ? coach.getSign() : null);
+      coachDTO.setIdPerson_Person((coach.getPerson().getIdPerson() != null) ? coach.getPerson().getIdPerson() : null);
 
-            return coachDTO;
-        } catch (Exception e) {
-            throw e;
-        }
+      return coachDTO;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public Coach coachDTOToCoach(CoachDTO coachDTO) throws Exception {
-        try {
-            Coach coach = new Coach();
+  @Transactional(readOnly = true)
+  public Coach coachDTOToCoach(CoachDTO coachDTO) throws Exception {
+    try {
+      Coach coach = new Coach();
 
-            coach.setIdCoach(coachDTO.getIdCoach());
-            coach.setCharge((coachDTO.getCharge() != null)
-                ? coachDTO.getCharge() : null);
-            coach.setLicenseSst((coachDTO.getLicenseSst() != null)
-                ? coachDTO.getLicenseSst() : null);
-            coach.setSign((coachDTO.getSign() != null) ? coachDTO.getSign() : null);
+      coach.setIdCoach(coachDTO.getIdCoach());
+      coach.setCharge((coachDTO.getCharge() != null) ? coachDTO.getCharge() : null);
+      coach.setLicenseSst((coachDTO.getLicenseSst() != null) ? coachDTO.getLicenseSst() : null);
+      coach.setSign((coachDTO.getSign() != null) ? coachDTO.getSign() : null);
 
-            Person person = new Person();
+      Person person = new Person();
 
-            if (coachDTO.getIdPerson_Person() != null) {
-                person = logicPerson1.getPerson(coachDTO.getIdPerson_Person());
-            }
+      if (coachDTO.getIdPerson_Person() != null) {
+        person = logicPerson1.getPerson(coachDTO.getIdPerson_Person());
+      }
 
-            if (person != null) {
-                coach.setPerson(person);
-            }
+      if (person != null) {
+        coach.setPerson(person);
+      }
 
-            return coach;
-        } catch (Exception e) {
-            throw e;
-        }
+      return coach;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<CoachDTO> listCoachToListCoachDTO(List<Coach> listCoach)
-        throws Exception {
-        try {
-            List<CoachDTO> coachDTOs = new ArrayList<CoachDTO>();
+  @Transactional(readOnly = true)
+  public List<CoachDTO> listCoachToListCoachDTO(List<Coach> listCoach) throws Exception {
+    try {
+      List<CoachDTO> coachDTOs = new ArrayList<CoachDTO>();
 
-            for (Coach coach : listCoach) {
-                CoachDTO coachDTO = coachToCoachDTO(coach);
+      for (Coach coach : listCoach) {
+        CoachDTO coachDTO = coachToCoachDTO(coach);
 
-                coachDTOs.add(coachDTO);
-            }
+        coachDTOs.add(coachDTO);
+      }
 
-            return coachDTOs;
-        } catch (Exception e) {
-            throw e;
-        }
+      return coachDTOs;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<Coach> listCoachDTOToListCoach(List<CoachDTO> listCoachDTO)
-        throws Exception {
-        try {
-            List<Coach> listCoach = new ArrayList<Coach>();
+  @Transactional(readOnly = true)
+  public List<Coach> listCoachDTOToListCoach(List<CoachDTO> listCoachDTO) throws Exception {
+    try {
+      List<Coach> listCoach = new ArrayList<Coach>();
 
-            for (CoachDTO coachDTO : listCoachDTO) {
-                Coach coach = coachDTOToCoach(coachDTO);
+      for (CoachDTO coachDTO : listCoachDTO) {
+        Coach coach = coachDTOToCoach(coachDTO);
 
-                listCoach.add(coach);
-            }
+        listCoach.add(coach);
+      }
 
-            return listCoach;
-        } catch (Exception e) {
-            throw e;
-        }
+      return listCoach;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 }

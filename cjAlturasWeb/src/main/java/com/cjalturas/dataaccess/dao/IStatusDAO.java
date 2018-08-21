@@ -6,8 +6,8 @@ import com.cjalturas.model.Status;
 
 
 /**
-* Interface for   StatusDAO.
-*
-*/
+ * Interface for StatusDAO.
+ *
+ */
 public interface IStatusDAO extends Dao<Status, String> {
 }

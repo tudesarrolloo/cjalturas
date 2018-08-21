@@ -204,7 +204,7 @@ public class EnterpriseLogic implements IEnterpriseLogic {
 
     return entity;
   }
-  
+
   @Transactional(readOnly = true)
   public List<Enterprise> findEnterpriseByProperty(String propertyName, Object value) throws Exception {
     log.debug("Buscando empresa o lista de empresas por una propiedad");

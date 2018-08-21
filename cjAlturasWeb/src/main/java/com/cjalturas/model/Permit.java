@@ -12,53 +12,54 @@ import javax.validation.constraints.*;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Entity
 @Table(name = "permit", schema = "${schema}")
 public class Permit implements java.io.Serializable {
-    @Id
-    @NotNull
-    private Integer idPermit;
-    @NotNull
-    private Rol rol;
-    @NotNull
-    @NotEmpty
-    @Size(max = 60)
-    private String resource;
+  @Id
+  @NotNull
+  private Integer idPermit;
 
-    public Permit() {
-    }
+  @NotNull
+  private Rol rol;
 
-    public Permit(Integer idPermit, String resource, Rol rol) {
-        this.idPermit = idPermit;
-        this.rol = rol;
-        this.resource = resource;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 60)
+  private String resource;
 
-    public Integer getIdPermit() {
-        return this.idPermit;
-    }
+  public Permit() {
+  }
 
-    public void setIdPermit(Integer idPermit) {
-        this.idPermit = idPermit;
-    }
+  public Permit(Integer idPermit, String resource, Rol rol) {
+    this.idPermit = idPermit;
+    this.rol = rol;
+    this.resource = resource;
+  }
 
-    public Rol getRol() {
-        return this.rol;
-    }
+  public Integer getIdPermit() {
+    return this.idPermit;
+  }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
+  public void setIdPermit(Integer idPermit) {
+    this.idPermit = idPermit;
+  }
 
-    public String getResource() {
-        return this.resource;
-    }
+  public Rol getRol() {
+    return this.rol;
+  }
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
+  public void setRol(Rol rol) {
+    this.rol = rol;
+  }
+
+  public String getResource() {
+    return this.resource;
+  }
+
+  public void setResource(String resource) {
+    this.resource = resource;
+  }
 }

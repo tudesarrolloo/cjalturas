@@ -6,8 +6,8 @@ import com.cjalturas.model.Learner;
 
 
 /**
-* Interface for   LearnerDAO.
-*
-*/
+ * Interface for LearnerDAO.
+ *
+ */
 public interface ILearnerDAO extends Dao<Learner, Integer> {
 }

@@ -7,18 +7,15 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public interface IUserMapper {
-    public UserDTO userToUserDTO(User user) throws Exception;
+  public UserDTO userToUserDTO(User user) throws Exception;
 
-    public User userDTOToUser(UserDTO userDTO) throws Exception;
+  public User userDTOToUser(UserDTO userDTO) throws Exception;
 
-    public List<UserDTO> listUserToListUserDTO(List<User> users)
-        throws Exception;
+  public List<UserDTO> listUserToListUserDTO(List<User> users) throws Exception;
 
-    public List<User> listUserDTOToListUser(List<UserDTO> userDTOs)
-        throws Exception;
+  public List<User> listUserDTOToListUser(List<UserDTO> userDTOs) throws Exception;
 }

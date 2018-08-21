@@ -14,73 +14,75 @@ import javax.validation.constraints.*;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Entity
 @Table(name = "learner", schema = "${schema}")
 public class Learner implements java.io.Serializable {
-    @Id
-    @NotNull
-    private Integer idLearner;
-    @NotNull
-    private Economicsector economicsector;
-    @NotNull
-    private Enterprise enterprise;
-    @NotNull
-    private Person person;
-    private Set<Inscription> inscriptions = new HashSet<Inscription>(0);
+  @Id
+  @NotNull
+  private Integer idLearner;
 
-    public Learner() {
-    }
+  @NotNull
+  private Economicsector economicsector;
 
-    public Learner(Integer idLearner, Economicsector economicsector,
-        Enterprise enterprise, Set<Inscription> inscriptions, Person person) {
-        this.idLearner = idLearner;
-        this.economicsector = economicsector;
-        this.enterprise = enterprise;
-        this.person = person;
-        this.inscriptions = inscriptions;
-    }
+  @NotNull
+  private Enterprise enterprise;
 
-    public Integer getIdLearner() {
-        return this.idLearner;
-    }
+  @NotNull
+  private Person person;
 
-    public void setIdLearner(Integer idLearner) {
-        this.idLearner = idLearner;
-    }
+  private Set<Inscription> inscriptions = new HashSet<Inscription>(0);
 
-    public Economicsector getEconomicsector() {
-        return this.economicsector;
-    }
+  public Learner() {
+  }
 
-    public void setEconomicsector(Economicsector economicsector) {
-        this.economicsector = economicsector;
-    }
+  public Learner(Integer idLearner, Economicsector economicsector, Enterprise enterprise, Set<Inscription> inscriptions, Person person) {
+    this.idLearner = idLearner;
+    this.economicsector = economicsector;
+    this.enterprise = enterprise;
+    this.person = person;
+    this.inscriptions = inscriptions;
+  }
 
-    public Enterprise getEnterprise() {
-        return this.enterprise;
-    }
+  public Integer getIdLearner() {
+    return this.idLearner;
+  }
 
-    public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
-    }
+  public void setIdLearner(Integer idLearner) {
+    this.idLearner = idLearner;
+  }
 
-    public Person getPerson() {
-        return this.person;
-    }
+  public Economicsector getEconomicsector() {
+    return this.economicsector;
+  }
 
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+  public void setEconomicsector(Economicsector economicsector) {
+    this.economicsector = economicsector;
+  }
 
-    public Set<Inscription> getInscriptions() {
-        return this.inscriptions;
-    }
+  public Enterprise getEnterprise() {
+    return this.enterprise;
+  }
 
-    public void setInscriptions(Set<Inscription> inscriptions) {
-        this.inscriptions = inscriptions;
-    }
+  public void setEnterprise(Enterprise enterprise) {
+    this.enterprise = enterprise;
+  }
+
+  public Person getPerson() {
+    return this.person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
+  }
+
+  public Set<Inscription> getInscriptions() {
+    return this.inscriptions;
+  }
+
+  public void setInscriptions(Set<Inscription> inscriptions) {
+    this.inscriptions = inscriptions;
+  }
 }

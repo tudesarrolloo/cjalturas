@@ -11,14 +11,11 @@ import java.util.List;
  * @author Edison
  */
 public interface ICourseMapper {
-    public CourseDTO courseToCourseDTO(Course course) throws Exception;
+  public CourseDTO courseToCourseDTO(Course course) throws Exception;
 
-    public Course courseDTOToCourse(CourseDTO courseDTO)
-        throws Exception;
+  public Course courseDTOToCourse(CourseDTO courseDTO) throws Exception;
 
-    public List<CourseDTO> listCourseToListCourseDTO(List<Course> courses)
-        throws Exception;
+  public List<CourseDTO> listCourseToListCourseDTO(List<Course> courses) throws Exception;
 
-    public List<Course> listCourseDTOToListCourse(List<CourseDTO> courseDTOs)
-        throws Exception;
+  public List<Course> listCourseDTOToListCourse(List<CourseDTO> courseDTOs) throws Exception;
 }

@@ -6,8 +6,8 @@ import com.cjalturas.model.Person;
 
 
 /**
-* Interface for   PersonDAO.
-*
-*/
+ * Interface for PersonDAO.
+ *
+ */
 public interface IPersonDAO extends Dao<Person, Integer> {
 }

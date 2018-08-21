@@ -1,67 +1,69 @@
 package com.cjalturas.model.dto;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
-
 
 /**
-*
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ *
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public class GroupDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(GroupDTO.class);
-    private Date dateStart;
-    private Integer idGroup;
-    private String observations;
-    private Integer idCoach_Coach;
-    private Integer idCourse_Course;
+  private static final long serialVersionUID = 1L;
 
-    public Date getDateStart() {
-        return dateStart;
-    }
+  private static final Logger log = LoggerFactory.getLogger(GroupDTO.class);
 
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
+  private Date dateStart;
 
-    public Integer getIdGroup() {
-        return idGroup;
-    }
+  private Integer idGroup;
 
-    public void setIdGroup(Integer idGroup) {
-        this.idGroup = idGroup;
-    }
+  private String observations;
 
-    public String getObservations() {
-        return observations;
-    }
+  private Integer idCoach_Coach;
 
-    public void setObservations(String observations) {
-        this.observations = observations;
-    }
+  private Integer idCourse_Course;
 
-    public Integer getIdCoach_Coach() {
-        return idCoach_Coach;
-    }
+  public Date getDateStart() {
+    return dateStart;
+  }
 
-    public void setIdCoach_Coach(Integer idCoach_Coach) {
-        this.idCoach_Coach = idCoach_Coach;
-    }
+  public void setDateStart(Date dateStart) {
+    this.dateStart = dateStart;
+  }
 
-    public Integer getIdCourse_Course() {
-        return idCourse_Course;
-    }
+  public Integer getIdGroup() {
+    return idGroup;
+  }
 
-    public void setIdCourse_Course(Integer idCourse_Course) {
-        this.idCourse_Course = idCourse_Course;
-    }
+  public void setIdGroup(Integer idGroup) {
+    this.idGroup = idGroup;
+  }
+
+  public String getObservations() {
+    return observations;
+  }
+
+  public void setObservations(String observations) {
+    this.observations = observations;
+  }
+
+  public Integer getIdCoach_Coach() {
+    return idCoach_Coach;
+  }
+
+  public void setIdCoach_Coach(Integer idCoach_Coach) {
+    this.idCoach_Coach = idCoach_Coach;
+  }
+
+  public Integer getIdCourse_Course() {
+    return idCourse_Course;
+  }
+
+  public void setIdCourse_Course(Integer idCourse_Course) {
+    this.idCourse_Course = idCourse_Course;
+  }
 }

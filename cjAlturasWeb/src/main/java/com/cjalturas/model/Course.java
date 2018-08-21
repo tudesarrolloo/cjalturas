@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+
 /**
  * Entidad que mapea con la tabla de cursos en la base de datos.
  * @author Edison
@@ -20,48 +21,50 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "course", schema = "${schema}")
 public class Course implements java.io.Serializable {
-	
-	private static final long serialVersionUID = 6102448183847092098L;
-	
-		@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idCourse;
-    @NotNull
-    @NotEmpty
-    @Size(max = 20)
-    private String course;
-    private Set<Group> groups = new HashSet<Group>(0);
 
-    public Course() {
-    }
+  private static final long serialVersionUID = 6102448183847092098L;
 
-    public Course(Integer idCourse, String course, Set<Group> groups) {
-        this.idCourse = idCourse;
-        this.course = course;
-        this.groups = groups;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer idCourse;
 
-    public Integer getIdCourse() {
-        return this.idCourse;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 20)
+  private String course;
 
-    public void setIdCourse(Integer idCourse) {
-        this.idCourse = idCourse;
-    }
+  private Set<Group> groups = new HashSet<Group>(0);
 
-    public String getCourse() {
-        return this.course;
-    }
+  public Course() {
+  }
 
-    public void setCourse(String course) {
-        this.course = course;
-    }
+  public Course(Integer idCourse, String course, Set<Group> groups) {
+    this.idCourse = idCourse;
+    this.course = course;
+    this.groups = groups;
+  }
 
-    public Set<Group> getGroups() {
-        return this.groups;
-    }
+  public Integer getIdCourse() {
+    return this.idCourse;
+  }
 
-    public void setGroups(Set<Group> groups) {
-        this.groups = groups;
-    }
+  public void setIdCourse(Integer idCourse) {
+    this.idCourse = idCourse;
+  }
+
+  public String getCourse() {
+    return this.course;
+  }
+
+  public void setCourse(String course) {
+    this.course = course;
+  }
+
+  public Set<Group> getGroups() {
+    return this.groups;
+  }
+
+  public void setGroups(Set<Group> groups) {
+    this.groups = groups;
+  }
 }

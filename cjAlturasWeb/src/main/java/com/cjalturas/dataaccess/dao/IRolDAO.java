@@ -6,8 +6,8 @@ import com.cjalturas.model.Rol;
 
 
 /**
-* Interface for   RolDAO.
-*
-*/
+ * Interface for RolDAO.
+ *
+ */
 public interface IRolDAO extends Dao<Rol, String> {
 }

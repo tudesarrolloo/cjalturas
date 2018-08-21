@@ -14,90 +14,93 @@ import javax.validation.constraints.*;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Entity
 @Table(name = "coach", schema = "${schema}")
 public class Coach implements java.io.Serializable {
-    @Id
-    @NotNull
-    private Integer idCoach;
-    @NotNull
-    private Person person;
-    @NotNull
-    @NotEmpty
-    @Size(max = 30)
-    private String charge;
-    @NotNull
-    @NotEmpty
-    @Size(max = 100)
-    private String licenseSst;
-    @NotNull
-    @NotEmpty
-    @Size(max = 100)
-    private String sign;
-    private Set<Group> groups = new HashSet<Group>(0);
+  @Id
+  @NotNull
+  private Integer idCoach;
 
-    public Coach() {
-    }
+  @NotNull
+  private Person person;
 
-    public Coach(Integer idCoach, String charge, Set<Group> groups,
-        String licenseSst, Person person, String sign) {
-        this.idCoach = idCoach;
-        this.person = person;
-        this.charge = charge;
-        this.licenseSst = licenseSst;
-        this.sign = sign;
-        this.groups = groups;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 30)
+  private String charge;
 
-    public Integer getIdCoach() {
-        return this.idCoach;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 100)
+  private String licenseSst;
 
-    public void setIdCoach(Integer idCoach) {
-        this.idCoach = idCoach;
-    }
+  @NotNull
+  @NotEmpty
+  @Size(max = 100)
+  private String sign;
 
-    public Person getPerson() {
-        return this.person;
-    }
+  private Set<Group> groups = new HashSet<Group>(0);
 
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+  public Coach() {
+  }
 
-    public String getCharge() {
-        return this.charge;
-    }
+  public Coach(Integer idCoach, String charge, Set<Group> groups, String licenseSst, Person person, String sign) {
+    this.idCoach = idCoach;
+    this.person = person;
+    this.charge = charge;
+    this.licenseSst = licenseSst;
+    this.sign = sign;
+    this.groups = groups;
+  }
 
-    public void setCharge(String charge) {
-        this.charge = charge;
-    }
+  public Integer getIdCoach() {
+    return this.idCoach;
+  }
 
-    public String getLicenseSst() {
-        return this.licenseSst;
-    }
+  public void setIdCoach(Integer idCoach) {
+    this.idCoach = idCoach;
+  }
 
-    public void setLicenseSst(String licenseSst) {
-        this.licenseSst = licenseSst;
-    }
+  public Person getPerson() {
+    return this.person;
+  }
 
-    public String getSign() {
-        return this.sign;
-    }
+  public void setPerson(Person person) {
+    this.person = person;
+  }
 
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
+  public String getCharge() {
+    return this.charge;
+  }
 
-    public Set<Group> getGroups() {
-        return this.groups;
-    }
+  public void setCharge(String charge) {
+    this.charge = charge;
+  }
 
-    public void setGroups(Set<Group> groups) {
-        this.groups = groups;
-    }
+  public String getLicenseSst() {
+    return this.licenseSst;
+  }
+
+  public void setLicenseSst(String licenseSst) {
+    this.licenseSst = licenseSst;
+  }
+
+  public String getSign() {
+    return this.sign;
+  }
+
+  public void setSign(String sign) {
+    this.sign = sign;
+  }
+
+  public Set<Group> getGroups() {
+    return this.groups;
+  }
+
+  public void setGroups(Set<Group> groups) {
+    this.groups = groups;
+  }
 }

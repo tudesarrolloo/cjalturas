@@ -78,7 +78,7 @@ public class EnterpriseView implements Serializable {
     PageUtils.clearTextBox(txtName);
     PageUtils.clearTextBox(txtContactName);
     PageUtils.clearTextBox(txtPhone);
-    
+
     PageUtils.enableTextbox(txtNit);
     PageUtils.disableTextbox(txtName);
     PageUtils.disableTextbox(txtContactName);

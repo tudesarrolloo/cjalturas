@@ -21,79 +21,73 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Component
 @Scope("singleton")
 public class StatusMapper implements IStatusMapper {
-    private static final Logger log = LoggerFactory.getLogger(StatusMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(StatusMapper.class);
 
-    @Transactional(readOnly = true)
-    public StatusDTO statusToStatusDTO(Status status) throws Exception {
-        try {
-            StatusDTO statusDTO = new StatusDTO();
+  @Transactional(readOnly = true)
+  public StatusDTO statusToStatusDTO(Status status) throws Exception {
+    try {
+      StatusDTO statusDTO = new StatusDTO();
 
-            statusDTO.setCode(status.getCode());
-            statusDTO.setStatus((status.getStatus() != null)
-                ? status.getStatus() : null);
+      statusDTO.setCode(status.getCode());
+      statusDTO.setStatus((status.getStatus() != null) ? status.getStatus() : null);
 
-            return statusDTO;
-        } catch (Exception e) {
-            throw e;
-        }
+      return statusDTO;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public Status statusDTOToStatus(StatusDTO statusDTO)
-        throws Exception {
-        try {
-            Status status = new Status();
+  @Transactional(readOnly = true)
+  public Status statusDTOToStatus(StatusDTO statusDTO) throws Exception {
+    try {
+      Status status = new Status();
 
-            status.setCode(statusDTO.getCode());
-            status.setStatus((statusDTO.getStatus() != null)
-                ? statusDTO.getStatus() : null);
+      status.setCode(statusDTO.getCode());
+      status.setStatus((statusDTO.getStatus() != null) ? statusDTO.getStatus() : null);
 
-            return status;
-        } catch (Exception e) {
-            throw e;
-        }
+      return status;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<StatusDTO> listStatusToListStatusDTO(List<Status> listStatus)
-        throws Exception {
-        try {
-            List<StatusDTO> statusDTOs = new ArrayList<StatusDTO>();
+  @Transactional(readOnly = true)
+  public List<StatusDTO> listStatusToListStatusDTO(List<Status> listStatus) throws Exception {
+    try {
+      List<StatusDTO> statusDTOs = new ArrayList<StatusDTO>();
 
-            for (Status status : listStatus) {
-                StatusDTO statusDTO = statusToStatusDTO(status);
+      for (Status status : listStatus) {
+        StatusDTO statusDTO = statusToStatusDTO(status);
 
-                statusDTOs.add(statusDTO);
-            }
+        statusDTOs.add(statusDTO);
+      }
 
-            return statusDTOs;
-        } catch (Exception e) {
-            throw e;
-        }
+      return statusDTOs;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<Status> listStatusDTOToListStatus(List<StatusDTO> listStatusDTO)
-        throws Exception {
-        try {
-            List<Status> listStatus = new ArrayList<Status>();
+  @Transactional(readOnly = true)
+  public List<Status> listStatusDTOToListStatus(List<StatusDTO> listStatusDTO) throws Exception {
+    try {
+      List<Status> listStatus = new ArrayList<Status>();
 
-            for (StatusDTO statusDTO : listStatusDTO) {
-                Status status = statusDTOToStatus(statusDTO);
+      for (StatusDTO statusDTO : listStatusDTO) {
+        Status status = statusDTOToStatus(statusDTO);
 
-                listStatus.add(status);
-            }
+        listStatus.add(status);
+      }
 
-            return listStatus;
-        } catch (Exception e) {
-            throw e;
-        }
+      return listStatus;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 }

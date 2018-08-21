@@ -31,25 +31,21 @@ import javax.annotation.Resource;
 
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Economicsector entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * A data access object (DAO) providing persistence and search support for Economicsector entities. Transaction control of the save(), update() and delete()
+ * operations can directly support Spring container-managed transactions or they can be augmented to handle user-managed Spring transactions. Each of these
+ * methods provides additional information for how to configure it for the desired type of transaction control.
  *
  * @see lidis.Economicsector
  */
 @Scope("singleton")
 @Repository("EconomicsectorDAO")
-public class EconomicsectorDAO extends HibernateDaoImpl<Economicsector, Integer>
-    implements IEconomicsectorDAO {
-    private static final Logger log = LoggerFactory.getLogger(EconomicsectorDAO.class);
-    @Resource
-    private SessionFactory sessionFactory;
+public class EconomicsectorDAO extends HibernateDaoImpl<Economicsector, Integer> implements IEconomicsectorDAO {
+  private static final Logger log = LoggerFactory.getLogger(EconomicsectorDAO.class);
 
-    public static IEconomicsectorDAO getFromApplicationContext(
-        ApplicationContext ctx) {
-        return (IEconomicsectorDAO) ctx.getBean("EconomicsectorDAO");
-    }
+  @Resource
+  private SessionFactory sessionFactory;
+
+  public static IEconomicsectorDAO getFromApplicationContext(ApplicationContext ctx) {
+    return (IEconomicsectorDAO) ctx.getBean("EconomicsectorDAO");
+  }
 }

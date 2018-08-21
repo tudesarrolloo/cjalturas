@@ -1,40 +1,38 @@
 package com.cjalturas.model.dto;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
-
 
 /**
-*
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ *
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public class RolDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(RolDTO.class);
-    private String codeRol;
-    private String rol;
+  private static final long serialVersionUID = 1L;
 
-    public String getCodeRol() {
-        return codeRol;
-    }
+  private static final Logger log = LoggerFactory.getLogger(RolDTO.class);
 
-    public void setCodeRol(String codeRol) {
-        this.codeRol = codeRol;
-    }
+  private String codeRol;
 
-    public String getRol() {
-        return rol;
-    }
+  private String rol;
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+  public String getCodeRol() {
+    return codeRol;
+  }
+
+  public void setCodeRol(String codeRol) {
+    this.codeRol = codeRol;
+  }
+
+  public String getRol() {
+    return rol;
+  }
+
+  public void setRol(String rol) {
+    this.rol = rol;
+  }
 }

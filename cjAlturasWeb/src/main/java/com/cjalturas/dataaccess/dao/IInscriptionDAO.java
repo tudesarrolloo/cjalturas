@@ -6,8 +6,8 @@ import com.cjalturas.model.Inscription;
 
 
 /**
-* Interface for   InscriptionDAO.
-*
-*/
+ * Interface for InscriptionDAO.
+ *
+ */
 public interface IInscriptionDAO extends Dao<Inscription, Integer> {
 }

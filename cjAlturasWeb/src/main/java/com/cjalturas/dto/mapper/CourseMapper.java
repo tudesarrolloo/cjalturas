@@ -20,76 +20,71 @@ import com.cjalturas.model.dto.CourseDTO;
 @Component
 @Scope("singleton")
 public class CourseMapper implements ICourseMapper {
-    private static final Logger log = LoggerFactory.getLogger(CourseMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(CourseMapper.class);
 
-    @Transactional(readOnly = true)
-    public CourseDTO courseToCourseDTO(Course course) throws Exception {
-        try {
-            CourseDTO courseDTO = new CourseDTO();
+  @Transactional(readOnly = true)
+  public CourseDTO courseToCourseDTO(Course course) throws Exception {
+    try {
+      CourseDTO courseDTO = new CourseDTO();
 
-            courseDTO.setIdCourse(course.getIdCourse());
-            courseDTO.setCourse((course.getCourse() != null)
-                ? course.getCourse() : null);
+      courseDTO.setIdCourse(course.getIdCourse());
+      courseDTO.setCourse((course.getCourse() != null) ? course.getCourse() : null);
 
-            return courseDTO;
-        } catch (Exception e) {
-        	log.error("Error convirtiendo curso a su equivalente en dto");
-          throw e;
-        }
+      return courseDTO;
+    } catch (Exception e) {
+      log.error("Error convirtiendo curso a su equivalente en dto");
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public Course courseDTOToCourse(CourseDTO courseDTO)
-        throws Exception {
-        try {
-            Course course = new Course();
+  @Transactional(readOnly = true)
+  public Course courseDTOToCourse(CourseDTO courseDTO) throws Exception {
+    try {
+      Course course = new Course();
 
-            course.setIdCourse(courseDTO.getIdCourse());
-            course.setCourse((courseDTO.getCourse() != null)
-                ? courseDTO.getCourse() : null);
+      course.setIdCourse(courseDTO.getIdCourse());
+      course.setCourse((courseDTO.getCourse() != null) ? courseDTO.getCourse() : null);
 
-            return course;
-        } catch (Exception e) {
-        		log.error("Error convirtiendo dto a su equivalente en curso");
-            throw e;
-        }
+      return course;
+    } catch (Exception e) {
+      log.error("Error convirtiendo dto a su equivalente en curso");
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<CourseDTO> listCourseToListCourseDTO(List<Course> listCourse)
-        throws Exception {
-        try {
-            List<CourseDTO> courseDTOs = new ArrayList<CourseDTO>();
+  @Transactional(readOnly = true)
+  public List<CourseDTO> listCourseToListCourseDTO(List<Course> listCourse) throws Exception {
+    try {
+      List<CourseDTO> courseDTOs = new ArrayList<CourseDTO>();
 
-            for (Course course : listCourse) {
-                CourseDTO courseDTO = courseToCourseDTO(course);
+      for (Course course : listCourse) {
+        CourseDTO courseDTO = courseToCourseDTO(course);
 
-                courseDTOs.add(courseDTO);
-            }
+        courseDTOs.add(courseDTO);
+      }
 
-            return courseDTOs;
-        } catch (Exception e) {
-        	log.error("Error convirtiendo lista de cursos a su equivalente en lista de cursos dto");
-            throw e;
-        }
+      return courseDTOs;
+    } catch (Exception e) {
+      log.error("Error convirtiendo lista de cursos a su equivalente en lista de cursos dto");
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<Course> listCourseDTOToListCourse(List<CourseDTO> listCourseDTO)
-        throws Exception {
-        try {
-            List<Course> listCourse = new ArrayList<Course>();
+  @Transactional(readOnly = true)
+  public List<Course> listCourseDTOToListCourse(List<CourseDTO> listCourseDTO) throws Exception {
+    try {
+      List<Course> listCourse = new ArrayList<Course>();
 
-            for (CourseDTO courseDTO : listCourseDTO) {
-                Course course = courseDTOToCourse(courseDTO);
+      for (CourseDTO courseDTO : listCourseDTO) {
+        Course course = courseDTOToCourse(courseDTO);
 
-                listCourse.add(course);
-            }
+        listCourse.add(course);
+      }
 
-            return listCourse;
-        } catch (Exception e) {
-        	log.error("Error convirtiendo lista de cursos dto a su equivalente en lista de cursos");
-            throw e;
-        }
+      return listCourse;
+    } catch (Exception e) {
+      log.error("Error convirtiendo lista de cursos dto a su equivalente en lista de cursos");
+      throw e;
     }
+  }
 }

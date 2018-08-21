@@ -6,8 +6,8 @@ import com.cjalturas.model.Group;
 
 
 /**
-* Interface for   GroupDAO.
-*
-*/
+ * Interface for GroupDAO.
+ *
+ */
 public interface IGroupDAO extends Dao<Group, Integer> {
 }

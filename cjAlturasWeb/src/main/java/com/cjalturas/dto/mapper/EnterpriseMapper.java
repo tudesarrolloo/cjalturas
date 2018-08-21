@@ -21,92 +21,79 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Component
 @Scope("singleton")
 public class EnterpriseMapper implements IEnterpriseMapper {
-    private static final Logger log = LoggerFactory.getLogger(EnterpriseMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(EnterpriseMapper.class);
 
-    @Transactional(readOnly = true)
-    public EnterpriseDTO enterpriseToEnterpriseDTO(Enterprise enterprise)
-        throws Exception {
-        try {
-            EnterpriseDTO enterpriseDTO = new EnterpriseDTO();
+  @Transactional(readOnly = true)
+  public EnterpriseDTO enterpriseToEnterpriseDTO(Enterprise enterprise) throws Exception {
+    try {
+      EnterpriseDTO enterpriseDTO = new EnterpriseDTO();
 
-            enterpriseDTO.setIdEnterprise(enterprise.getIdEnterprise());
-            enterpriseDTO.setContactName((enterprise.getContactName() != null)
-                ? enterprise.getContactName() : null);
-            enterpriseDTO.setName((enterprise.getName() != null)
-                ? enterprise.getName() : null);
-            enterpriseDTO.setNit((enterprise.getNit() != null)
-                ? enterprise.getNit() : null);
-            enterpriseDTO.setPhone((enterprise.getPhone() != null)
-                ? enterprise.getPhone() : null);
+      enterpriseDTO.setIdEnterprise(enterprise.getIdEnterprise());
+      enterpriseDTO.setContactName((enterprise.getContactName() != null) ? enterprise.getContactName() : null);
+      enterpriseDTO.setName((enterprise.getName() != null) ? enterprise.getName() : null);
+      enterpriseDTO.setNit((enterprise.getNit() != null) ? enterprise.getNit() : null);
+      enterpriseDTO.setPhone((enterprise.getPhone() != null) ? enterprise.getPhone() : null);
 
-            return enterpriseDTO;
-        } catch (Exception e) {
-            throw e;
-        }
+      return enterpriseDTO;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public Enterprise enterpriseDTOToEnterprise(EnterpriseDTO enterpriseDTO)
-        throws Exception {
-        try {
-            Enterprise enterprise = new Enterprise();
+  @Transactional(readOnly = true)
+  public Enterprise enterpriseDTOToEnterprise(EnterpriseDTO enterpriseDTO) throws Exception {
+    try {
+      Enterprise enterprise = new Enterprise();
 
-            enterprise.setIdEnterprise(enterpriseDTO.getIdEnterprise());
-            enterprise.setContactName((enterpriseDTO.getContactName() != null)
-                ? enterpriseDTO.getContactName() : null);
-            enterprise.setName((enterpriseDTO.getName() != null)
-                ? enterpriseDTO.getName() : null);
-            enterprise.setNit((enterpriseDTO.getNit() != null)
-                ? enterpriseDTO.getNit() : null);
-            enterprise.setPhone((enterpriseDTO.getPhone() != null)
-                ? enterpriseDTO.getPhone() : null);
+      enterprise.setIdEnterprise(enterpriseDTO.getIdEnterprise());
+      enterprise.setContactName((enterpriseDTO.getContactName() != null) ? enterpriseDTO.getContactName() : null);
+      enterprise.setName((enterpriseDTO.getName() != null) ? enterpriseDTO.getName() : null);
+      enterprise.setNit((enterpriseDTO.getNit() != null) ? enterpriseDTO.getNit() : null);
+      enterprise.setPhone((enterpriseDTO.getPhone() != null) ? enterpriseDTO.getPhone() : null);
 
-            return enterprise;
-        } catch (Exception e) {
-            throw e;
-        }
+      return enterprise;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<EnterpriseDTO> listEnterpriseToListEnterpriseDTO(
-        List<Enterprise> listEnterprise) throws Exception {
-        try {
-            List<EnterpriseDTO> enterpriseDTOs = new ArrayList<EnterpriseDTO>();
+  @Transactional(readOnly = true)
+  public List<EnterpriseDTO> listEnterpriseToListEnterpriseDTO(List<Enterprise> listEnterprise) throws Exception {
+    try {
+      List<EnterpriseDTO> enterpriseDTOs = new ArrayList<EnterpriseDTO>();
 
-            for (Enterprise enterprise : listEnterprise) {
-                EnterpriseDTO enterpriseDTO = enterpriseToEnterpriseDTO(enterprise);
+      for (Enterprise enterprise : listEnterprise) {
+        EnterpriseDTO enterpriseDTO = enterpriseToEnterpriseDTO(enterprise);
 
-                enterpriseDTOs.add(enterpriseDTO);
-            }
+        enterpriseDTOs.add(enterpriseDTO);
+      }
 
-            return enterpriseDTOs;
-        } catch (Exception e) {
-            throw e;
-        }
+      return enterpriseDTOs;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<Enterprise> listEnterpriseDTOToListEnterprise(
-        List<EnterpriseDTO> listEnterpriseDTO) throws Exception {
-        try {
-            List<Enterprise> listEnterprise = new ArrayList<Enterprise>();
+  @Transactional(readOnly = true)
+  public List<Enterprise> listEnterpriseDTOToListEnterprise(List<EnterpriseDTO> listEnterpriseDTO) throws Exception {
+    try {
+      List<Enterprise> listEnterprise = new ArrayList<Enterprise>();
 
-            for (EnterpriseDTO enterpriseDTO : listEnterpriseDTO) {
-                Enterprise enterprise = enterpriseDTOToEnterprise(enterpriseDTO);
+      for (EnterpriseDTO enterpriseDTO : listEnterpriseDTO) {
+        Enterprise enterprise = enterpriseDTOToEnterprise(enterpriseDTO);
 
-                listEnterprise.add(enterprise);
-            }
+        listEnterprise.add(enterprise);
+      }
 
-            return listEnterprise;
-        } catch (Exception e) {
-            throw e;
-        }
+      return listEnterprise;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 }

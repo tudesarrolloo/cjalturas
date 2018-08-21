@@ -31,24 +31,21 @@ import javax.annotation.Resource;
 
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Status entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * A data access object (DAO) providing persistence and search support for Status entities. Transaction control of the save(), update() and delete() operations
+ * can directly support Spring container-managed transactions or they can be augmented to handle user-managed Spring transactions. Each of these methods
+ * provides additional information for how to configure it for the desired type of transaction control.
  *
  * @see lidis.Status
  */
 @Scope("singleton")
 @Repository("StatusDAO")
-public class StatusDAO extends HibernateDaoImpl<Status, String>
-    implements IStatusDAO {
-    private static final Logger log = LoggerFactory.getLogger(StatusDAO.class);
-    @Resource
-    private SessionFactory sessionFactory;
+public class StatusDAO extends HibernateDaoImpl<Status, String> implements IStatusDAO {
+  private static final Logger log = LoggerFactory.getLogger(StatusDAO.class);
 
-    public static IStatusDAO getFromApplicationContext(ApplicationContext ctx) {
-        return (IStatusDAO) ctx.getBean("StatusDAO");
-    }
+  @Resource
+  private SessionFactory sessionFactory;
+
+  public static IStatusDAO getFromApplicationContext(ApplicationContext ctx) {
+    return (IStatusDAO) ctx.getBean("StatusDAO");
+  }
 }

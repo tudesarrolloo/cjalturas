@@ -1,67 +1,68 @@
 package com.cjalturas.model.dto;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
-
 
 /**
-*
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ *
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public class EnterpriseDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(EnterpriseDTO.class);
-    private String contactName;
-    private Integer idEnterprise;
-    private String name;
-    private String nit;
-    private String phone;
+  private static final long serialVersionUID = 1L;
 
-    public String getContactName() {
-        return contactName;
-    }
+  private static final Logger log = LoggerFactory.getLogger(EnterpriseDTO.class);
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
+  private String contactName;
 
-    public Integer getIdEnterprise() {
-        return idEnterprise;
-    }
+  private Integer idEnterprise;
 
-    public void setIdEnterprise(Integer idEnterprise) {
-        this.idEnterprise = idEnterprise;
-    }
+  private String name;
 
-    public String getName() {
-        return name;
-    }
+  private String nit;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  private String phone;
 
-    public String getNit() {
-        return nit;
-    }
+  public String getContactName() {
+    return contactName;
+  }
 
-    public void setNit(String nit) {
-        this.nit = nit;
-    }
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
+  }
 
-    public String getPhone() {
-        return phone;
-    }
+  public Integer getIdEnterprise() {
+    return idEnterprise;
+  }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+  public void setIdEnterprise(Integer idEnterprise) {
+    this.idEnterprise = idEnterprise;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getNit() {
+    return nit;
+  }
+
+  public void setNit(String nit) {
+    this.nit = nit;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
 }

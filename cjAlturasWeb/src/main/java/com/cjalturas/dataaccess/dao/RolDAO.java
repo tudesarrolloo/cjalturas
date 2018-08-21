@@ -31,23 +31,21 @@ import javax.annotation.Resource;
 
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Rol entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * A data access object (DAO) providing persistence and search support for Rol entities. Transaction control of the save(), update() and delete() operations can
+ * directly support Spring container-managed transactions or they can be augmented to handle user-managed Spring transactions. Each of these methods provides
+ * additional information for how to configure it for the desired type of transaction control.
  *
  * @see lidis.Rol
  */
 @Scope("singleton")
 @Repository("RolDAO")
 public class RolDAO extends HibernateDaoImpl<Rol, String> implements IRolDAO {
-    private static final Logger log = LoggerFactory.getLogger(RolDAO.class);
-    @Resource
-    private SessionFactory sessionFactory;
+  private static final Logger log = LoggerFactory.getLogger(RolDAO.class);
 
-    public static IRolDAO getFromApplicationContext(ApplicationContext ctx) {
-        return (IRolDAO) ctx.getBean("RolDAO");
-    }
+  @Resource
+  private SessionFactory sessionFactory;
+
+  public static IRolDAO getFromApplicationContext(ApplicationContext ctx) {
+    return (IRolDAO) ctx.getBean("RolDAO");
+  }
 }

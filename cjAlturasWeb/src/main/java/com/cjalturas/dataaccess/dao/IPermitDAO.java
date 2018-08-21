@@ -6,8 +6,8 @@ import com.cjalturas.model.Permit;
 
 
 /**
-* Interface for   PermitDAO.
-*
-*/
+ * Interface for PermitDAO.
+ *
+ */
 public interface IPermitDAO extends Dao<Permit, Integer> {
 }

@@ -6,8 +6,8 @@ import com.cjalturas.model.User;
 
 
 /**
-* Interface for   UserDAO.
-*
-*/
+ * Interface for UserDAO.
+ *
+ */
 public interface IUserDAO extends Dao<User, Integer> {
 }

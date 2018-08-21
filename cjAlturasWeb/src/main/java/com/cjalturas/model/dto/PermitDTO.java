@@ -1,49 +1,48 @@
 package com.cjalturas.model.dto;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-
-import java.sql.*;
-
-import java.util.Date;
-
 
 /**
-*
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ *
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public class PermitDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(PermitDTO.class);
-    private Integer idPermit;
-    private String resource;
-    private String codeRol_Rol;
+  private static final long serialVersionUID = 1L;
 
-    public Integer getIdPermit() {
-        return idPermit;
-    }
+  private static final Logger log = LoggerFactory.getLogger(PermitDTO.class);
 
-    public void setIdPermit(Integer idPermit) {
-        this.idPermit = idPermit;
-    }
+  private Integer idPermit;
 
-    public String getResource() {
-        return resource;
-    }
+  private String resource;
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
+  private String codeRol_Rol;
 
-    public String getCodeRol_Rol() {
-        return codeRol_Rol;
-    }
+  public Integer getIdPermit() {
+    return idPermit;
+  }
 
-    public void setCodeRol_Rol(String codeRol_Rol) {
-        this.codeRol_Rol = codeRol_Rol;
-    }
+  public void setIdPermit(Integer idPermit) {
+    this.idPermit = idPermit;
+  }
+
+  public String getResource() {
+    return resource;
+  }
+
+  public void setResource(String resource) {
+    this.resource = resource;
+  }
+
+  public String getCodeRol_Rol() {
+    return codeRol_Rol;
+  }
+
+  public void setCodeRol_Rol(String codeRol_Rol) {
+    this.codeRol_Rol = codeRol_Rol;
+  }
 }

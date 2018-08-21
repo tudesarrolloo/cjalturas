@@ -7,19 +7,15 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public interface IPermitMapper {
-    public PermitDTO permitToPermitDTO(Permit permit) throws Exception;
+  public PermitDTO permitToPermitDTO(Permit permit) throws Exception;
 
-    public Permit permitDTOToPermit(PermitDTO permitDTO)
-        throws Exception;
+  public Permit permitDTOToPermit(PermitDTO permitDTO) throws Exception;
 
-    public List<PermitDTO> listPermitToListPermitDTO(List<Permit> permits)
-        throws Exception;
+  public List<PermitDTO> listPermitToListPermitDTO(List<Permit> permits) throws Exception;
 
-    public List<Permit> listPermitDTOToListPermit(List<PermitDTO> permitDTOs)
-        throws Exception;
+  public List<Permit> listPermitDTOToListPermit(List<PermitDTO> permitDTOs) throws Exception;
 }

@@ -21,98 +21,83 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 @Component
 @Scope("singleton")
 public class PersonMapper implements IPersonMapper {
-    private static final Logger log = LoggerFactory.getLogger(PersonMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(PersonMapper.class);
 
-    @Transactional(readOnly = true)
-    public PersonDTO personToPersonDTO(Person person) throws Exception {
-        try {
-            PersonDTO personDTO = new PersonDTO();
+  @Transactional(readOnly = true)
+  public PersonDTO personToPersonDTO(Person person) throws Exception {
+    try {
+      PersonDTO personDTO = new PersonDTO();
 
-            personDTO.setIdPerson(person.getIdPerson());
-            personDTO.setDocument((person.getDocument() != null)
-                ? person.getDocument() : null);
-            personDTO.setDocumentType((person.getDocumentType() != null)
-                ? person.getDocumentType() : null);
-            personDTO.setEmail((person.getEmail() != null) ? person.getEmail()
-                                                           : null);
-            personDTO.setLastname((person.getLastname() != null)
-                ? person.getLastname() : null);
-            personDTO.setName((person.getName() != null) ? person.getName() : null);
-            personDTO.setPhone((person.getPhone() != null) ? person.getPhone()
-                                                           : null);
+      personDTO.setIdPerson(person.getIdPerson());
+      personDTO.setDocument((person.getDocument() != null) ? person.getDocument() : null);
+      personDTO.setDocumentType((person.getDocumentType() != null) ? person.getDocumentType() : null);
+      personDTO.setEmail((person.getEmail() != null) ? person.getEmail() : null);
+      personDTO.setLastname((person.getLastname() != null) ? person.getLastname() : null);
+      personDTO.setName((person.getName() != null) ? person.getName() : null);
+      personDTO.setPhone((person.getPhone() != null) ? person.getPhone() : null);
 
-            return personDTO;
-        } catch (Exception e) {
-            throw e;
-        }
+      return personDTO;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public Person personDTOToPerson(PersonDTO personDTO)
-        throws Exception {
-        try {
-            Person person = new Person();
+  @Transactional(readOnly = true)
+  public Person personDTOToPerson(PersonDTO personDTO) throws Exception {
+    try {
+      Person person = new Person();
 
-            person.setIdPerson(personDTO.getIdPerson());
-            person.setDocument((personDTO.getDocument() != null)
-                ? personDTO.getDocument() : null);
-            person.setDocumentType((personDTO.getDocumentType() != null)
-                ? personDTO.getDocumentType() : null);
-            person.setEmail((personDTO.getEmail() != null)
-                ? personDTO.getEmail() : null);
-            person.setLastname((personDTO.getLastname() != null)
-                ? personDTO.getLastname() : null);
-            person.setName((personDTO.getName() != null) ? personDTO.getName()
-                                                         : null);
-            person.setPhone((personDTO.getPhone() != null)
-                ? personDTO.getPhone() : null);
+      person.setIdPerson(personDTO.getIdPerson());
+      person.setDocument((personDTO.getDocument() != null) ? personDTO.getDocument() : null);
+      person.setDocumentType((personDTO.getDocumentType() != null) ? personDTO.getDocumentType() : null);
+      person.setEmail((personDTO.getEmail() != null) ? personDTO.getEmail() : null);
+      person.setLastname((personDTO.getLastname() != null) ? personDTO.getLastname() : null);
+      person.setName((personDTO.getName() != null) ? personDTO.getName() : null);
+      person.setPhone((personDTO.getPhone() != null) ? personDTO.getPhone() : null);
 
-            return person;
-        } catch (Exception e) {
-            throw e;
-        }
+      return person;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<PersonDTO> listPersonToListPersonDTO(List<Person> listPerson)
-        throws Exception {
-        try {
-            List<PersonDTO> personDTOs = new ArrayList<PersonDTO>();
+  @Transactional(readOnly = true)
+  public List<PersonDTO> listPersonToListPersonDTO(List<Person> listPerson) throws Exception {
+    try {
+      List<PersonDTO> personDTOs = new ArrayList<PersonDTO>();
 
-            for (Person person : listPerson) {
-                PersonDTO personDTO = personToPersonDTO(person);
+      for (Person person : listPerson) {
+        PersonDTO personDTO = personToPersonDTO(person);
 
-                personDTOs.add(personDTO);
-            }
+        personDTOs.add(personDTO);
+      }
 
-            return personDTOs;
-        } catch (Exception e) {
-            throw e;
-        }
+      return personDTOs;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<Person> listPersonDTOToListPerson(List<PersonDTO> listPersonDTO)
-        throws Exception {
-        try {
-            List<Person> listPerson = new ArrayList<Person>();
+  @Transactional(readOnly = true)
+  public List<Person> listPersonDTOToListPerson(List<PersonDTO> listPersonDTO) throws Exception {
+    try {
+      List<Person> listPerson = new ArrayList<Person>();
 
-            for (PersonDTO personDTO : listPersonDTO) {
-                Person person = personDTOToPerson(personDTO);
+      for (PersonDTO personDTO : listPersonDTO) {
+        Person person = personDTOToPerson(personDTO);
 
-                listPerson.add(person);
-            }
+        listPerson.add(person);
+      }
 
-            return listPerson;
-        } catch (Exception e) {
-            throw e;
-        }
+      return listPerson;
+    } catch (Exception e) {
+      throw e;
     }
+  }
 }

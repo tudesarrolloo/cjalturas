@@ -8,23 +8,25 @@ import java.io.Serializable;
  * @author Edison
  */
 public class CourseDTO implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String course;
-    private Integer idCourse;
+  private static final long serialVersionUID = 1L;
 
-    public String getCourse() {
-        return course;
-    }
+  private String course;
 
-    public void setCourse(String course) {
-        this.course = course;
-    }
+  private Integer idCourse;
 
-    public Integer getIdCourse() {
-        return idCourse;
-    }
+  public String getCourse() {
+    return course;
+  }
 
-    public void setIdCourse(Integer idCourse) {
-        this.idCourse = idCourse;
-    }
+  public void setCourse(String course) {
+    this.course = course;
+  }
+
+  public Integer getIdCourse() {
+    return idCourse;
+  }
+
+  public void setIdCourse(Integer idCourse) {
+    this.idCourse = idCourse;
+  }
 }

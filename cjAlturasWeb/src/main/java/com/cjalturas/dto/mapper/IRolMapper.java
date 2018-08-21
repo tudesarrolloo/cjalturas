@@ -7,18 +7,15 @@ import java.util.List;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
+ *
+ */
 public interface IRolMapper {
-    public RolDTO rolToRolDTO(Rol rol) throws Exception;
+  public RolDTO rolToRolDTO(Rol rol) throws Exception;
 
-    public Rol rolDTOToRol(RolDTO rolDTO) throws Exception;
+  public Rol rolDTOToRol(RolDTO rolDTO) throws Exception;
 
-    public List<RolDTO> listRolToListRolDTO(List<Rol> rols)
-        throws Exception;
+  public List<RolDTO> listRolToListRolDTO(List<Rol> rols) throws Exception;
 
-    public List<Rol> listRolDTOToListRol(List<RolDTO> rolDTOs)
-        throws Exception;
+  public List<Rol> listRolDTOToListRol(List<RolDTO> rolDTOs) throws Exception;
 }

@@ -6,8 +6,8 @@ import com.cjalturas.model.Economicsector;
 
 
 /**
-* Interface for   EconomicsectorDAO.
-*
-*/
+ * Interface for EconomicsectorDAO.
+ *
+ */
 public interface IEconomicsectorDAO extends Dao<Economicsector, Integer> {
 }

@@ -31,24 +31,21 @@ import javax.annotation.Resource;
 
 
 /**
- * A data access object (DAO) providing persistence and search support for
- * Permit entities. Transaction control of the save(), update() and
- * delete() operations can directly support Spring container-managed
- * transactions or they can be augmented to handle user-managed Spring
- * transactions. Each of these methods provides additional information for how
- * to configure it for the desired type of transaction control.
+ * A data access object (DAO) providing persistence and search support for Permit entities. Transaction control of the save(), update() and delete() operations
+ * can directly support Spring container-managed transactions or they can be augmented to handle user-managed Spring transactions. Each of these methods
+ * provides additional information for how to configure it for the desired type of transaction control.
  *
  * @see lidis.Permit
  */
 @Scope("singleton")
 @Repository("PermitDAO")
-public class PermitDAO extends HibernateDaoImpl<Permit, Integer>
-    implements IPermitDAO {
-    private static final Logger log = LoggerFactory.getLogger(PermitDAO.class);
-    @Resource
-    private SessionFactory sessionFactory;
+public class PermitDAO extends HibernateDaoImpl<Permit, Integer> implements IPermitDAO {
+  private static final Logger log = LoggerFactory.getLogger(PermitDAO.class);
 
-    public static IPermitDAO getFromApplicationContext(ApplicationContext ctx) {
-        return (IPermitDAO) ctx.getBean("PermitDAO");
-    }
+  @Resource
+  private SessionFactory sessionFactory;
+
+  public static IPermitDAO getFromApplicationContext(ApplicationContext ctx) {
+    return (IPermitDAO) ctx.getBean("PermitDAO");
+  }
 }

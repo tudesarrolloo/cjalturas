@@ -6,8 +6,8 @@ import com.cjalturas.model.Enterprise;
 
 
 /**
-* Interface for   EnterpriseDAO.
-*
-*/
+ * Interface for EnterpriseDAO.
+ *
+ */
 public interface IEnterpriseDAO extends Dao<Enterprise, Integer> {
 }
