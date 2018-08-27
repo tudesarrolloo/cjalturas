@@ -1,16 +1,20 @@
 package com.cjalturas.presentation.backingBeans;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +35,10 @@ public class CoachView implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(CoachView.class);
+  
+  private InputNumber txtDocument;
+  
+  private SelectOneMenu lids;
 
   private InputText txtCharge;
 
@@ -57,12 +65,22 @@ public class CoachView implements Serializable {
   private Coach entity;
 
   private boolean showDialog;
+  
+  private HashMap<String, String> typesId;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
 
   public CoachView() {
     super();
+  }
+  
+  @PostConstruct
+  public void init() {
+    typesId = new HashMap<String, String>();
+    typesId.put("CC", "Cédula de ciudadanía");
+    typesId.put("CE","Cédula extranjería");
+    typesId.put("PP","Pasaporte");
   }
 
   public String action_new() {
@@ -401,4 +419,31 @@ public class CoachView implements Serializable {
   public void setShowDialog(boolean showDialog) {
     this.showDialog = showDialog;
   }
+
+  public InputNumber getTxtDocument() {
+    return txtDocument;
+  }
+
+  public void setTxtDocument(InputNumber txtDocument) {
+    this.txtDocument = txtDocument;
+  }
+
+  public SelectOneMenu getLids() {
+    return lids;
+  }
+
+  public void setLids(SelectOneMenu lids) {
+    this.lids = lids;
+  }
+
+  public HashMap<String, String> getTypesId() {
+    return typesId;
+  }
+
+  public void setTypesId(HashMap<String, String> typesId) {
+    this.typesId = typesId;
+  }
+
+
+  
 }

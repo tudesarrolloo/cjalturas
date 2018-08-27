@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cjalturas.model.Person;
+
 
 /**
  *
@@ -25,6 +27,8 @@ public class CoachDTO implements Serializable {
   private String sign;
 
   private Integer idPerson_Person;
+  
+  private Person person;
 
   public String getCharge() {
     return charge;
@@ -65,4 +69,13 @@ public class CoachDTO implements Serializable {
   public void setIdPerson_Person(Integer idPerson_Person) {
     this.idPerson_Person = idPerson_Person;
   }
+
+  public Person getPerson() {
+    return person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
+  }
+  
 }
