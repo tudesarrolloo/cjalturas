@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+      <p:panel id="panelDataTableEconomicsector">
+
+        <f:facet name="header">
+          <p:outputLabel>Administración de sectores empresariales</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear sector"
+            style="float:right;"
+            action="#{economicsectorView.action_new()}"
+            update=":dialogEconomicsector" />
+        </f:facet>
+
+        <p:growl id="men" />
+        <p:dataTable value="#{economicsectorView.data}"
+          var="economicsector" selectionMode="single"
+          selection="#{economicsectorView.selectedEconomicsector}"
+          rowKey="#{economicsector.idEconomicSector}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{economicsector.economicSector}"
+            sortBy="#{economicsector.economicSector}">
+            <f:facet name="header">
+              <h:outputText value="Sector Económico" />
+            </f:facet>
+            <h:outputText value="#{economicsector.economicSector}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogEconomicsector"
+              actionListener="#{economicsectorView.action_edit}">
+              <f:attribute name="selectedEconomicsector"
+                value="#{economicsector}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{economicsectorView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['economicsector.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedEconomicsector"
+                value="#{economicsector}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogEconomicsector" appendTo="@(body)"
+      draggable="true" closable="false"
+      visible="#{economicsectorView.showDialog}" resizable="false"
+      modal="true" width="380" header="Información del sector enocómico">
+      <h:form id="formDialog">
+        <p:messages id="msg" />
+        <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
+          <h:outputText id="msgEconomicSector" value="Sector económico" />
+          <p:inputText id="txtEconomicSector"
+            binding="#{economicsectorView.txtEconomicSector}" />
+        </h:panelGrid>
+        <div align="center" class="panel-boton">
+          <p:commandButton id="btnSave"
+            binding="#{economicsectorView.btnSave}" value="Guardar"
+            action="#{economicsectorView.action_save()}"
+            update=":dialogEconomicsector :frm:panelDataTableEconomicsector" />
+          <p:commandButton id="btnClear" value="Limpiar"
+            action="#{economicsectorView.action_clear()}"
+            update=":dialogEconomicsector" />
+          <p:commandButton id="btnExit" value="Salir"
+            action="#{economicsectorView.action_closeDialog()}"
+            update=":dialogEconomicsector" />
+        </div>
+      </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+  </ui:define>
+</ui:composition>
+

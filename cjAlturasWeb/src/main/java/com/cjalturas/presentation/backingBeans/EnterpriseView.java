@@ -100,6 +100,7 @@ public class EnterpriseView implements Serializable {
     PageUtils.enableTextbox(txtContactName);
     PageUtils.enableButton(btnSave);
     if (entity != null) {
+      PageUtils.disableTextbox(txtNit);
       txtNit.setValue(entity.getNit());
       txtName.setValue(entity.getName());
       txtPhone.setValue(entity.getPhone());

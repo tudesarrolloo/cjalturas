@@ -20,6 +20,7 @@ import com.cjalturas.dataaccess.dao.IEconomicsectorDAO;
 import com.cjalturas.dataaccess.dao.ILearnerDAO;
 import com.cjalturas.dto.mapper.IEconomicsectorMapper;
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Economicsector;
 import com.cjalturas.model.Learner;
 import com.cjalturas.model.dto.EconomicsectorDTO;
@@ -27,8 +28,8 @@ import com.cjalturas.utilities.Utilities;
 
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Lógica de negocio relacionada con la gestión de sectores económicos.
+ * @author Edison
  */
 @Scope("singleton")
 @Service("EconomicsectorLogic")
@@ -37,7 +38,6 @@ public class EconomicsectorLogic implements IEconomicsectorLogic {
 
   /**
    * DAO injected by Spring that manages Economicsector entities
-   *
    */
   @Autowired
   private IEconomicsectorDAO economicsectorDAO;
@@ -58,18 +58,24 @@ public class EconomicsectorLogic implements IEconomicsectorLogic {
   public void validateEconomicsector(Economicsector economicsector) throws Exception {
     try {
       Set<ConstraintViolation<Economicsector>> constraintViolations = validator.validate(economicsector);
-
       if (constraintViolations.size() > 0) {
         StringBuilder strMessage = new StringBuilder();
-
         for (ConstraintViolation<Economicsector> constraintViolation : constraintViolations) {
           strMessage.append(constraintViolation.getPropertyPath().toString());
           strMessage.append(" - ");
           strMessage.append(constraintViolation.getMessage());
           strMessage.append(". \n");
         }
-
         throw new Exception(strMessage.toString());
+      }
+      
+      log.debug("Se incicia validación no existencia de sector enonómico con el mismo nombre.");
+      Economicsector economicSectorFinded = economicsectorDAO.findByName(economicsector.getEconomicSector());
+      if (economicSectorFinded != null) {
+        if (economicsector.getIdEconomicSector() == null || Integer.compare(economicSectorFinded.getIdEconomicSector(), economicsector.getIdEconomicSector()) != 0) {
+          throw new ZMessManager().new DuplicateException(ApplicationMessages.getInstance().getMessage("course.error.duplicate.name"));
+        }
+        economicsectorDAO.evict(economicSectorFinded);
       }
     } catch (Exception e) {
       throw e;
@@ -101,10 +107,8 @@ public class EconomicsectorLogic implements IEconomicsectorLogic {
       if (entity == null) {
         throw new ZMessManager().new NullEntityExcepcion("Economicsector");
       }
-
       validateEconomicsector(entity);
-
-      if (getEconomicsector(entity.getIdEconomicSector()) != null) {
+      if (entity.getIdEconomicSector() != null && getEconomicsector(entity.getIdEconomicSector()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 

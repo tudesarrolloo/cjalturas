@@ -15,15 +15,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Economicsector;
 import com.cjalturas.model.dto.EconomicsectorDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
+import com.cjalturas.utilities.PageUtils;
 
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Bean de la vista de lista y edición de sectores económicos.
+ * @author Edison
  */
 @ManagedBean
 @ViewScoped
@@ -33,8 +35,6 @@ public class EconomicsectorView implements Serializable {
   private static final Logger log = LoggerFactory.getLogger(EconomicsectorView.class);
 
   private InputText txtEconomicSector;
-
-  private InputText txtIdEconomicSector;
 
   private CommandButton btnSave;
 
@@ -70,62 +70,15 @@ public class EconomicsectorView implements Serializable {
   public String action_clear() {
     entity = null;
     selectedEconomicsector = null;
-
-    if (txtEconomicSector != null) {
-      txtEconomicSector.setValue(null);
-      txtEconomicSector.setDisabled(true);
-    }
-
-    if (txtIdEconomicSector != null) {
-      txtIdEconomicSector.setValue(null);
-      txtIdEconomicSector.setDisabled(false);
-    }
-
-    if (btnSave != null) {
-      btnSave.setDisabled(true);
-    }
-
-    if (btnDelete != null) {
-      btnDelete.setDisabled(true);
-    }
-
+    PageUtils.clearTextBox(txtEconomicSector);
+    PageUtils.disableButton(btnDelete);
     return "";
-  }
-
-  public void listener_txtId() {
-    try {
-      Integer idEconomicSector = FacesUtils.checkInteger(txtIdEconomicSector);
-      entity = (idEconomicSector != null) ? businessDelegatorView.getEconomicsector(idEconomicSector) : null;
-    } catch (Exception e) {
-      entity = null;
-    }
-
-    if (entity == null) {
-      txtEconomicSector.setDisabled(false);
-      txtIdEconomicSector.setDisabled(false);
-      btnSave.setDisabled(false);
-    } else {
-      txtEconomicSector.setValue(entity.getEconomicSector());
-      txtEconomicSector.setDisabled(false);
-      txtIdEconomicSector.setValue(entity.getIdEconomicSector());
-      txtIdEconomicSector.setDisabled(true);
-      btnSave.setDisabled(false);
-
-      if (btnDelete != null) {
-        btnDelete.setDisabled(false);
-      }
-    }
   }
 
   public String action_edit(ActionEvent evt) {
     selectedEconomicsector = (EconomicsectorDTO) (evt.getComponent().getAttributes().get("selectedEconomicsector"));
     txtEconomicSector.setValue(selectedEconomicsector.getEconomicSector());
-    txtEconomicSector.setDisabled(false);
-    txtIdEconomicSector.setValue(selectedEconomicsector.getIdEconomicSector());
-    txtIdEconomicSector.setDisabled(true);
-    btnSave.setDisabled(false);
     setShowDialog(true);
-
     return "";
   }
 
@@ -136,31 +89,26 @@ public class EconomicsectorView implements Serializable {
       } else {
         action_modify();
       }
-
       data = null;
     } catch (Exception e) {
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de guardado del sector económico", e);
     }
-
     return "";
   }
 
   public String action_create() {
     try {
       entity = new Economicsector();
-
-      Integer idEconomicSector = FacesUtils.checkInteger(txtIdEconomicSector);
-
       entity.setEconomicSector(FacesUtils.checkString(txtEconomicSector));
-      entity.setIdEconomicSector(idEconomicSector);
       businessDelegatorView.saveEconomicsector(entity);
       FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
       action_clear();
     } catch (Exception e) {
       entity = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de creación del sector económico", e);
     }
-
     return "";
   }
 
@@ -170,51 +118,38 @@ public class EconomicsectorView implements Serializable {
         Integer idEconomicSector = new Integer(selectedEconomicsector.getIdEconomicSector());
         entity = businessDelegatorView.getEconomicsector(idEconomicSector);
       }
-
       entity.setEconomicSector(FacesUtils.checkString(txtEconomicSector));
       businessDelegatorView.updateEconomicsector(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+      ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("economicsector.edit.success"));
     } catch (Exception e) {
       data = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de modificación del sector económico", e);
     }
-
     return "";
   }
 
   public String action_delete_datatable(ActionEvent evt) {
     try {
       selectedEconomicsector = (EconomicsectorDTO) (evt.getComponent().getAttributes().get("selectedEconomicsector"));
-
       Integer idEconomicSector = new Integer(selectedEconomicsector.getIdEconomicSector());
       entity = businessDelegatorView.getEconomicsector(idEconomicSector);
       action_delete();
     } catch (Exception e) {
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de eliminación del sector economico", e);
     }
-
-    return "";
-  }
-
-  public String action_delete_master() {
-    try {
-      Integer idEconomicSector = FacesUtils.checkInteger(txtIdEconomicSector);
-      entity = businessDelegatorView.getEconomicsector(idEconomicSector);
-      action_delete();
-    } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
-    }
-
     return "";
   }
 
   public void action_delete() throws Exception {
     try {
       businessDelegatorView.deleteEconomicsector(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
+      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("course.delete.success"));
       action_clear();
       data = null;
     } catch (Exception e) {
+      log.error("Falló la acción de eliminación del sector económico", e);
       throw e;
     }
   }
@@ -222,21 +157,6 @@ public class EconomicsectorView implements Serializable {
   public String action_closeDialog() {
     setShowDialog(false);
     action_clear();
-
-    return "";
-  }
-
-  public String action_modifyWitDTO(String economicSector, Integer idEconomicSector) throws Exception {
-    try {
-      entity.setEconomicSector(FacesUtils.checkString(economicSector));
-      businessDelegatorView.updateEconomicsector(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-    } catch (Exception e) {
-      // renderManager.getOnDemandRenderer("EconomicsectorView").requestRender();
-      FacesUtils.addErrorMessage(e.getMessage());
-      throw e;
-    }
-
     return "";
   }
 
@@ -248,23 +168,15 @@ public class EconomicsectorView implements Serializable {
     this.txtEconomicSector = txtEconomicSector;
   }
 
-  public InputText getTxtIdEconomicSector() {
-    return txtIdEconomicSector;
-  }
-
-  public void setTxtIdEconomicSector(InputText txtIdEconomicSector) {
-    this.txtIdEconomicSector = txtIdEconomicSector;
-  }
-
   public List<EconomicsectorDTO> getData() {
     try {
       if (data == null) {
         data = businessDelegatorView.getDataEconomicsector();
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Falló obteniendo los datos de los sectores económicos actuales", e);
+      ZMessManager.addErrorMessage(e.getMessage());
     }
-
     return data;
   }
 
