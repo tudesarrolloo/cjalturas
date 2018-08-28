@@ -3,6 +3,7 @@ package com.cjalturas.model.control;
 import java.util.List;
 
 import com.cjalturas.model.Coach;
+import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.dto.CoachDTO;
 
 
@@ -35,6 +36,15 @@ public interface ICoachLogic {
    *
    */
   public Coach getCoach(Integer idCoach) throws Exception;
+  
+  /**
+   * Encuentra un entrenador por alguna de sus propiedades.
+   * @param propertyName nombre de la propiedad.
+   * @param propertyValue valor de la propiedad.
+   * @return 
+   * @throws Exception
+   */
+  public List<Coach> findCoachByProperty(String propertyName, Object propertyValue) throws Exception;
 
   public List<Coach> findByCriteria(Object[] variables, Object[] variablesBetween, Object[] variablesBetweenDates) throws Exception;
 
@@ -45,4 +55,5 @@ public interface ICoachLogic {
   public List<CoachDTO> getDataCoach() throws Exception;
 
   public void validateCoach(Coach coach) throws Exception;
+
 }

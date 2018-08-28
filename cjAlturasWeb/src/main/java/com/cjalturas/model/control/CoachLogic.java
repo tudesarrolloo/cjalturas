@@ -20,7 +20,9 @@ import com.cjalturas.dataaccess.dao.ICoachDAO;
 import com.cjalturas.dataaccess.dao.IGroupDAO;
 import com.cjalturas.dto.mapper.ICoachMapper;
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.exceptions.ZMessManager.FindingException;
 import com.cjalturas.model.Coach;
+import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.utilities.Utilities;
@@ -188,7 +190,6 @@ public class CoachLogic implements ICoachLogic {
         CoachDTO coachDTO2 = coachMapper.coachToCoachDTO(coachTmp);
         coachDTO.add(coachDTO2);
       }
-
       return coachDTO;
     } catch (Exception e) {
       throw e;
@@ -369,4 +370,17 @@ public class CoachLogic implements ICoachLogic {
 
     return list;
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<Coach> findCoachByProperty(String propertyName, Object propertyValue) throws Exception {
+    log.debug("Buscando entrenador o lista de entrenador por una propiedad");
+    try {
+      return coachDAO.findByProperty(propertyName, propertyValue);
+    } catch (Exception e) {
+      log.error("Falló la búsqueda de entrenadores", e);
+      throw new ZMessManager().new FindingException("Coach");
+    }
+  }
+
 }

@@ -105,9 +105,8 @@ public class EnterpriseView implements Serializable {
       txtName.setValue(entity.getName());
       txtPhone.setValue(entity.getPhone());
       txtContactName.setValue(entity.getContactName());
-      if (btnDelete != null) {
-        PageUtils.enableButton(btnDelete);
-      }
+      
+      PageUtils.enableButton(btnDelete);
     }
   }
 

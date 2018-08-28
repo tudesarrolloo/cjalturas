@@ -45,8 +45,10 @@ public class CoachMapper implements ICoachMapper {
       coachDTO.setCharge((coach.getCharge() != null) ? coach.getCharge() : null);
       coachDTO.setLicenseSst((coach.getLicenseSst() != null) ? coach.getLicenseSst() : null);
       coachDTO.setSign((coach.getSign() != null) ? coach.getSign() : null);
-      coachDTO.setIdPerson_Person((coach.getPerson().getIdPerson() != null) ? coach.getPerson().getIdPerson() : null);
-
+      if (coach.getPerson() !=null) {
+        coachDTO.setPerson(coach.getPerson());
+        coachDTO.setIdPerson_Person((coach.getPerson().getIdPerson() != null) ? coach.getPerson().getIdPerson() : null);
+      }
       return coachDTO;
     } catch (Exception e) {
       throw e;

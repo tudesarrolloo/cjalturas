@@ -20,14 +20,18 @@ import org.slf4j.LoggerFactory;
 
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.model.Coach;
+import com.cjalturas.model.Enterprise;
+import com.cjalturas.model.Person;
+import com.cjalturas.model.TypeId;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
+import com.cjalturas.utilities.PageUtils;
 
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Bean de la vista de lista y edición de entrenadores.
+ * @author Edison
  */
 @ManagedBean
 @ViewScoped
@@ -35,20 +39,22 @@ public class CoachView implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(CoachView.class);
+
+  private SelectOneMenu cmbTypeId;
   
   private InputNumber txtDocument;
   
-  private SelectOneMenu lids;
-
+  private InputText txtName;
+  
+  private InputText txtLastname;
+  
+  private InputText txtPhone;
+  
+  private InputText txtEmail;
+  
   private InputText txtCharge;
 
   private InputText txtLicenseSst;
-
-  private InputText txtSign;
-
-  private InputText txtIdPerson_Person;
-
-  private InputText txtIdCoach;
 
   private CommandButton btnSave;
 
@@ -77,96 +83,100 @@ public class CoachView implements Serializable {
   
   @PostConstruct
   public void init() {
-    typesId = new HashMap<String, String>();
-    typesId.put("CC", "Cédula de ciudadanía");
-    typesId.put("CE","Cédula extranjería");
-    typesId.put("PP","Pasaporte");
+    typesId = TypeId.getTypesId();
   }
 
   public String action_new() {
     action_clear();
     selectedCoach = null;
     setShowDialog(true);
-
     return "";
   }
 
   public String action_clear() {
     entity = null;
     selectedCoach = null;
-
-    if (txtCharge != null) {
-      txtCharge.setValue(null);
-      txtCharge.setDisabled(true);
-    }
-
-    if (txtLicenseSst != null) {
-      txtLicenseSst.setValue(null);
-      txtLicenseSst.setDisabled(true);
-    }
-
-    if (txtSign != null) {
-      txtSign.setValue(null);
-      txtSign.setDisabled(true);
-    }
-
-    if (txtIdPerson_Person != null) {
-      txtIdPerson_Person.setValue(null);
-      txtIdPerson_Person.setDisabled(true);
-    }
-
-    if (txtIdCoach != null) {
-      txtIdCoach.setValue(null);
-      txtIdCoach.setDisabled(false);
-    }
-
-    if (btnSave != null) {
-      btnSave.setDisabled(true);
-    }
-
-    if (btnDelete != null) {
-      btnDelete.setDisabled(true);
-    }
-
+    PageUtils.clearTextBox(txtDocument);
+    PageUtils.clearComboBox(cmbTypeId);
+    PageUtils.clearTextBox(txtName);
+    PageUtils.clearTextBox(txtLastname);
+    PageUtils.clearTextBox(txtPhone);
+    PageUtils.clearTextBox(txtEmail);
+    PageUtils.clearTextBox(txtCharge);
+    PageUtils.clearTextBox(txtLicenseSst);
+    
+    PageUtils.enableTextbox(txtDocument);
+    PageUtils.enableComboBox(cmbTypeId);
+    PageUtils.enableTextbox(txtName);
+    PageUtils.enableTextbox(txtLastname);
+    PageUtils.enableTextbox(txtPhone);
+    PageUtils.enableTextbox(txtEmail);
+    PageUtils.enableTextbox(txtCharge);
+    PageUtils.enableTextbox(txtLicenseSst);
+    
+    PageUtils.disableButton(btnDelete);
     return "";
   }
 
   public void listener_txtId() {
     try {
-      Integer idCoach = FacesUtils.checkInteger(txtIdCoach);
-      entity = (idCoach != null) ? businessDelegatorView.getCoach(idCoach) : null;
+      Integer document = FacesUtils.checkInteger(txtDocument);
+      entity = findCoachByDocumentPerson(document);
     } catch (Exception e) {
       entity = null;
     }
-
-    if (entity == null) {
-      txtCharge.setDisabled(false);
-      txtLicenseSst.setDisabled(false);
-      txtSign.setDisabled(false);
-      txtIdPerson_Person.setDisabled(false);
-      txtIdCoach.setDisabled(false);
-      btnSave.setDisabled(false);
-    } else {
-      txtCharge.setValue(entity.getCharge());
-      txtCharge.setDisabled(false);
-      txtLicenseSst.setValue(entity.getLicenseSst());
-      txtLicenseSst.setDisabled(false);
-      txtSign.setValue(entity.getSign());
-      txtSign.setDisabled(false);
-      txtIdPerson_Person.setValue(entity.getPerson().getIdPerson());
-      txtIdPerson_Person.setDisabled(false);
-      txtIdCoach.setValue(entity.getIdCoach());
-      txtIdCoach.setDisabled(true);
-      btnSave.setDisabled(false);
-
-      if (btnDelete != null) {
-        btnDelete.setDisabled(false);
-      }
+    
+    PageUtils.enableTextbox(txtDocument);
+    PageUtils.enableComboBox(cmbTypeId);
+    PageUtils.enableTextbox(txtName);
+    PageUtils.enableTextbox(txtLastname);
+    PageUtils.enableTextbox(txtPhone);
+    PageUtils.enableTextbox(txtEmail);
+    PageUtils.enableTextbox(txtCharge);
+    PageUtils.enableTextbox(txtLicenseSst);
+    
+    if (entity != null) {
+      PageUtils.disableTextbox(txtDocument);
+      loadCoachInfoFromEntity(entity);
+      PageUtils.enableButton(btnDelete);
     }
   }
+  
+  /**
+   * Encuentra un entrenador por el documento de la persona.
+   * @param documentPerson documento de la persona con la que se buscará el entrenador.
+   * @return instancia del entrenador en caso de que exista.
+   * @throws Exception
+   */
+  private Coach findCoachByDocumentPerson(Integer documentPerson) throws Exception {
+    if (documentPerson != null) {
+      List<Coach> listCoachs = businessDelegatorView.findCoachByProperty("person.document", String.valueOf(documentPerson));
+      if (listCoachs.isEmpty()) {
+        return null;
+      } else if (listCoachs.size() > 1) {
+        log.error("Se encontró más de un instructor con el mismo documento: " + documentPerson);
+        throw new RuntimeException("Se encontró más de un instructor con el mismo documento: " + documentPerson);
+      }
+      return listCoachs.get(0);
+    }
+    return null;
+  }
+
 
   public String action_edit(ActionEvent evt) {
     selectedCoach = (CoachDTO) (evt.getComponent().getAttributes().get("selectedCoach"));
+    
+    loadCoachInfoFromEntity(selectedCoach);
+    
+    txtDocument
+    cmbTypeId
+    txtName
+    txtLastname
+    txtPhone
+    txtEmail
+    txtCharge
+    txtLicenseSst
+    
     txtCharge.setValue(selectedCoach.getCharge());
     txtCharge.setDisabled(false);
     txtLicenseSst.setValue(selectedCoach.getLicenseSst());
@@ -181,6 +191,22 @@ public class CoachView implements Serializable {
     setShowDialog(true);
 
     return "";
+  }
+
+  /**
+   * Carga los valores del insc
+   * @param coach entidad desde la cual se cargará la información. 
+   */
+  private void loadCoachInfoFromEntity(CoachDTO coach) {
+    Person person = coach.getPerson();
+    txtDocument.setValue(person.getDocument());
+    cmbTypeId.setValue(person.getDocumentType());
+    txtName.setValue(person.getName());
+    txtLastname.setValue(person.getLastname());
+    txtPhone.setValue(person.getPhone());
+    txtEmail.setValue(person.getEmail());
+    txtCharge.setValue(coach.getCharge());
+    txtLicenseSst.setValue(coach.getLicenseSst());
   }
 
   public String action_save() {
