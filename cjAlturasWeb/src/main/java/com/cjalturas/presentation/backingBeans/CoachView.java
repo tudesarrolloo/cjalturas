@@ -18,6 +18,7 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cjalturas.dto.mapper.CoachMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Enterprise;
@@ -106,13 +107,13 @@ public class CoachView implements Serializable {
     PageUtils.clearTextBox(txtLicenseSst);
     
     PageUtils.enableTextbox(txtDocument);
-    PageUtils.enableComboBox(cmbTypeId);
-    PageUtils.enableTextbox(txtName);
-    PageUtils.enableTextbox(txtLastname);
-    PageUtils.enableTextbox(txtPhone);
-    PageUtils.enableTextbox(txtEmail);
-    PageUtils.enableTextbox(txtCharge);
-    PageUtils.enableTextbox(txtLicenseSst);
+    PageUtils.disableComboBox(cmbTypeId);
+    PageUtils.disableTextbox(txtName);
+    PageUtils.disableTextbox(txtLastname);
+    PageUtils.disableTextbox(txtPhone);
+    PageUtils.disableTextbox(txtEmail);
+    PageUtils.disableTextbox(txtCharge);
+    PageUtils.disableTextbox(txtLicenseSst);
     
     PageUtils.disableButton(btnDelete);
     return "";
@@ -137,8 +138,17 @@ public class CoachView implements Serializable {
     
     if (entity != null) {
       PageUtils.disableTextbox(txtDocument);
-      loadCoachInfoFromEntity(entity);
       PageUtils.enableButton(btnDelete);
+      
+      Person person = entity.getPerson();
+      txtDocument.setValue(person.getDocument());
+      cmbTypeId.setValue(person.getDocumentType());
+      txtName.setValue(person.getName());
+      txtLastname.setValue(person.getLastname());
+      txtPhone.setValue(person.getPhone());
+      txtEmail.setValue(person.getEmail());
+      txtCharge.setValue(entity.getCharge());
+      txtLicenseSst.setValue(entity.getLicenseSst());
     }
   }
   
@@ -193,21 +203,6 @@ public class CoachView implements Serializable {
     return "";
   }
 
-  /**
-   * Carga los valores del insc
-   * @param coach entidad desde la cual se cargará la información. 
-   */
-  private void loadCoachInfoFromEntity(CoachDTO coach) {
-    Person person = coach.getPerson();
-    txtDocument.setValue(person.getDocument());
-    cmbTypeId.setValue(person.getDocumentType());
-    txtName.setValue(person.getName());
-    txtLastname.setValue(person.getLastname());
-    txtPhone.setValue(person.getPhone());
-    txtEmail.setValue(person.getEmail());
-    txtCharge.setValue(coach.getCharge());
-    txtLicenseSst.setValue(coach.getLicenseSst());
-  }
 
   public String action_save() {
     try {
