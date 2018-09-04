@@ -1,27 +1,39 @@
 package com.cjalturas.presentation.backingBeans;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.annotation.SessionScope;
 
-import com.cjalturas.dto.mapper.CoachMapper;
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Coach;
-import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Person;
 import com.cjalturas.model.TypeId;
 import com.cjalturas.model.dto.CoachDTO;
@@ -36,26 +48,29 @@ import com.cjalturas.utilities.PageUtils;
  */
 @ManagedBean
 @ViewScoped
+//@SessionScoped
 public class CoachView implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(CoachView.class);
 
   private SelectOneMenu cmbTypeId;
-  
+
   private InputNumber txtDocument;
-  
+
   private InputText txtName;
-  
+
   private InputText txtLastname;
-  
+
   private InputText txtPhone;
-  
+
   private InputText txtEmail;
-  
+
   private InputText txtCharge;
 
   private InputText txtLicenseSst;
+
+  private UploadedFile file;
 
   private CommandButton btnSave;
 
@@ -72,7 +87,7 @@ public class CoachView implements Serializable {
   private Coach entity;
 
   private boolean showDialog;
-  
+
   private HashMap<String, String> typesId;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -81,7 +96,7 @@ public class CoachView implements Serializable {
   public CoachView() {
     super();
   }
-  
+
   @PostConstruct
   public void init() {
     typesId = TypeId.getTypesId();
@@ -105,7 +120,7 @@ public class CoachView implements Serializable {
     PageUtils.clearTextBox(txtEmail);
     PageUtils.clearTextBox(txtCharge);
     PageUtils.clearTextBox(txtLicenseSst);
-    
+
     PageUtils.enableTextbox(txtDocument);
     PageUtils.disableComboBox(cmbTypeId);
     PageUtils.disableTextbox(txtName);
@@ -114,7 +129,7 @@ public class CoachView implements Serializable {
     PageUtils.disableTextbox(txtEmail);
     PageUtils.disableTextbox(txtCharge);
     PageUtils.disableTextbox(txtLicenseSst);
-    
+
     PageUtils.disableButton(btnDelete);
     return "";
   }
@@ -126,7 +141,7 @@ public class CoachView implements Serializable {
     } catch (Exception e) {
       entity = null;
     }
-    
+
     PageUtils.enableTextbox(txtDocument);
     PageUtils.enableComboBox(cmbTypeId);
     PageUtils.enableTextbox(txtName);
@@ -135,11 +150,11 @@ public class CoachView implements Serializable {
     PageUtils.enableTextbox(txtEmail);
     PageUtils.enableTextbox(txtCharge);
     PageUtils.enableTextbox(txtLicenseSst);
-    
+
     if (entity != null) {
       PageUtils.disableTextbox(txtDocument);
       PageUtils.enableButton(btnDelete);
-      
+
       Person person = entity.getPerson();
       txtDocument.setValue(person.getDocument());
       cmbTypeId.setValue(person.getDocumentType());
@@ -151,7 +166,7 @@ public class CoachView implements Serializable {
       txtLicenseSst.setValue(entity.getLicenseSst());
     }
   }
-  
+
   /**
    * Encuentra un entrenador por el documento de la persona.
    * @param documentPerson documento de la persona con la que se buscará el entrenador.
@@ -172,37 +187,33 @@ public class CoachView implements Serializable {
     return null;
   }
 
-
   public String action_edit(ActionEvent evt) {
     selectedCoach = (CoachDTO) (evt.getComponent().getAttributes().get("selectedCoach"));
-    
-    loadCoachInfoFromEntity(selectedCoach);
-    
-    txtDocument
-    cmbTypeId
-    txtName
-    txtLastname
-    txtPhone
-    txtEmail
-    txtCharge
-    txtLicenseSst
-    
-    txtCharge.setValue(selectedCoach.getCharge());
-    txtCharge.setDisabled(false);
-    txtLicenseSst.setValue(selectedCoach.getLicenseSst());
-    txtLicenseSst.setDisabled(false);
-    txtSign.setValue(selectedCoach.getSign());
-    txtSign.setDisabled(false);
-    txtIdPerson_Person.setValue(selectedCoach.getIdPerson_Person());
-    txtIdPerson_Person.setDisabled(false);
-    txtIdCoach.setValue(selectedCoach.getIdCoach());
-    txtIdCoach.setDisabled(true);
-    btnSave.setDisabled(false);
-    setShowDialog(true);
 
+    Person person = selectedCoach.getPerson();
+    txtDocument.setValue(person.getDocument());
+    cmbTypeId.setValue(person.getDocumentType());
+    txtName.setValue(person.getName());
+    txtLastname.setValue(person.getLastname());
+    txtPhone.setValue(person.getPhone());
+    txtEmail.setValue(person.getEmail());
+    txtCharge.setValue(selectedCoach.getCharge());
+    txtLicenseSst.setValue(selectedCoach.getLicenseSst());
+
+    PageUtils.enableTextbox(txtDocument);
+    PageUtils.enableComboBox(cmbTypeId);
+    PageUtils.enableTextbox(txtName);
+    PageUtils.enableTextbox(txtLastname);
+    PageUtils.enableTextbox(txtPhone);
+    PageUtils.enableTextbox(txtEmail);
+    PageUtils.enableTextbox(txtCharge);
+    PageUtils.enableTextbox(txtLicenseSst);
+
+    PageUtils.enableButton(btnSave);
+    PageUtils.enableButton(btnDelete);
+    setShowDialog(true);
     return "";
   }
-
 
   public String action_save() {
     try {
@@ -211,35 +222,38 @@ public class CoachView implements Serializable {
       } else {
         action_modify();
       }
-
       data = null;
     } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
+      ZMessManager.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de guardado de la empresa", e);
     }
-
     return "";
   }
 
   public String action_create() {
     try {
+      Person person = new Person();
+      person.setDocument(FacesUtils.checkString(txtDocument));
+      person.setDocumentType(FacesUtils.checkString(cmbTypeId));
+      person.setName(FacesUtils.checkString(txtName));
+      person.setLastname(FacesUtils.checkString(txtLastname));
+      person.setPhone(FacesUtils.checkString(txtPhone));
+      person.setEmail(FacesUtils.checkString(txtEmail));
+
       entity = new Coach();
-
-      Integer idCoach = FacesUtils.checkInteger(txtIdCoach);
-
       entity.setCharge(FacesUtils.checkString(txtCharge));
-      entity.setIdCoach(idCoach);
       entity.setLicenseSst(FacesUtils.checkString(txtLicenseSst));
-      entity.setSign(FacesUtils.checkString(txtSign));
-      entity.setPerson(
-          (FacesUtils.checkInteger(txtIdPerson_Person) != null) ? businessDelegatorView.getPerson(FacesUtils.checkInteger(txtIdPerson_Person)) : null);
+      entity.setPerson(person);
+      entity.setSign("PENDING");
+
       businessDelegatorView.saveCoach(entity);
       FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
       action_clear();
     } catch (Exception e) {
       entity = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de creación del curso", e);
     }
-
     return "";
   }
 
@@ -250,54 +264,49 @@ public class CoachView implements Serializable {
         entity = businessDelegatorView.getCoach(idCoach);
       }
 
+      Person person = entity.getPerson();
+      person.setDocument(FacesUtils.checkString(txtDocument));
+      person.setDocumentType(FacesUtils.checkString(cmbTypeId));
+      person.setName(FacesUtils.checkString(txtName));
+      person.setLastname(FacesUtils.checkString(txtLastname));
+      person.setPhone(FacesUtils.checkString(txtPhone));
+      person.setEmail(FacesUtils.checkString(txtEmail));
+
       entity.setCharge(FacesUtils.checkString(txtCharge));
       entity.setLicenseSst(FacesUtils.checkString(txtLicenseSst));
-      entity.setSign(FacesUtils.checkString(txtSign));
-      entity.setPerson(
-          (FacesUtils.checkInteger(txtIdPerson_Person) != null) ? businessDelegatorView.getPerson(FacesUtils.checkInteger(txtIdPerson_Person)) : null);
+//      entity.setSign(FacesUtils.checkString(txtSign));
+      entity.setPerson(person);
       businessDelegatorView.updateCoach(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+      ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("enterprise.edit.success"));
     } catch (Exception e) {
       data = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de modificación de la empresa", e);
     }
-
     return "";
   }
 
   public String action_delete_datatable(ActionEvent evt) {
     try {
       selectedCoach = (CoachDTO) (evt.getComponent().getAttributes().get("selectedCoach"));
-
       Integer idCoach = new Integer(selectedCoach.getIdCoach());
       entity = businessDelegatorView.getCoach(idCoach);
       action_delete();
     } catch (Exception e) {
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de eliminación del curso", e);
     }
-
-    return "";
-  }
-
-  public String action_delete_master() {
-    try {
-      Integer idCoach = FacesUtils.checkInteger(txtIdCoach);
-      entity = businessDelegatorView.getCoach(idCoach);
-      action_delete();
-    } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
-    }
-
     return "";
   }
 
   public void action_delete() throws Exception {
     try {
       businessDelegatorView.deleteCoach(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
+      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("course.delete.success"));
       action_clear();
       data = null;
     } catch (Exception e) {
+      log.error("Falló la acción de eliminación del instructor", e);
       throw e;
     }
   }
@@ -305,64 +314,7 @@ public class CoachView implements Serializable {
   public String action_closeDialog() {
     setShowDialog(false);
     action_clear();
-
     return "";
-  }
-
-  public String action_modifyWitDTO(String charge, Integer idCoach, String licenseSst, String sign, Integer idPerson_Person) throws Exception {
-    try {
-      entity.setCharge(FacesUtils.checkString(charge));
-      entity.setLicenseSst(FacesUtils.checkString(licenseSst));
-      entity.setSign(FacesUtils.checkString(sign));
-      businessDelegatorView.updateCoach(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-    } catch (Exception e) {
-      // renderManager.getOnDemandRenderer("CoachView").requestRender();
-      FacesUtils.addErrorMessage(e.getMessage());
-      throw e;
-    }
-
-    return "";
-  }
-
-  public InputText getTxtCharge() {
-    return txtCharge;
-  }
-
-  public void setTxtCharge(InputText txtCharge) {
-    this.txtCharge = txtCharge;
-  }
-
-  public InputText getTxtLicenseSst() {
-    return txtLicenseSst;
-  }
-
-  public void setTxtLicenseSst(InputText txtLicenseSst) {
-    this.txtLicenseSst = txtLicenseSst;
-  }
-
-  public InputText getTxtSign() {
-    return txtSign;
-  }
-
-  public void setTxtSign(InputText txtSign) {
-    this.txtSign = txtSign;
-  }
-
-  public InputText getTxtIdPerson_Person() {
-    return txtIdPerson_Person;
-  }
-
-  public void setTxtIdPerson_Person(InputText txtIdPerson_Person) {
-    this.txtIdPerson_Person = txtIdPerson_Person;
-  }
-
-  public InputText getTxtIdCoach() {
-    return txtIdCoach;
-  }
-
-  public void setTxtIdCoach(InputText txtIdCoach) {
-    this.txtIdCoach = txtIdCoach;
   }
 
   public List<CoachDTO> getData() {
@@ -381,12 +333,88 @@ public class CoachView implements Serializable {
     this.data = coachDTO;
   }
 
-  public CoachDTO getSelectedCoach() {
-    return selectedCoach;
+  public TimeZone getTimeZone() {
+    return java.util.TimeZone.getDefault();
   }
 
-  public void setSelectedCoach(CoachDTO coach) {
-    this.selectedCoach = coach;
+  public IBusinessDelegatorView getBusinessDelegatorView() {
+    return businessDelegatorView;
+  }
+
+  public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
+    this.businessDelegatorView = businessDelegatorView;
+  }
+
+  public boolean isShowDialog() {
+    return showDialog;
+  }
+
+  public void setShowDialog(boolean showDialog) {
+    this.showDialog = showDialog;
+  }
+
+  public SelectOneMenu getCmbTypeId() {
+    return cmbTypeId;
+  }
+
+  public void setCmbTypeId(SelectOneMenu cmbTypeId) {
+    this.cmbTypeId = cmbTypeId;
+  }
+
+  public InputNumber getTxtDocument() {
+    return txtDocument;
+  }
+
+  public void setTxtDocument(InputNumber txtDocument) {
+    this.txtDocument = txtDocument;
+  }
+
+  public InputText getTxtName() {
+    return txtName;
+  }
+
+  public void setTxtName(InputText txtName) {
+    this.txtName = txtName;
+  }
+
+  public InputText getTxtLastname() {
+    return txtLastname;
+  }
+
+  public void setTxtLastname(InputText txtLastname) {
+    this.txtLastname = txtLastname;
+  }
+
+  public InputText getTxtPhone() {
+    return txtPhone;
+  }
+
+  public void setTxtPhone(InputText txtPhone) {
+    this.txtPhone = txtPhone;
+  }
+
+  public InputText getTxtEmail() {
+    return txtEmail;
+  }
+
+  public void setTxtEmail(InputText txtEmail) {
+    this.txtEmail = txtEmail;
+  }
+
+  public InputText getTxtCharge() {
+    return txtCharge;
+  }
+
+  public void setTxtCharge(InputText txtCharge) {
+    this.txtCharge = txtCharge;
+  }
+
+  public InputText getTxtLicenseSst() {
+    return txtLicenseSst;
+  }
+
+  public void setTxtLicenseSst(InputText txtLicenseSst) {
+    this.txtLicenseSst = txtLicenseSst;
   }
 
   public CommandButton getBtnSave() {
@@ -421,40 +449,20 @@ public class CoachView implements Serializable {
     this.btnClear = btnClear;
   }
 
-  public TimeZone getTimeZone() {
-    return java.util.TimeZone.getDefault();
+  public CoachDTO getSelectedCoach() {
+    return selectedCoach;
   }
 
-  public IBusinessDelegatorView getBusinessDelegatorView() {
-    return businessDelegatorView;
+  public void setSelectedCoach(CoachDTO selectedCoach) {
+    this.selectedCoach = selectedCoach;
   }
 
-  public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
-    this.businessDelegatorView = businessDelegatorView;
+  public Coach getEntity() {
+    return entity;
   }
 
-  public boolean isShowDialog() {
-    return showDialog;
-  }
-
-  public void setShowDialog(boolean showDialog) {
-    this.showDialog = showDialog;
-  }
-
-  public InputNumber getTxtDocument() {
-    return txtDocument;
-  }
-
-  public void setTxtDocument(InputNumber txtDocument) {
-    this.txtDocument = txtDocument;
-  }
-
-  public SelectOneMenu getLids() {
-    return lids;
-  }
-
-  public void setLids(SelectOneMenu lids) {
-    this.lids = lids;
+  public void setEntity(Coach entity) {
+    this.entity = entity;
   }
 
   public HashMap<String, String> getTypesId() {
@@ -465,6 +473,61 @@ public class CoachView implements Serializable {
     this.typesId = typesId;
   }
 
+  public UploadedFile getFile() {
+    return file;
+  }
 
-  
+  public void setFile(UploadedFile file) {
+    this.file = file;
+  }
+
+  public void handleFileUpload(FileUploadEvent event) {
+    this.setFile(event.getFile());
+    FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+    FacesContext.getCurrentInstance().addMessage(null, message);
+
+  }
+
+  public StreamedContent getSayFile() throws IOException {
+//    InputStream is;
+//    try {
+//      if (getFile() != null) {
+//        is = getFile().getInputstream();
+//        return new DefaultStreamedContent(is, "image/png");
+//      }
+//    } catch (IOException e) {
+//
+//    }
+//    return new DefaultStreamedContent(null, "image/png");
+
+//    String mimeType = "image/jpg";
+//    File sourceimage = new File("E:\\sign1.png"); 
+//    InputStream targetStream = new FileInputStream(sourceimage);
+//    StreamedContent file = new DefaultStreamedContent(targetStream, mimeType, "firma");
+//    return file;
+
+//    String image_id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("image_id");
+//    System.out.println("image_id: " + image_id);
+//
+//    if (image_id == null) {
+//      File sourceimage = new File("E:\\sign1.png"); 
+//    InputStream targetStream = new FileInputStream(sourceimage);
+//      
+//      DefaultStreamedContent defaultImage = new DefaultStreamedContent(targetStream, "image/png");
+//      return defaultImage;
+//    }
+    if (this.getFile() != null) {
+      return new DefaultStreamedContent( this.getFile().getInputstream(), "image/png");
+    }else {
+      return null;
+    }
+
+//    DefaultStreamedContent image = new DefaultStreamedContent(new ByteArrayInputStream(images.get(Integer.valueOf(image_id))), "image/png");
+//    File sourceimage = new File("E:\\sign1.png"); 
+//    DefaultStreamedContent dbStream = //Get inputstream of a blob eg javax.sql.Blob.getInputStream() API
+    
+    
+    
+  }
+
 }

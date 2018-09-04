@@ -170,7 +170,19 @@ public class FacesUtils {
    * @param msg the error message
    */
   public static void addErrorMessage(String clientId, String msg) {
+    String p1 = null; 
+    String p2 = null;
+    
+    if (msg.contains("|")) {
+      int indexSep = msg.indexOf("|");
+      p1 = msg.substring(0, indexSep); 
+      p2 = msg.substring(indexSep+1,msg.length());
+      msg = p1;
+    }
     FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+    if (p2!=null) {
+      addErrorMessage(clientId, p2);
+    }
   }
 
   private static Application getApplication() {

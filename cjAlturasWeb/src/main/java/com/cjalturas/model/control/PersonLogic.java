@@ -120,9 +120,9 @@ public class PersonLogic implements IPersonLogic {
         throw new ZMessManager().new NullEntityExcepcion("Person");
       }
 
-      validatePerson(entity);
+//      validatePerson(entity);
 
-      if (getPerson(entity.getIdPerson()) != null) {
+      if (entity.getIdPerson() != null &&  getPerson(entity.getIdPerson()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 

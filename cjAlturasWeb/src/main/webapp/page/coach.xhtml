@@ -18,71 +18,69 @@
         </f:facet>
 
         <p:growl id="men" />
-          <p:dataTable value="#{coachView.data}" var="coach"
-            selectionMode="single"
-            selection="#{coachView.selectedCoach}"
-            rowKey="#{coach.idCoach}" paginator="true"
-            paginatorPosition="bottom" rows="8">
+        <p:dataTable value="#{coachView.data}" var="coach"
+          selectionMode="single" selection="#{coachView.selectedCoach}"
+          rowKey="#{coach.idCoach}" paginator="true"
+          paginatorPosition="bottom" rows="8">
 
-            <p:column filterBy="#{coach.person.document}"
-              sortBy="#{coach.person.document}">
-              <f:facet name="header">
-                <h:outputText value="Documento" />
-              </f:facet>
-              <h:outputText value="#{coach.person.document}" />
-            </p:column>
+          <p:column filterBy="#{coach.person.document}"
+            sortBy="#{coach.person.document}">
+            <f:facet name="header">
+              <h:outputText value="Documento" />
+            </f:facet>
+            <h:outputText value="#{coach.person.document}" />
+          </p:column>
 
-            <p:column filterBy="#{coach.person.name}"
-              sortBy="#{coach.person.name}">
-              <f:facet name="header">
-                <h:outputText value="Nombre" />
-              </f:facet>
-              <h:outputText value="#{coach.person.name}" />
-            </p:column>
+          <p:column filterBy="#{coach.person.name}"
+            sortBy="#{coach.person.name}">
+            <f:facet name="header">
+              <h:outputText value="Nombre" />
+            </f:facet>
+            <h:outputText value="#{coach.person.name}" />
+          </p:column>
 
-            <p:column filterBy="#{coach.person.lastname}"
-              sortBy="#{coach.person.lastname}">
-              <f:facet name="header">
-                <h:outputText value="Apellidos" />
-              </f:facet>
-              <h:outputText value="#{coach.person.lastname}" />
-            </p:column>
+          <p:column filterBy="#{coach.person.lastname}"
+            sortBy="#{coach.person.lastname}">
+            <f:facet name="header">
+              <h:outputText value="Apellidos" />
+            </f:facet>
+            <h:outputText value="#{coach.person.lastname}" />
+          </p:column>
 
-            <p:column filterBy="#{coach.charge}"
-              sortBy="#{coach.charge}">
-              <f:facet name="header">
-                <h:outputText value="Cargo" />
-              </f:facet>
-              <h:outputText value="#{coach.charge}" />
-            </p:column>
+          <p:column filterBy="#{coach.charge}" sortBy="#{coach.charge}">
+            <f:facet name="header">
+              <h:outputText value="Cargo" />
+            </f:facet>
+            <h:outputText value="#{coach.charge}" />
+          </p:column>
 
-            <p:column filterBy="#{coach.licenseSst}"
-              sortBy="#{coach.licenseSst}">
-              <f:facet name="header">
-                <h:outputText value="Licencia SST" />
-              </f:facet>
-              <h:outputText value="#{coach.licenseSst}" />
-            </p:column>
+          <p:column filterBy="#{coach.licenseSst}"
+            sortBy="#{coach.licenseSst}">
+            <f:facet name="header">
+              <h:outputText value="Licencia SST" />
+            </f:facet>
+            <h:outputText value="#{coach.licenseSst}" />
+          </p:column>
 
-            <p:column width="70">
-              <p:commandLink id="btnEdit" title="Editar"
-                update=":dialogCoach"
-                actionListener="#{coachView.action_edit}">
-                <f:attribute name="selectedCoach" value="#{coach}" />
-                <span class="icon-table border fa fa-edit"></span>
-              </p:commandLink>
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogCoach"
+              actionListener="#{coachView.action_edit}">
+              <f:attribute name="selectedCoach" value="#{coach}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
 
-              <p:commandLink id="btnDelete" title="Eliminar"
-                actionListener="#{coachView.action_delete_datatable}"
-                update="@form">
-                <p:confirm header="Confirmation"
-                  message="#{msg['coach.delete.confirm']}"
-                  icon="ui-icon-alert" />
-                <f:attribute name="selectedCoach" value="#{coach}" />
-                <span class="icon-table fa fa-trash-o"></span>
-              </p:commandLink>
-            </p:column>
-          </p:dataTable>
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{coachView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['coach.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedCoach" value="#{coach}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
       </p:panel>
     </h:form>
     <p:dialog id="dialogCoach" appendTo="@(body)" draggable="true"
@@ -90,63 +88,84 @@
       resizable="false" modal="true" width="500"
       header="Información del instructor">
       <p:focus context="dialogCoach" />
-      <h:form id="formDialog">
+      <h:form id="formDialog" enctype="multipart/form-data">
         <p:messages id="msg" />
         <h:panelGrid columns="2" id="panelGrid">
 
-          <h:outputText id="msgTypeId" value="Tipo de documento" />
-<!--           <p:selectOneMenu id="console" -->
-<!--             value="#{selectOneMenuView.console}" style="width:125px"> -->
-<!--             <f:selectItem itemLabel="Select One" itemValue="" /> -->
-<!--             <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" /> -->
-<!--             <f:selectItem itemLabel="PS4" itemValue="PS4" /> -->
-<!--             <f:selectItem itemLabel="Wii U" itemValue="Wii U" /> -->
-<!--           </p:selectOneMenu> -->
-
-        <p:selectOneMenu id="console" binding="#{coachView.lids}">
-          <f:selectItems value="#{coachView.typesId}" />
-        </p:selectOneMenu>
-        
-
-          <!--           <p:inputText id="cmbTypeId" disabled="true" -->
-          <!--             binding="#{coachView.txtCharge}" /> -->
-
           <h:outputText id="msgDocument" value="Documento" />
-          <p:inputNumber id="txtDocument" disabled="true"
-            binding="#{coachView.txtDocument}" />
+          <p:inputNumber id="txtDocument" disabled="true" decimalPlaces="0"
+            binding="#{coachView.txtDocument}">
+            <p:ajax update=":dialogCoach"
+              listener="#{coachView.listener_txtId}" />
+          </p:inputNumber>
 
-          <!--           <p:inputText id="txtDocument" disabled="true" -->
-          <!--             binding="#{coachView.txtDocument}" /> -->
+          <h:outputText id="msgTypeId" value="Tipo de documento" />
+          <p:selectOneMenu id="console" binding="#{coachView.cmbTypeId}">
+            <f:selectItems value="#{coachView.typesId}" />
+          </p:selectOneMenu>
 
-          <h:outputText id="msgCharge" value=" Charge" />
+          <h:outputText id="msgName" value="Nombre" />
+          <p:inputText id="txtName" disabled="true"
+            binding="#{coachView.txtName}" />
+
+          <h:outputText id="msgLastname" value="Apellidos" />
+          <p:inputText id="txtLastname" disabled="true"
+            binding="#{coachView.txtLastname}" />
+
+          <h:outputText id="msgPhone" value="Teléfono" />
+          <p:inputText id="txtPhone" disabled="true"
+            binding="#{coachView.txtPhone}" />
+
+          <h:outputText id="msgEmail" value="E-mail" />
+          <p:inputText id="txtEmail" disabled="true"
+            binding="#{coachView.txtEmail}" />
+
+          <h:outputText id="msgCharge" value="Cargo" />
           <p:inputText id="txtCharge" disabled="true"
             binding="#{coachView.txtCharge}" />
 
-          <h:outputText id="msgLicenseSst" value=" LicenseSst" />
+          <h:outputText id="msgLicenseSst" value="Licencia SST" />
           <p:inputText id="txtLicenseSst" disabled="true"
             binding="#{coachView.txtLicenseSst}" />
-          <h:outputText id="msgSign" value=" Sign" />
-          <p:inputText id="txtSign" disabled="true"
-            binding="#{coachView.txtSign}" />
-          <h:outputText id="msgIdPerson_Person" value=" IdPerson_Person" />
-          <p:inputText id="txtIdPerson_Person" disabled="true"
-            binding="#{coachView.txtIdPerson_Person}" />
+            
+            <h:outputText id="msgSign" value="Firma digitals" />
+<!--             <p:fileUpload value="#{coachView.file}" mode="simple" skinSimple="true" update=":dialogCoach" auto="true"/> -->
+            
+            <p:fileUpload fileUploadListener="#{coachView.handleFileUpload}" mode="advanced" update=":dialogCoach"
+                     auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            
+            <h:outputText id="msgSignss" value="IMGGG" />
+              <p:graphicImage value="#{coachView.sayFile}" />
+              
+<!--             <p:graphicImage value="#{coachView.sayFile}"> -->
+<!--                <f:param id="a" name="a" value="a" /> --> 
+<!--               <f:param id="image_id" name="image_id" value="455" /> -->
+<!--             </p:graphicImage> -->
+
+          <!--           <h:outputText id="msgSign" value=" Sign" /> -->
+          <!--           <p:inputText id="txtSign" disabled="true" -->
+          <!--             binding="#{coachView.txtSign}" /> -->
 
         </h:panelGrid>
-        <p:panel id="panelBotones">
-          <div align="center">
-            <p:commandButton id="btnSave" binding="#{coachView.btnSave}"
-              value="Save" action="#{coachView.action_save()}"
-              update=":dialogCoach :frm:panelDataTableCoach" />
-            <p:commandButton id="btnClear" value="Clear"
-              action="#{coachView.action_clear()}" update=":dialogCoach" />
-            <p:commandButton id="btnExit" value="Exit"
-              action="#{coachView.action_closeDialog()}"
-              update=":dialogCoach" />
-          </div>
-        </p:panel>
+        <div align="center" class="panel-boton">
+          <p:commandButton id="btnSave" binding="#{coachView.btnSave}"
+            value="Guardar" action="#{coachView.action_save()}"
+            update=":dialogCoach :frm:panelDataTableCoach" />
+          <p:commandButton id="btnClear" value="Limpiar"
+            action="#{coachView.action_clear()}" update=":dialogCoach" />
+          <p:commandButton id="btnExit" value="Salir"
+            action="#{coachView.action_closeDialog()}"
+            update=":dialogCoach" />
+        </div>
       </h:form>
     </p:dialog>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
   </ui:define>
 </ui:composition>
 

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ import com.cjalturas.dataaccess.dao.ICoachDAO;
 import com.cjalturas.dataaccess.dao.IGroupDAO;
 import com.cjalturas.dto.mapper.ICoachMapper;
 import com.cjalturas.exceptions.ZMessManager;
-import com.cjalturas.exceptions.ZMessManager.FindingException;
 import com.cjalturas.model.Coach;
-import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Group;
+import com.cjalturas.model.Person;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.utilities.Utilities;
+import com.cjalturas.validation.ConstraintMessagesTransformer;
 
 
 /**
@@ -67,19 +68,40 @@ public class CoachLogic implements ICoachLogic {
   public void validateCoach(Coach coach) throws Exception {
     try {
       Set<ConstraintViolation<Coach>> constraintViolations = validator.validate(coach);
-
-      if (constraintViolations.size() > 0) {
-        StringBuilder strMessage = new StringBuilder();
-
-        for (ConstraintViolation<Coach> constraintViolation : constraintViolations) {
-          strMessage.append(constraintViolation.getPropertyPath().toString());
-          strMessage.append(" - ");
-          strMessage.append(constraintViolation.getMessage());
-          strMessage.append(". \n");
-        }
-
-        throw new Exception(strMessage.toString());
+      
+      Set<ConstraintViolation<Person>> constraintViolationsPerson = validator.validate(coach.getPerson());
+      
+      ConstraintMessagesTransformer transformerConstraints = new ConstraintMessagesTransformer();
+      transformerConstraints.transform(constraintViolationsPerson);
+      transformerConstraints.transform(constraintViolations);
+      String validationMessages = transformerConstraints.getValidationMessage();
+      
+      if (StringUtils.isNotBlank(validationMessages)) {
+        throw new Exception(validationMessages);
       }
+      
+//      String m = ConstraintMessagesTransformer.transform(constraintViolations,constraintViolationsPerson);
+      
+
+//      if (constraintViolations.size() > 0 || !constraintViolationsPerson.isEmpty()) {
+//        StringBuilder strMessage = new StringBuilder();
+
+//        for (ConstraintViolation<Person> constraintViolation : constraintViolationsPerson) {
+//          strMessage.append(constraintViolation.getPropertyPath().toString());
+//          strMessage.append(" - ");
+//          strMessage.append(constraintViolation.getMessage());
+//          strMessage.append(". \n");
+//        }
+        
+//        for (ConstraintViolation<Coach> constraintViolation : constraintViolations) {
+//          strMessage.append(constraintViolation.getPropertyPath().toString());
+//          strMessage.append(" - ");
+//          strMessage.append(constraintViolation.getMessage());
+//          strMessage.append(". \n");
+//        }
+        
+        
+//      }
     } catch (Exception e) {
       throw e;
     }
@@ -113,11 +135,13 @@ public class CoachLogic implements ICoachLogic {
 
       validateCoach(entity);
 
-      if (getCoach(entity.getIdCoach()) != null) {
+      if (entity.getIdCoach() != null && getCoach(entity.getIdCoach()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 
+      logicPerson1.savePerson(entity.getPerson());
       coachDAO.save(entity);
+      
 
       log.debug("save Coach successful");
     } catch (Exception e) {
@@ -148,6 +172,7 @@ public class CoachLogic implements ICoachLogic {
         throw new ZMessManager().new DeletingException("groups");
       }
 
+      logicPerson1.deletePerson(entity.getPerson());
       coachDAO.delete(entity);
 
       log.debug("delete Coach successful");
@@ -168,7 +193,8 @@ public class CoachLogic implements ICoachLogic {
       }
 
       validateCoach(entity);
-
+      
+      logicPerson1.updatePerson(entity.getPerson());
       coachDAO.update(entity);
 
       log.debug("update Coach successful");

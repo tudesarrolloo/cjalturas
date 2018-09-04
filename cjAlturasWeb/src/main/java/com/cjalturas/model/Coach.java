@@ -1,16 +1,19 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
-import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -20,8 +23,24 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "coach", schema = "${schema}")
 public class Coach implements java.io.Serializable {
+  
+  public static Map<String,String> map_fields;
+  
+  static {
+    map_fields = new HashMap<>();
+    map_fields.put("document", "Documento");
+    map_fields.put("documentType", "Tipo de documento");
+    map_fields.put("email", "E-mail");
+    map_fields.put("lastname", "Apellidos");
+    map_fields.put("name", "Nombre");
+    map_fields.put("phone", "Teléfono");
+    map_fields.put("charge", "Cargo");
+    map_fields.put("licenseSst", "Licencia SST");
+    map_fields.put("sign", "Firma");
+  }
+  
   @Id
-  @NotNull
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer idCoach;
 
   @NotNull
@@ -103,4 +122,10 @@ public class Coach implements java.io.Serializable {
   public void setGroups(Set<Group> groups) {
     this.groups = groups;
   }
+
+  public static Map<String, String> getMapFields() {
+    return map_fields;
+  }
+  
+  
 }
