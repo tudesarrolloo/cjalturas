@@ -24,7 +24,7 @@
       <column name="licenseSST" length="100" not-null="true" />
     </property>
     <property name="sign" type="java.lang.String">
-      <column name="sign" length="100" not-null="true">
+      <column name="sign">
         <comment>Firma digital del instructor</comment>
       </column>
     </property>

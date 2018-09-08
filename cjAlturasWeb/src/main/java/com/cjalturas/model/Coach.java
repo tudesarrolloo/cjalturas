@@ -56,9 +56,6 @@ public class Coach implements java.io.Serializable {
   @Size(max = 100)
   private String licenseSst;
 
-  @NotNull
-  @NotEmpty
-  @Size(max = 100)
   private String sign;
 
   private Set<Group> groups = new HashSet<Group>(0);

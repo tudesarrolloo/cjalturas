@@ -84,80 +84,83 @@
       </p:panel>
     </h:form>
     <p:dialog id="dialogCoach" appendTo="@(body)" draggable="true"
-      closable="false" visible="#{coachView.showDialog}"
+      closable="true" visible="#{coachView.showDialog}"
       resizable="false" modal="true" width="500"
       header="Información del instructor">
-      <p:focus context="dialogCoach" />
-      <h:form id="formDialog" enctype="multipart/form-data">
-        <p:messages id="msg" />
-        <h:panelGrid columns="2" id="panelGrid">
 
-          <h:outputText id="msgDocument" value="Documento" />
-          <p:inputNumber id="txtDocument" disabled="true" decimalPlaces="0"
-            binding="#{coachView.txtDocument}">
-            <p:ajax update=":dialogCoach"
-              listener="#{coachView.listener_txtId}" />
-          </p:inputNumber>
+      <div id="coach-dialog-container" class="coach-dialog-container">
 
-          <h:outputText id="msgTypeId" value="Tipo de documento" />
-          <p:selectOneMenu id="console" binding="#{coachView.cmbTypeId}">
-            <f:selectItems value="#{coachView.typesId}" />
-          </p:selectOneMenu>
+        <p:focus context="dialogCoach" />
+        <h:form id="formDialog" enctype="multipart/form-data">
+          <p:messages id="msg" />
+          <div id="edit-content">
+            <h:panelGrid columns="2" id="panelGrid">
 
-          <h:outputText id="msgName" value="Nombre" />
-          <p:inputText id="txtName" disabled="true"
-            binding="#{coachView.txtName}" />
+              <h:outputText id="msgDocument" value="Documento" />
+              <p:inputNumber id="txtDocument" disabled="true"
+                decimalPlaces="0" binding="#{coachView.txtDocument}">
+                <p:ajax update=":dialogCoach"
+                  listener="#{coachView.listener_txtId}" />
+              </p:inputNumber>
 
-          <h:outputText id="msgLastname" value="Apellidos" />
-          <p:inputText id="txtLastname" disabled="true"
-            binding="#{coachView.txtLastname}" />
+              <h:outputText id="msgTypeId" value="Tipo de documento" />
+              <p:selectOneMenu id="console"
+                binding="#{coachView.cmbTypeId}">
+                <f:selectItems value="#{coachView.typesId}" />
+              </p:selectOneMenu>
 
-          <h:outputText id="msgPhone" value="Teléfono" />
-          <p:inputText id="txtPhone" disabled="true"
-            binding="#{coachView.txtPhone}" />
+              <h:outputText id="msgName" value="Nombre" />
+              <p:inputText id="txtName" disabled="true"
+                binding="#{coachView.txtName}" />
 
-          <h:outputText id="msgEmail" value="E-mail" />
-          <p:inputText id="txtEmail" disabled="true"
-            binding="#{coachView.txtEmail}" />
+              <h:outputText id="msgLastname" value="Apellidos" />
+              <p:inputText id="txtLastname" disabled="true"
+                binding="#{coachView.txtLastname}" />
 
-          <h:outputText id="msgCharge" value="Cargo" />
-          <p:inputText id="txtCharge" disabled="true"
-            binding="#{coachView.txtCharge}" />
+              <h:outputText id="msgPhone" value="Teléfono" />
+              <p:inputText id="txtPhone" disabled="true"
+                binding="#{coachView.txtPhone}" />
 
-          <h:outputText id="msgLicenseSst" value="Licencia SST" />
-          <p:inputText id="txtLicenseSst" disabled="true"
-            binding="#{coachView.txtLicenseSst}" />
-            
-            <h:outputText id="msgSign" value="Firma digitals" />
-<!--             <p:fileUpload value="#{coachView.file}" mode="simple" skinSimple="true" update=":dialogCoach" auto="true"/> -->
-            
-            <p:fileUpload fileUploadListener="#{coachView.handleFileUpload}" mode="advanced" update=":dialogCoach"
-                     auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-            
-            <h:outputText id="msgSignss" value="IMGGG" />
-              <p:graphicImage value="#{coachView.sayFile}" />
-              
-<!--             <p:graphicImage value="#{coachView.sayFile}"> -->
-<!--                <f:param id="a" name="a" value="a" /> --> 
-<!--               <f:param id="image_id" name="image_id" value="455" /> -->
-<!--             </p:graphicImage> -->
+              <h:outputText id="msgEmail" value="E-mail" />
+              <p:inputText id="txtEmail" disabled="true"
+                binding="#{coachView.txtEmail}" />
 
-          <!--           <h:outputText id="msgSign" value=" Sign" /> -->
-          <!--           <p:inputText id="txtSign" disabled="true" -->
-          <!--             binding="#{coachView.txtSign}" /> -->
+              <h:outputText id="msgCharge" value="Cargo" />
+              <p:inputText id="txtCharge" disabled="true"
+                binding="#{coachView.txtCharge}" />
 
-        </h:panelGrid>
-        <div align="center" class="panel-boton">
-          <p:commandButton id="btnSave" binding="#{coachView.btnSave}"
-            value="Guardar" action="#{coachView.action_save()}"
-            update=":dialogCoach :frm:panelDataTableCoach" />
-          <p:commandButton id="btnClear" value="Limpiar"
-            action="#{coachView.action_clear()}" update=":dialogCoach" />
-          <p:commandButton id="btnExit" value="Salir"
-            action="#{coachView.action_closeDialog()}"
-            update=":dialogCoach" />
-        </div>
-      </h:form>
+              <h:outputText id="msgLicenseSst" value="Licencia SST" />
+              <p:inputText id="txtLicenseSst" disabled="true"
+                binding="#{coachView.txtLicenseSst}" />
+
+              <h:outputText id="msgSign" value="Firma digitals" />
+              <p:fileUpload
+                fileUploadListener="#{coachView.handleFileUpload}"
+                mode="advanced" skinSimple="true" update=":dialogCoach"
+                label="Seleccionar firma" auto="true"
+                sizeLimit="1000000"
+                allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+            </h:panelGrid>
+            <div id="sign-content">
+              <label>Firma digital del entrenador</label>
+              <h:graphicImage
+                value="data:image/gif;base64,#{coachView.imgSign}" />
+            </div>
+          </div>
+
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave" binding="#{coachView.btnSave}"
+              value="Guardar" action="#{coachView.action_save()}"
+              update=":dialogCoach :frm:panelDataTableCoach" />
+            <p:commandButton id="btnClear" value="Limpiar"
+              action="#{coachView.action_clear()}" update=":dialogCoach" />
+            <p:commandButton id="btnExit" value="Salir"
+              action="#{coachView.action_closeDialog()}"
+              update=":dialogCoach" />
+          </div>
+        </h:form>
+
+      </div>
     </p:dialog>
 
     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -166,6 +169,7 @@
       <p:commandButton value="No" type="button"
         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
     </p:confirmDialog>
+
   </ui:define>
 </ui:composition>
 

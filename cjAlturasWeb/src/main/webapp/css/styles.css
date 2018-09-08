@@ -677,3 +677,46 @@ body {
 		border-width: 0px 1px 0px 0px;
 	    border-style: groove;	    
 	}
+	
+	/**Componente fileUpload*/
+	.ui-fileupload-buttonbar{
+	    background: none;
+    	border: none;
+	}
+	.ui-fileupload-content{
+		height: 0px;
+    	border: 0px;
+	}
+	
+	.ui-fileupload-content .ui-messages {
+		position: relative;
+	}
+	
+	.ui-fileupload-content .ui-fileupload-files {
+		display: none;
+	}
+
+	.coach-dialog-container table{
+		float:left;
+	}
+	
+	.coach-dialog-container #edit-content{
+		overflow: hidden;
+	}
+	
+	.coach-dialog-container #edit-content .ui-fileupload-content .ui-messages{
+	    position: absolute;
+    	top: 0px;
+    	left: 15px;
+	}
+	
+	.coach-dialog-container #sign-content label{
+		display: block;
+	}
+	
+	.coach-dialog-container #sign-content img{
+		display: block;
+		margin:auto;
+		max-width: 180px;
+		max-height: 180px;
+	}

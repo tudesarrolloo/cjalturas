@@ -1,22 +1,14 @@
 package com.cjalturas.presentation.backingBeans;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.commandbutton.CommandButton;
@@ -24,12 +16,8 @@ import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.annotation.SessionScope;
 
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
@@ -39,6 +27,7 @@ import com.cjalturas.model.TypeId;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
+import com.cjalturas.utilities.FileUtils;
 import com.cjalturas.utilities.PageUtils;
 
 
@@ -48,6 +37,7 @@ import com.cjalturas.utilities.PageUtils;
  */
 @ManagedBean
 @ViewScoped
+//@RequestScoped
 //@SessionScoped
 public class CoachView implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -70,8 +60,6 @@ public class CoachView implements Serializable {
 
   private InputText txtLicenseSst;
 
-  private UploadedFile file;
-
   private CommandButton btnSave;
 
   private CommandButton btnModify;
@@ -89,6 +77,8 @@ public class CoachView implements Serializable {
   private boolean showDialog;
 
   private HashMap<String, String> typesId;
+  
+  private String imgSign;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
@@ -112,6 +102,7 @@ public class CoachView implements Serializable {
   public String action_clear() {
     entity = null;
     selectedCoach = null;
+    setImgSign(null);
     PageUtils.clearTextBox(txtDocument);
     PageUtils.clearComboBox(cmbTypeId);
     PageUtils.clearTextBox(txtName);
@@ -164,6 +155,7 @@ public class CoachView implements Serializable {
       txtEmail.setValue(person.getEmail());
       txtCharge.setValue(entity.getCharge());
       txtLicenseSst.setValue(entity.getLicenseSst());
+      setImgSign(entity.getSign());
     }
   }
 
@@ -199,6 +191,7 @@ public class CoachView implements Serializable {
     txtEmail.setValue(person.getEmail());
     txtCharge.setValue(selectedCoach.getCharge());
     txtLicenseSst.setValue(selectedCoach.getLicenseSst());
+    setImgSign(selectedCoach.getSign());
 
     PageUtils.enableTextbox(txtDocument);
     PageUtils.enableComboBox(cmbTypeId);
@@ -244,7 +237,7 @@ public class CoachView implements Serializable {
       entity.setCharge(FacesUtils.checkString(txtCharge));
       entity.setLicenseSst(FacesUtils.checkString(txtLicenseSst));
       entity.setPerson(person);
-      entity.setSign("PENDING");
+      entity.setSign(getImgSign());
 
       businessDelegatorView.saveCoach(entity);
       FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
@@ -274,7 +267,7 @@ public class CoachView implements Serializable {
 
       entity.setCharge(FacesUtils.checkString(txtCharge));
       entity.setLicenseSst(FacesUtils.checkString(txtLicenseSst));
-//      entity.setSign(FacesUtils.checkString(txtSign));
+      entity.setSign(getImgSign());
       entity.setPerson(person);
       businessDelegatorView.updateCoach(entity);
       ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("enterprise.edit.success"));
@@ -315,6 +308,14 @@ public class CoachView implements Serializable {
     setShowDialog(false);
     action_clear();
     return "";
+  }
+  
+  /**
+   * Realiza el manejo de los archivos de subida.
+   * @param event
+   */
+  public void handleFileUpload(FileUploadEvent event) {
+    setImgSign(FileUtils.convertFileToBase64(event.getFile()));
   }
 
   public List<CoachDTO> getData() {
@@ -473,61 +474,12 @@ public class CoachView implements Serializable {
     this.typesId = typesId;
   }
 
-  public UploadedFile getFile() {
-    return file;
+  public String getImgSign() {
+    return imgSign;
   }
 
-  public void setFile(UploadedFile file) {
-    this.file = file;
+  public void setImgSign(String imgSign) {
+    this.imgSign = imgSign;
   }
-
-  public void handleFileUpload(FileUploadEvent event) {
-    this.setFile(event.getFile());
-    FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-    FacesContext.getCurrentInstance().addMessage(null, message);
-
-  }
-
-  public StreamedContent getSayFile() throws IOException {
-//    InputStream is;
-//    try {
-//      if (getFile() != null) {
-//        is = getFile().getInputstream();
-//        return new DefaultStreamedContent(is, "image/png");
-//      }
-//    } catch (IOException e) {
-//
-//    }
-//    return new DefaultStreamedContent(null, "image/png");
-
-//    String mimeType = "image/jpg";
-//    File sourceimage = new File("E:\\sign1.png"); 
-//    InputStream targetStream = new FileInputStream(sourceimage);
-//    StreamedContent file = new DefaultStreamedContent(targetStream, mimeType, "firma");
-//    return file;
-
-//    String image_id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("image_id");
-//    System.out.println("image_id: " + image_id);
-//
-//    if (image_id == null) {
-//      File sourceimage = new File("E:\\sign1.png"); 
-//    InputStream targetStream = new FileInputStream(sourceimage);
-//      
-//      DefaultStreamedContent defaultImage = new DefaultStreamedContent(targetStream, "image/png");
-//      return defaultImage;
-//    }
-    if (this.getFile() != null) {
-      return new DefaultStreamedContent( this.getFile().getInputstream(), "image/png");
-    }else {
-      return null;
-    }
-
-//    DefaultStreamedContent image = new DefaultStreamedContent(new ByteArrayInputStream(images.get(Integer.valueOf(image_id))), "image/png");
-//    File sourceimage = new File("E:\\sign1.png"); 
-//    DefaultStreamedContent dbStream = //Get inputstream of a blob eg javax.sql.Blob.getInputStream() API
-    
-    
-    
-  }
-
+  
 }
