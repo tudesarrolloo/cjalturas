@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableLearner">
+        <f:facet name="header">
+          <p:outputLabel>Administración de aprendices</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear aprendiz"
+            style="float:right;" action="#{learnerView.action_new()}"
+            update=":dialogLearner" />
+        </f:facet>
+
+        <p:growl id="men" />
+        <p:dataTable value="#{learnerView.data}" var="learner"
+          selectionMode="single"
+          selection="#{learnerView.selectedLearner}"
+          rowKey="#{learner.idLearner}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{learner.person.document}"
+            sortBy="#{learner.person.document}">
+            <f:facet name="header">
+              <h:outputText value="Documento" />
+            </f:facet>
+            <h:outputText value="#{learner.person.document}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.name}"
+            sortBy="#{learner.person.name}">
+            <f:facet name="header">
+              <h:outputText value="Nombre" />
+            </f:facet>
+            <h:outputText value="#{learner.person.name}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.lastname}"
+            sortBy="#{learner.person.lastname}">
+            <f:facet name="header">
+              <h:outputText value="Apellidos" />
+            </f:facet>
+            <h:outputText value="#{learner.person.lastname}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.phone}"
+            sortBy="#{learner.person.phone}">
+            <f:facet name="header">
+              <h:outputText value="Teléfono" />
+            </f:facet>
+            <h:outputText value="#{learner.person.phone}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.email}"
+            sortBy="#{learner.person.email}">
+            <f:facet name="header">
+              <h:outputText value="E-mail" />
+            </f:facet>
+            <h:outputText value="#{learner.person.email}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogLearner"
+              actionListener="#{learnerView.action_edit}">
+              <f:attribute name="selectedLearner" value="#{learner}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{learnerView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['learner.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedLearner" value="#{learner}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogLearner" appendTo="@(body)" draggable="true"
+      closable="true" visible="#{learnerView.showDialog}"
+      resizable="false" modal="true" width="500"
+      header="Información del aprendiz">
+
+      <div id="learner-dialog-container"
+        class="learner-dialog-container">
+
+        <p:focus context="dialogLearner" />
+        <h:form id="formDialog">
+          <p:messages id="msg" />
+          <div id="edit-content">
+            <h:panelGrid columns="2" id="panelGrid">
+
+              <h:outputText id="msgDocument" value="Documento" />
+              <p:inputNumber id="txtDocument" disabled="true"
+                decimalPlaces="0" binding="#{learnerView.txtDocument}">
+                <p:ajax update=":dialogLearner"
+                  listener="#{learnerView.listener_txtId}" />
+              </p:inputNumber>
+
+              <h:outputText id="msgTypeId" value="Tipo de documento" />
+              <p:selectOneMenu id="cmbTypeId"
+                binding="#{learnerView.cmbTypeId}">
+                <f:selectItems value="#{learnerView.typesId}" />
+              </p:selectOneMenu>
+
+              <h:outputText id="msgName" value="Nombre" />
+              <p:inputText id="txtName" disabled="true"
+                binding="#{learnerView.txtName}" />
+
+              <h:outputText id="msgLastname" value="Apellidos" />
+              <p:inputText id="txtLastname" disabled="true"
+                binding="#{learnerView.txtLastname}" />
+
+              <h:outputText id="msgPhone" value="Teléfono" />
+              <p:inputText id="txtPhone" disabled="true"
+                binding="#{learnerView.txtPhone}" />
+
+              <h:outputText id="msgEmail" value="E-mail" />
+              <p:inputText id="txtEmail" disabled="true"
+                binding="#{learnerView.txtEmail}" />
+
+              <h:outputText id="msgEconomicSector"
+                value="Sector económico" />
+              <p:selectOneMenu id="cmbEconomicSector" 
+                value="#{learnerView.economicSectorSel}"
+                binding="#{learnerView.cmbEconomicSector}">
+                <f:selectItems value="#{learnerView.economicSectors}"
+                  var="economicSector" itemLabel="#{economicSector.economicSector}"
+                  itemValue="#{economicSector.idEconomicSector}" />
+              </p:selectOneMenu>
+
+              <h:outputText id="msgEnterprise" value="Empresa" />
+              <p:selectOneMenu id="cmbEnterprise"
+                value="#{learnerView.economicSectorSel}"
+                binding="#{learnerView.cmbEnterprise}">
+                <f:selectItems value="#{learnerView.enterprises}"
+                  var="enterprise" itemLabel="#{enterprise.name}"
+                  itemValue="#{enterprise.idEnterprise}" />
+              </p:selectOneMenu>
+
+            </h:panelGrid>
+          </div>
+
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave"
+              binding="#{learnerView.btnSave}" value="Guardar"
+              action="#{learnerView.action_save()}"
+              update=":dialogLearner :frm:panelDataTableLearner" />
+            <p:commandButton id="btnClear" value="Limpiar"
+              action="#{learnerView.action_clear()}"
+              update=":dialogLearner" />
+            <p:commandButton id="btnExit" value="Salir"
+              action="#{learnerView.action_closeDialog()}"
+              update=":dialogLearner" />
+          </div>
+        </h:form>
+
+      </div>
+    </p:dialog>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+  </ui:define>
+</ui:composition>
+

@@ -44,12 +44,20 @@ public interface IBusinessDelegatorView {
   public Coach getCoach(Integer idCoach) throws Exception;
   
   /**
-   * Encuentra la información de un entrenador, filtrando por alguna de sus propiedades. 
+   * Encuentra una lista de entrenadores, filtrando por alguna de sus propiedades. 
    * @param propertyName nombre de la propiedad.
    * @param valueProperty valor de la propiedad.
    * @return lista de entrenadores que cumplen con las propiedaes
    */
   public List<Coach> findCoachByProperty(String propertyName, String valueProperty) throws Exception;
+  
+  /**
+   * Encuentra una lista de aprendices, filtrando por alguna de sus propiedades. 
+   * @param propertyName nombre de la propiedad.
+   * @param valueProperty valor de la propiedad.
+   * @return lista de aprendices que cumplen con las propiedaes
+   */
+  public List<Learner> findLearnerByProperty(String propertyName, String valueProperty) throws Exception;
   
   public List<Coach> findByCriteriaInCoach(Object[] variables, Object[] variablesBetween, Object[] variablesBetweenDates) throws Exception;
 

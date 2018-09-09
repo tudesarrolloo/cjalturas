@@ -162,6 +162,15 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     }
   }
   
+  @Override
+  public List<Learner> findLearnerByProperty(String propertyName, String valueProperty) throws Exception {
+    try {
+      return learnerLogic.findLearnerByProperty(propertyName, valueProperty);
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+  
   public List<Coach> findByCriteriaInCoach(Object[] variables, Object[] variablesBetween, Object[] variablesBetweenDates) throws Exception {
     return coachLogic.findByCriteria(variables, variablesBetween, variablesBetweenDates);
   }

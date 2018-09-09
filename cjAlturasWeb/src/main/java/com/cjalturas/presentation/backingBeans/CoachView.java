@@ -37,8 +37,6 @@ import com.cjalturas.utilities.PageUtils;
  */
 @ManagedBean
 @ViewScoped
-//@RequestScoped
-//@SessionScoped
 public class CoachView implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -218,7 +216,7 @@ public class CoachView implements Serializable {
       data = null;
     } catch (Exception e) {
       ZMessManager.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de guardado de la empresa", e);
+      log.error("Falló la acción de guardado del entrenador", e);
     }
     return "";
   }
@@ -240,12 +238,12 @@ public class CoachView implements Serializable {
       entity.setSign(getImgSign());
 
       businessDelegatorView.saveCoach(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+      ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("coach.edit.success"));
       action_clear();
     } catch (Exception e) {
       entity = null;
       FacesUtils.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de creación del curso", e);
+      log.error("Falló la acción de creación del entrenador", e);
     }
     return "";
   }
@@ -270,11 +268,11 @@ public class CoachView implements Serializable {
       entity.setSign(getImgSign());
       entity.setPerson(person);
       businessDelegatorView.updateCoach(entity);
-      ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("enterprise.edit.success"));
+      ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("coach.edit.success"));
     } catch (Exception e) {
       data = null;
       FacesUtils.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de modificación de la empresa", e);
+      log.error("Falló la acción de modificación del entrenador", e);
     }
     return "";
   }
@@ -295,7 +293,7 @@ public class CoachView implements Serializable {
   public void action_delete() throws Exception {
     try {
       businessDelegatorView.deleteCoach(entity);
-      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("course.delete.success"));
+      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("coach.delete.success"));
       action_clear();
       data = null;
     } catch (Exception e) {

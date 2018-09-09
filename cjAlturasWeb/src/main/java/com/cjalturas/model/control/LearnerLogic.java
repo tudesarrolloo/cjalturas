@@ -383,4 +383,16 @@ public class LearnerLogic implements ILearnerLogic {
 
     return list;
   }
+  
+  @Override
+  @Transactional(readOnly = true)
+  public List<Learner> findLearnerByProperty(String propertyName, Object propertyValue) throws Exception {
+    log.debug("Buscando aprendiz o lista de aprendices por una propiedad");
+    try {
+      return learnerDAO.findByProperty(propertyName, propertyValue);
+    } catch (Exception e) {
+      log.error("Falló la búsqueda de aprendices", e);
+      throw new ZMessManager().new FindingException("Learner");
+    }
+  }
 }

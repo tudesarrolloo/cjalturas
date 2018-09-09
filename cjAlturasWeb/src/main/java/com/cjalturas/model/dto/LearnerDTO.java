@@ -5,6 +5,10 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cjalturas.model.Economicsector;
+import com.cjalturas.model.Enterprise;
+import com.cjalturas.model.Person;
+
 
 /**
  *
@@ -23,6 +27,12 @@ public class LearnerDTO implements Serializable {
   private Integer idEnterprise_Enterprise;
 
   private Integer idPerson_Person;
+  
+  private Person person;
+  
+  private Enterprise enterprise;
+  
+  private Economicsector economicSector;
 
   public Integer getIdLearner() {
     return idLearner;
@@ -55,4 +65,29 @@ public class LearnerDTO implements Serializable {
   public void setIdPerson_Person(Integer idPerson_Person) {
     this.idPerson_Person = idPerson_Person;
   }
+  
+  public Person getPerson() {
+    return person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
+  }
+
+  public Enterprise getEnterprise() {
+    return enterprise;
+  }
+
+  public void setEnterprise(Enterprise enterprise) {
+    this.enterprise = enterprise;
+  }
+
+  public Economicsector getEconomicSector() {
+    return economicSector;
+  }
+
+  public void setEconomicSector(Economicsector economicSector) {
+    this.economicSector = economicSector;
+  }
+  
 }

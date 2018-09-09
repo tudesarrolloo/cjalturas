@@ -59,17 +59,20 @@ public class LearnerMapper implements ILearnerMapper {
 
       if (learner.getEconomicsector() != null) {
         learnerDTO.setIdEconomicSector_Economicsector(learner.getEconomicsector().getIdEconomicSector());
+        learnerDTO.setEconomicSector(learner.getEconomicsector());
       } else {
         learnerDTO.setIdEconomicSector_Economicsector(null);
       }
 
       if (learner.getEnterprise() != null) {
         learnerDTO.setIdEnterprise_Enterprise(learner.getEnterprise().getIdEnterprise());
+        learnerDTO.setEnterprise(learner.getEnterprise());
       } else {
         learnerDTO.setIdEnterprise_Enterprise(null);
       }
 
       learnerDTO.setIdPerson_Person((learner.getPerson().getIdPerson() != null) ? learner.getPerson().getIdPerson() : null);
+      learnerDTO.setPerson(learner.getPerson());
 
       return learnerDTO;
     } catch (Exception e) {

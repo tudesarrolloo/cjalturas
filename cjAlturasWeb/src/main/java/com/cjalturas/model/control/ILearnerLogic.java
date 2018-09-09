@@ -45,4 +45,13 @@ public interface ILearnerLogic {
   public List<LearnerDTO> getDataLearner() throws Exception;
 
   public void validateLearner(Learner learner) throws Exception;
+  
+  /**
+   * Encuentra una lista de aprendices por alguna de sus propiedades.
+   * @param propertyName nombre de la propiedad.
+   * @param propertyValue valor de la propiedad.
+   * @return 
+   * @throws Exception
+   */
+  public List<Learner> findLearnerByProperty(String propertyName, Object propertyValue) throws Exception;
 }
