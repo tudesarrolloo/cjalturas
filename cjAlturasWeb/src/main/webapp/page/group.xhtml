@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableGroup">
+        <f:facet name="header">
+          <p:outputLabel>Administración de grupos</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear grupo" style="float:right;"
+            action="#{groupView.action_new()}" update=":dialogGroup" />
+        </f:facet>
+
+        <p:growl id="men" />
+        <p:dataTable value="#{groupView.data}" var="group" selectionMode="single"
+          selection="#{groupView.selectedGroup}" rowKey="#{group.idgroup}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{group.description}" sortBy="#{group.description}">
+            <f:facet name="header">
+              <h:outputText value="Descripción" />
+            </f:facet>
+            <h:outputText value="#{group.description}" />
+          </p:column>
+
+          <p:column filterBy="#{group.coach.person.name}" sortBy="#{group.coach.person.name}">
+            <f:facet name="header">
+              <h:outputText value="Entrenador" />
+            </f:facet>
+            <h:outputText value="#{group.coach.person.name}" />
+          </p:column>
+
+          <p:column filterBy="#{group.course.course}" sortBy="#{group.course.course}">
+            <f:facet name="header">
+              <h:outputText value="Curso" />
+            </f:facet>
+            <h:outputText value="#{group.course.course}" />
+          </p:column>
+
+          <p:column filterBy="#{group.dateStart}" sortBy="#{group.dateStart}">
+            <f:facet name="header">
+              <h:outputText value="Fecha Inicio" />
+            </f:facet>
+            <h:outputText value="#{group.dateStart}" />
+          </p:column>
+
+          <p:column filterBy="#{group.dateEnd}" sortBy="#{group.dateEnd}">
+            <f:facet name="header">
+              <h:outputText value="Fecha Fin" />
+            </f:facet>
+            <h:outputText value="#{group.dateEnd}" />
+          </p:column>
+
+          <p:column filterBy="#{group.status}" sortBy="#{group.status}">
+            <f:facet name="header">
+              <h:outputText value="Estado" />
+            </f:facet>
+            <h:outputText value="#{group.status}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar" update=":dialogGroup"
+              actionListener="#{groupView.action_edit}">
+              <f:attribute name="selectedGroup" value="#{group}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{groupView.action_delete_datatable}" update="@form">
+              <p:confirm header="Confirmation" message="#{msg['group.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedGroup" value="#{group}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogGroup" appendTo="@(body)" draggable="true" closable="true"
+      visible="#{groupView.showDialog}" resizable="false" modal="true" width="500"
+      header="Información del grupo">
+
+      <div id="group-dialog-container" class="group-dialog-container">
+
+        <p:focus context="dialogGroup" />
+        <h:form id="formDialog">
+          <p:messages id="msg" />
+          <div id="edit-content">
+            <h:panelGrid columns="2" id="panelGrid">
+
+              <h:outputText id="msgDescription" value="Descripción" />
+              <p:inputText id="txtDescription" binding="#{groupView.txtDescription}" />
+
+              <h:outputText id="msgCoach" value="Entrenador" />
+              <p:selectOneMenu id="cmbCoach" value="#{groupView.idCoachSel}"
+                binding="#{groupView.cmbCoach}">
+                <f:selectItems value="#{groupView.coachs}" var="coach"
+                  itemLabel="#{coach.person.fullName}" itemValue="#{coach.idCoach}" />
+              </p:selectOneMenu>
+
+              <h:outputText id="msgCourse" value="Curso" />
+              <p:selectOneMenu id="cmbCourse" value="#{groupView.idCourseSel}"
+                binding="#{groupView.cmbCourse}">
+                <f:selectItems value="#{groupView.courses}" var="course"
+                  itemLabel="#{course.course}" itemValue="#{course.idCourse}" />
+              </p:selectOneMenu>
+
+              <h:outputText id="msgDateStart" value="Fecha Inicio" />
+              <p:calendar id="calDateStart" value="#{groupView.calDateStart}" />
+
+              <h:outputText id="msgDateEnd" value="Fecha Fin" />
+              <p:calendar id="calDateEnd" value="#{groupView.calDateEnd}" />
+
+              <h:outputText id="msgStatus" value="Estado" />
+              <p:selectBooleanButton id="chkStatus" value="#{groupView.chkStatus}" onLabel="Activo"
+                offLabel="Inactivo" />
+
+            </h:panelGrid>
+          </div>
+
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave" binding="#{groupView.btnSave}" value="Guardar"
+              action="#{groupView.action_save()}"
+              update=":dialogGroup :frm:panelDataTableGroup" />
+            <p:commandButton id="btnClear" value="Limpiar" action="#{groupView.action_clear()}"
+              update=":dialogGroup" />
+            <p:commandButton id="btnExit" value="Salir" action="#{groupView.action_closeDialog()}"
+              update=":dialogGroup" />
+          </div>
+        </h:form>
+      </div>
+    </p:dialog>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+        icon="ui-icon-check" />
+      <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+        icon="ui-icon-close" />
+    </p:confirmDialog>
+
+  </ui:define>
+</ui:composition>
+

@@ -174,4 +174,9 @@ public class Person implements java.io.Serializable {
   public static Map<String, String> getMapFields() {
     return map_fields;
   }
+  
+  public String getFullName() {
+    return this.name + " " + this.lastname;
+  }
+  
 }

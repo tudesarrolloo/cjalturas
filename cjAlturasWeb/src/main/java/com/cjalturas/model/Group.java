@@ -1,7 +1,5 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +7,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -27,26 +24,35 @@ public class Group implements java.io.Serializable {
   @NotNull
   private Coach coach;
 
+  private String description;
+
   @NotNull
   private Course course;
 
   @NotNull
   private Date dateStart;
 
+  private Date dateEnd;
+
   private String observations;
+
+  private Integer status;
 
   private Set<Inscription> inscriptions = new HashSet<Inscription>(0);
 
   public Group() {
   }
 
-  public Group(Integer idGroup, Coach coach, Course course, Date dateStart, Set<Inscription> inscriptions, String observations) {
+  public Group(Integer idGroup, Coach coach, String description, Course course, Date dateStart, Date dateEnd, String observations, Integer status) {
+    super();
     this.idGroup = idGroup;
     this.coach = coach;
+    this.description = description;
     this.course = course;
     this.dateStart = dateStart;
+    this.dateEnd = dateEnd;
     this.observations = observations;
-    this.inscriptions = inscriptions;
+    this.status = status;
   }
 
   public Integer getIdGroup() {
@@ -96,4 +102,29 @@ public class Group implements java.io.Serializable {
   public void setInscriptions(Set<Inscription> inscriptions) {
     this.inscriptions = inscriptions;
   }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Date getDateEnd() {
+    return dateEnd;
+  }
+
+  public void setDateEnd(Date dateEnd) {
+    this.dateEnd = dateEnd;
+  }
+
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
 }

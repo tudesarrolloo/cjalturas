@@ -15,6 +15,11 @@
         <comment>Entrenador encargado del grupo</comment>
       </column>
     </many-to-one>
+    <property name="description" type="java.lang.String">
+      <column name="description">
+        <comment>Descripcion o nombre para identificar el curso</comment>
+      </column>
+    </property>
     <many-to-one name="course" class="com.cjalturas.model.Course"
       fetch="select">
       <column name="id_course" not-null="true">
@@ -26,8 +31,18 @@
         <comment>Fecha en la que inicia el curso</comment>
       </column>
     </property>
+    <property name="dateEnd" type="java.util.Date">
+      <column name="date_end" length="19">
+        <comment>Fecha en la que finaliza el curso</comment>
+      </column>
+    </property>
     <property name="observations" type="java.lang.String">
       <column name="observations">
+        <comment>Observaciones generales para el curso</comment>
+      </column>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="status">
         <comment>Observaciones generales para el curso</comment>
       </column>
     </property>
