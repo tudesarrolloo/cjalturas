@@ -131,7 +131,7 @@
               <h:outputText id="msgEconomicSector"
                 value="Sector económico" />
               <p:selectOneMenu id="cmbEconomicSector" 
-                value="#{learnerView.economicSectorSel}"
+              	value="#{learnerView.idEconomicSectorSel}"
                 binding="#{learnerView.cmbEconomicSector}">
                 <f:selectItems value="#{learnerView.economicSectors}"
                   var="economicSector" itemLabel="#{economicSector.economicSector}"
@@ -140,7 +140,7 @@
 
               <h:outputText id="msgEnterprise" value="Empresa" />
               <p:selectOneMenu id="cmbEnterprise"
-                value="#{learnerView.economicSectorSel}"
+              	value="#{learnerView.idEnterpriseSel}"
                 binding="#{learnerView.cmbEnterprise}">
                 <f:selectItems value="#{learnerView.enterprises}"
                   var="enterprise" itemLabel="#{enterprise.name}"

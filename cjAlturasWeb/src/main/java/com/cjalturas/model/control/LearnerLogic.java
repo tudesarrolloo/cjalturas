@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import com.cjalturas.dataaccess.dao.IInscriptionDAO;
 import com.cjalturas.dataaccess.dao.ILearnerDAO;
 import com.cjalturas.dto.mapper.ILearnerMapper;
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
+import com.cjalturas.model.Person;
 import com.cjalturas.model.dto.LearnerDTO;
 import com.cjalturas.utilities.Utilities;
+import com.cjalturas.validation.ConstraintMessagesTransformer;
 
 
 /**
@@ -79,18 +83,15 @@ public class LearnerLogic implements ILearnerLogic {
   public void validateLearner(Learner learner) throws Exception {
     try {
       Set<ConstraintViolation<Learner>> constraintViolations = validator.validate(learner);
-
-      if (constraintViolations.size() > 0) {
-        StringBuilder strMessage = new StringBuilder();
-
-        for (ConstraintViolation<Learner> constraintViolation : constraintViolations) {
-          strMessage.append(constraintViolation.getPropertyPath().toString());
-          strMessage.append(" - ");
-          strMessage.append(constraintViolation.getMessage());
-          strMessage.append(". \n");
-        }
-
-        throw new Exception(strMessage.toString());
+      Set<ConstraintViolation<Person>> constraintViolationsPerson = validator.validate(learner.getPerson());
+      
+      ConstraintMessagesTransformer transformerConstraints = new ConstraintMessagesTransformer();
+      transformerConstraints.transform(constraintViolationsPerson);
+      transformerConstraints.transform(constraintViolations);
+      String validationMessages = transformerConstraints.getValidationMessage();
+      
+      if (StringUtils.isNotBlank(validationMessages)) {
+        throw new Exception(validationMessages);
       }
     } catch (Exception e) {
       throw e;
@@ -122,13 +123,18 @@ public class LearnerLogic implements ILearnerLogic {
       if (entity == null) {
         throw new ZMessManager().new NullEntityExcepcion("Learner");
       }
+      
+      if (entity.getPerson().getDocument() == null) {
+        throw new RuntimeException(ApplicationMessages.getInstance().getMessage("learner.requiere.document"));
+      }
 
       validateLearner(entity);
 
-      if (getLearner(entity.getIdLearner()) != null) {
+      if (entity.getIdLearner() != null && getLearner(entity.getIdLearner()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 
+      logicPerson3.savePerson(entity.getPerson());
       learnerDAO.save(entity);
 
       log.debug("save Learner successful");
@@ -180,7 +186,8 @@ public class LearnerLogic implements ILearnerLogic {
       }
 
       validateLearner(entity);
-
+      
+      logicPerson3.updatePerson(entity.getPerson());
       learnerDAO.update(entity);
 
       log.debug("update Learner successful");

@@ -1,16 +1,16 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
-import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -20,8 +20,23 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "learner", schema = "${schema}")
 public class Learner implements java.io.Serializable {
+
+  public static Map<String, String> map_fields;
+
+  static {
+    map_fields = new HashMap<>();
+    map_fields.put("document", "Documento");
+    map_fields.put("documentType", "Tipo de documento");
+    map_fields.put("name", "Nombre");
+    map_fields.put("lastname", "Apellidos");
+    map_fields.put("phone", "Teléfono");
+    map_fields.put("email", "E-mail");
+    map_fields.put("economicsector", "Sector Económico");
+    map_fields.put("enterprise", "Empresa");
+  }
+
   @Id
-  @NotNull
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer idLearner;
 
   @NotNull

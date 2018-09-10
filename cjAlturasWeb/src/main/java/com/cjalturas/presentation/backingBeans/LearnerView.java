@@ -41,7 +41,7 @@ public class LearnerView implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(LearnerView.class);
-  
+
   private SelectOneMenu cmbTypeId;
 
   private InputNumber txtDocument;
@@ -53,9 +53,9 @@ public class LearnerView implements Serializable {
   private InputText txtPhone;
 
   private InputText txtEmail;
-  
+
   private SelectOneMenu cmbEconomicSector;
-  
+
   private SelectOneMenu cmbEnterprise;
 
   private CommandButton btnSave;
@@ -73,15 +73,15 @@ public class LearnerView implements Serializable {
   private Learner entity;
 
   private boolean showDialog;
-  
+
   private HashMap<String, String> typesId;
-  
-  private Enterprise enterpriseSel;
-  
-  private Economicsector economicSectorSel;
-  
+
+  private Integer idEnterpriseSel;
+
+  private Integer idEconomicSectorSel;
+
   private List<Economicsector> economicSectors;
-  
+
   private List<Enterprise> enterprises;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
@@ -90,7 +90,7 @@ public class LearnerView implements Serializable {
   public LearnerView() {
     super();
   }
-  
+
   @PostConstruct
   public void init() {
     typesId = TypeId.getTypesId();
@@ -108,7 +108,7 @@ public class LearnerView implements Serializable {
       throw new RuntimeException("Falló la carga de los sectores económicos.");
     }
   }
-  
+
   private void loadEnterprises() {
     try {
       if (enterprises == null) {
@@ -155,11 +155,11 @@ public class LearnerView implements Serializable {
   public void listener_txtId() {
     try {
       Integer document = FacesUtils.checkInteger(txtDocument);
-      entity = findLearnerByDocumentPerson(document); 
+      entity = findLearnerByDocumentPerson(document);
     } catch (Exception e) {
       entity = null;
     }
-    
+
     PageUtils.enableTextbox(txtDocument);
     PageUtils.enableComboBox(cmbTypeId);
     PageUtils.enableTextbox(txtName);
@@ -172,7 +172,7 @@ public class LearnerView implements Serializable {
     if (entity != null) {
       PageUtils.disableTextbox(txtDocument);
       PageUtils.enableButton(btnDelete);
-      
+
       Person person = entity.getPerson();
       txtDocument.setValue(person.getDocument());
       cmbTypeId.setValue(person.getDocumentType());
@@ -182,9 +182,9 @@ public class LearnerView implements Serializable {
       txtEmail.setValue(person.getEmail());
       cmbEconomicSector.setValue(person.getDocumentType());
       cmbEnterprise.setValue(person.getDocumentType());
-    } 
+    }
   }
-  
+
   /**
    * Encuentra un aprendiz por el documento de la persona.
    * @param documentPerson documento de la persona con la que se buscará el aprendiz.
@@ -207,7 +207,7 @@ public class LearnerView implements Serializable {
 
   public String action_edit(ActionEvent evt) {
     selectedLearner = (LearnerDTO) (evt.getComponent().getAttributes().get("selectedLearner"));
-    
+
     Person person = selectedLearner.getPerson();
     txtDocument.setValue(person.getDocument());
     cmbTypeId.setValue(person.getDocumentType());
@@ -215,9 +215,9 @@ public class LearnerView implements Serializable {
     txtLastname.setValue(person.getLastname());
     txtPhone.setValue(person.getPhone());
     txtEmail.setValue(person.getEmail());
-    cmbEconomicSector.setValue(selectedLearner.getEconomicSector().getEconomicSector());
-    cmbEnterprise.setValue(selectedLearner.getEnterprise().getName());
-    
+    cmbEconomicSector.setValue(selectedLearner.getEconomicSector().getIdEconomicSector());
+    cmbEnterprise.setValue(selectedLearner.getEnterprise().getIdEnterprise());
+
     PageUtils.enableTextbox(txtDocument);
     PageUtils.enableComboBox(cmbTypeId);
     PageUtils.enableTextbox(txtName);
@@ -257,15 +257,14 @@ public class LearnerView implements Serializable {
       person.setLastname(FacesUtils.checkString(txtLastname));
       person.setPhone(FacesUtils.checkString(txtPhone));
       person.setEmail(FacesUtils.checkString(txtEmail));
-      
+
       entity = new Learner();
-      entity.setEconomicsector((Economicsector) cmbEconomicSector.getValue());
-      entity.setEnterprise(enterpriseSel);
+      entity.setEconomicsector(getEconomicSector());
+      entity.setEnterprise(getEnterprise());
       entity.setPerson(person);
-      
+
       businessDelegatorView.saveLearner(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
-      ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("learner.edit.success"));
+      ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("learner.save.success"));
       action_clear();
     } catch (Exception e) {
       entity = null;
@@ -275,13 +274,39 @@ public class LearnerView implements Serializable {
     return "";
   }
 
+  private Enterprise getEnterprise() {
+    Integer idEnterprise = getIdEnterpriseSel();
+    if (idEnterprise != null) {
+      try {
+        return businessDelegatorView.getEnterprise(idEnterprise);
+      } catch (Exception e) {
+        FacesUtils.addErrorMessage(e.getMessage());
+        log.error("No se encontró una empresa con el id: " + idEnterprise, e);
+      }
+    }
+    return null;
+  }
+
+  private Economicsector getEconomicSector() {
+    Integer idEconomicSectorSel = getIdEconomicSectorSel();
+    if (idEconomicSectorSel != null) {
+      try {
+        return businessDelegatorView.getEconomicsector(idEconomicSectorSel);
+      } catch (Exception e) {
+        FacesUtils.addErrorMessage(e.getMessage());
+        log.error("No se encontró un sector económico con el id: " + idEconomicSectorSel, e);
+      }
+    }
+    return null;
+  }
+
   public String action_modify() {
     try {
       if (entity == null) {
         Integer idLearner = new Integer(selectedLearner.getIdLearner());
         entity = businessDelegatorView.getLearner(idLearner);
       }
-      
+
       Person person = entity.getPerson();
       person.setDocument(FacesUtils.checkString(txtDocument));
       person.setDocumentType(FacesUtils.checkString(cmbTypeId));
@@ -290,8 +315,8 @@ public class LearnerView implements Serializable {
       person.setPhone(FacesUtils.checkString(txtPhone));
       person.setEmail(FacesUtils.checkString(txtEmail));
 
-      entity.setEconomicsector(economicSectorSel);
-      entity.setEnterprise(enterpriseSel);
+      entity.setEconomicsector(getEconomicSector());
+      entity.setEnterprise(getEnterprise());
       entity.setPerson(person);
       businessDelegatorView.updateLearner(entity);
       ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("learner.edit.success"));
@@ -489,22 +514,6 @@ public class LearnerView implements Serializable {
     this.typesId = typesId;
   }
 
-  public Enterprise getEnterpriseSel() {
-    return enterpriseSel;
-  }
-
-  public void setEnterpriseSel(Enterprise enterpriseSel) {
-    this.enterpriseSel = enterpriseSel;
-  }
-
-  public Economicsector getEconomicSectorSel() {
-    return economicSectorSel;
-  }
-
-  public void setEconomicSectorSel(Economicsector economicSectorSel) {
-    this.economicSectorSel = economicSectorSel;
-  }
-
   public List<Economicsector> getEconomicSectors() {
     return economicSectors;
   }
@@ -520,5 +529,21 @@ public class LearnerView implements Serializable {
   public void setEnterprises(List<Enterprise> enterprises) {
     this.enterprises = enterprises;
   }
-  
+
+  public Integer getIdEnterpriseSel() {
+    return idEnterpriseSel;
+  }
+
+  public void setIdEnterpriseSel(Integer idEnterpriseSel) {
+    this.idEnterpriseSel = idEnterpriseSel;
+  }
+
+  public Integer getIdEconomicSectorSel() {
+    return idEconomicSectorSel;
+  }
+
+  public void setIdEconomicSectorSel(Integer idEconomicSectorSel) {
+    this.idEconomicSectorSel = idEconomicSectorSel;
+  }
+
 }
