@@ -68,7 +68,6 @@ public class CoachLogic implements ICoachLogic {
   public void validateCoach(Coach coach) throws Exception {
     try {
       Set<ConstraintViolation<Coach>> constraintViolations = validator.validate(coach);
-      
       Set<ConstraintViolation<Person>> constraintViolationsPerson = validator.validate(coach.getPerson());
       
       ConstraintMessagesTransformer transformerConstraints = new ConstraintMessagesTransformer();
@@ -79,29 +78,6 @@ public class CoachLogic implements ICoachLogic {
       if (StringUtils.isNotBlank(validationMessages)) {
         throw new Exception(validationMessages);
       }
-      
-//      String m = ConstraintMessagesTransformer.transform(constraintViolations,constraintViolationsPerson);
-      
-
-//      if (constraintViolations.size() > 0 || !constraintViolationsPerson.isEmpty()) {
-//        StringBuilder strMessage = new StringBuilder();
-
-//        for (ConstraintViolation<Person> constraintViolation : constraintViolationsPerson) {
-//          strMessage.append(constraintViolation.getPropertyPath().toString());
-//          strMessage.append(" - ");
-//          strMessage.append(constraintViolation.getMessage());
-//          strMessage.append(". \n");
-//        }
-        
-//        for (ConstraintViolation<Coach> constraintViolation : constraintViolations) {
-//          strMessage.append(constraintViolation.getPropertyPath().toString());
-//          strMessage.append(" - ");
-//          strMessage.append(constraintViolation.getMessage());
-//          strMessage.append(". \n");
-//        }
-        
-        
-//      }
     } catch (Exception e) {
       throw e;
     }

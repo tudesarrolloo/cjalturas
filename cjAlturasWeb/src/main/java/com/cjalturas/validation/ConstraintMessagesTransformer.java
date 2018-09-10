@@ -18,6 +18,8 @@ public class ConstraintMessagesTransformer {
   private static final String NOT_EMPTY_HEADER = "Los siguientes campos no pueden estar vacíos:|";
 
   private ArrayList<String> fieldsNoEmpty = new ArrayList<>();
+  
+  private ArrayList<String> otherMessages = new ArrayList<>();
 
   public <T> void transform(Set<ConstraintViolation<T>> constraints) {
 
@@ -37,6 +39,13 @@ public class ConstraintMessagesTransformer {
             // TODO Auto-generated catch block
             e.printStackTrace();
           }
+        }else {
+          StringBuilder strMessage = new StringBuilder();
+          strMessage.append(constraintViolation.getPropertyPath().toString());
+          strMessage.append(" - ");
+          strMessage.append(constraintViolation.getMessage());
+          strMessage.append(". \n");
+          otherMessages.add(strMessage.toString());
         }
 
       }
@@ -54,6 +63,10 @@ public class ConstraintMessagesTransformer {
       }
       fields = !fields.isEmpty() ? fields.substring(0, fields.length() - 3) : fields;
       strMessage.append(fields);
+    }
+    
+    for (String otherMessage : otherMessages) {
+      strMessage.append(otherMessage);
     }
 
     return strMessage.toString();
