@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -17,19 +18,30 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
+import org.primefaces.component.selectonebutton.SelectOneButton;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
+import com.cjalturas.model.Coach;
+import com.cjalturas.model.Course;
+import com.cjalturas.model.Economicsector;
+import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Group;
+import com.cjalturas.model.TypeId;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
+import com.cjalturas.utilities.PageUtils;
 
 
 /**
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Bean de la vista de lista y edición de grupos.
+ * @author Edison
  */
 @ManagedBean
 @ViewScoped
@@ -38,15 +50,19 @@ public class GroupView implements Serializable {
 
   private static final Logger log = LoggerFactory.getLogger(GroupView.class);
 
-  private InputText txtObservations;
-
-  private InputText txtIdCoach_Coach;
-
-  private InputText txtIdCourse_Course;
-
-  private InputText txtIdGroup;
-
-  private Calendar txtDateStart;
+  private InputText txtDescription;
+  
+  private SelectOneMenu cmbCoach;
+  
+  private SelectOneMenu cmbCourse;
+  
+  private Calendar calDateStart;
+  
+  private Calendar calDateEnd;
+  
+  private SelectBooleanButton chkStatus;
+  
+  private InputTextarea txtObservations;
 
   private CommandButton btnSave;
 
@@ -63,6 +79,14 @@ public class GroupView implements Serializable {
   private Group entity;
 
   private boolean showDialog;
+  
+  private Integer idCoachSel;
+
+  private Integer idCourseSel;
+
+  private List<Course> courses;
+
+  private List<Coach> coaches;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
@@ -70,110 +94,72 @@ public class GroupView implements Serializable {
   public GroupView() {
     super();
   }
+  
+  @PostConstruct
+  public void init() {
+    loadCoaches();
+    loadCourses();
+  }
+  
+  private void loadCourses() {
+    try {
+      if (courses == null) {
+        courses = businessDelegatorView.getCourse();
+      }
+    } catch (Exception e) {
+      log.error("Falló la carga de los cursos.");
+      throw new RuntimeException("Falló la carga de los cursos.");
+    }
+  }
+
+  private void loadCoaches() {
+    try {
+      if (coaches == null) {
+        coaches = businessDelegatorView.getCoach();
+      }
+    } catch (Exception e) {
+      log.error("Falló la carga de los entrenadores.");
+      throw new RuntimeException("Falló la carga de los entrenadores.");
+    }
+  }
 
   public String action_new() {
     action_clear();
     selectedGroup = null;
     setShowDialog(true);
-
     return "";
   }
 
   public String action_clear() {
     entity = null;
     selectedGroup = null;
-
-    if (txtObservations != null) {
-      txtObservations.setValue(null);
-      txtObservations.setDisabled(true);
-    }
-
-    if (txtIdCoach_Coach != null) {
-      txtIdCoach_Coach.setValue(null);
-      txtIdCoach_Coach.setDisabled(true);
-    }
-
-    if (txtIdCourse_Course != null) {
-      txtIdCourse_Course.setValue(null);
-      txtIdCourse_Course.setDisabled(true);
-    }
-
-    if (txtDateStart != null) {
-      txtDateStart.setValue(null);
-      txtDateStart.setDisabled(true);
-    }
-
-    if (txtIdGroup != null) {
-      txtIdGroup.setValue(null);
-      txtIdGroup.setDisabled(false);
-    }
-
-    if (btnSave != null) {
-      btnSave.setDisabled(true);
-    }
-
-    if (btnDelete != null) {
-      btnDelete.setDisabled(true);
-    }
-
+    PageUtils.clearTextBox(txtDescription);
+    PageUtils.clearComboBox(cmbCoach);
+    PageUtils.clearComboBox(cmbCourse);
+    PageUtils.clearCalendar(calDateStart);
+    PageUtils.clearCalendar(calDateEnd);
+    PageUtils.clearBooleanButton(chkStatus, false);
+    PageUtils.clearTextArea(txtObservations);
+    
+    PageUtils.disableButton(btnDelete);
     return "";
-  }
-
-  public void listener_txtDateStart() {
-    Date inputDate = (Date) txtDateStart.getValue();
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Selected Date " + dateFormat.format(inputDate)));
-  }
-
-  public void listener_txtId() {
-    try {
-      Integer idGroup = FacesUtils.checkInteger(txtIdGroup);
-      entity = (idGroup != null) ? businessDelegatorView.getGroup(idGroup) : null;
-    } catch (Exception e) {
-      entity = null;
-    }
-
-    if (entity == null) {
-      txtObservations.setDisabled(false);
-      txtIdCoach_Coach.setDisabled(false);
-      txtIdCourse_Course.setDisabled(false);
-      txtDateStart.setDisabled(false);
-      txtIdGroup.setDisabled(false);
-      btnSave.setDisabled(false);
-    } else {
-      txtDateStart.setValue(entity.getDateStart());
-      txtDateStart.setDisabled(false);
-      txtObservations.setValue(entity.getObservations());
-      txtObservations.setDisabled(false);
-      txtIdCoach_Coach.setValue(entity.getCoach().getIdCoach());
-      txtIdCoach_Coach.setDisabled(false);
-      txtIdCourse_Course.setValue(entity.getCourse().getIdCourse());
-      txtIdCourse_Course.setDisabled(false);
-      txtIdGroup.setValue(entity.getIdGroup());
-      txtIdGroup.setDisabled(true);
-      btnSave.setDisabled(false);
-
-      if (btnDelete != null) {
-        btnDelete.setDisabled(false);
-      }
-    }
   }
 
   public String action_edit(ActionEvent evt) {
     selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
-    txtDateStart.setValue(selectedGroup.getDateStart());
-    txtDateStart.setDisabled(false);
+    
+    txtDescription.setValue(selectedGroup.getDescription());
     txtObservations.setValue(selectedGroup.getObservations());
-    txtObservations.setDisabled(false);
-    txtIdCoach_Coach.setValue(selectedGroup.getIdCoach_Coach());
-    txtIdCoach_Coach.setDisabled(false);
-    txtIdCourse_Course.setValue(selectedGroup.getIdCourse_Course());
-    txtIdCourse_Course.setDisabled(false);
-    txtIdGroup.setValue(selectedGroup.getIdGroup());
-    txtIdGroup.setDisabled(true);
-    btnSave.setDisabled(false);
+    
+    cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
+    cmbCourse.setValue(selectedGroup.getIdCourse_Course());
+    
+    calDateStart.setValue(selectedGroup.getDateStart());
+    calDateEnd.setValue(selectedGroup.getDateEnd());
+    chkStatus.setValue(selectedGroup.getStatus() == 1);
+    
+    PageUtils.enableButton(btnSave);
     setShowDialog(true);
-
     return "";
   }
 
@@ -184,36 +170,59 @@ public class GroupView implements Serializable {
       } else {
         action_modify();
       }
-
       data = null;
     } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
+      ZMessManager.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de guardado del grupo", e);
     }
-
     return "";
   }
 
   public String action_create() {
     try {
       entity = new Group();
-
-      Integer idGroup = FacesUtils.checkInteger(txtIdGroup);
-
-      entity.setDateStart(FacesUtils.checkDate(txtDateStart));
-      entity.setIdGroup(idGroup);
+      entity.setDescription(FacesUtils.checkString(txtDescription));
+      entity.setCoach(getCoach());
+      entity.setCourse(getCourse());
+      entity.setDateStart(FacesUtils.checkDate(calDateStart));
+      entity.setDateEnd(FacesUtils.checkDate(calDateEnd));
       entity.setObservations(FacesUtils.checkString(txtObservations));
-      entity.setCoach((FacesUtils.checkInteger(txtIdCoach_Coach) != null) ? businessDelegatorView.getCoach(FacesUtils.checkInteger(txtIdCoach_Coach)) : null);
-      entity.setCourse(
-          (FacesUtils.checkInteger(txtIdCourse_Course) != null) ? businessDelegatorView.getCourse(FacesUtils.checkInteger(txtIdCourse_Course)) : null);
+      
       businessDelegatorView.saveGroup(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYSAVED);
+      ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("group.save.success"));
       action_clear();
     } catch (Exception e) {
       entity = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de creación del grupo", e);
     }
-
     return "";
+  }
+  
+  private Coach getCoach() {
+    Integer idCoach = getIdCoachSel();
+    if (idCoach != null) {
+      try {
+        return businessDelegatorView.getCoach(idCoach);
+      } catch (Exception e) {
+        FacesUtils.addErrorMessage(e.getMessage());
+        log.error("No se encontró un entrenador con el id: " + idCoach, e);
+      }
+    }
+    return null;
+  }
+  
+  private Course getCourse() {
+    Integer idCourse = getIdCourseSel();
+    if (idCourse != null) {
+      try {
+        return businessDelegatorView.getCourse(idCourse);
+      } catch (Exception e) {
+        FacesUtils.addErrorMessage(e.getMessage());
+        log.error("No se encontró un curso con el id: " + idCourse, e);
+      }
+    }
+    return null;
   }
 
   public String action_modify() {
@@ -222,55 +231,45 @@ public class GroupView implements Serializable {
         Integer idGroup = new Integer(selectedGroup.getIdGroup());
         entity = businessDelegatorView.getGroup(idGroup);
       }
-
-      entity.setDateStart(FacesUtils.checkDate(txtDateStart));
+      
+      entity.setDescription(FacesUtils.checkString(txtDescription));
+      entity.setCoach(getCoach());
+      entity.setCourse(getCourse());
+      entity.setDateStart(FacesUtils.checkDate(calDateStart));
+      entity.setDateEnd(FacesUtils.checkDate(calDateEnd));
       entity.setObservations(FacesUtils.checkString(txtObservations));
-      entity.setCoach((FacesUtils.checkInteger(txtIdCoach_Coach) != null) ? businessDelegatorView.getCoach(FacesUtils.checkInteger(txtIdCoach_Coach)) : null);
-      entity.setCourse(
-          (FacesUtils.checkInteger(txtIdCourse_Course) != null) ? businessDelegatorView.getCourse(FacesUtils.checkInteger(txtIdCourse_Course)) : null);
+
       businessDelegatorView.updateGroup(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
+      ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("group.edit.success"));
     } catch (Exception e) {
       data = null;
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de modificación del grupo", e);
     }
-
     return "";
   }
 
   public String action_delete_datatable(ActionEvent evt) {
     try {
       selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
-
       Integer idGroup = new Integer(selectedGroup.getIdGroup());
       entity = businessDelegatorView.getGroup(idGroup);
       action_delete();
     } catch (Exception e) {
       FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de eliminación del grupo", e);
     }
-
-    return "";
-  }
-
-  public String action_delete_master() {
-    try {
-      Integer idGroup = FacesUtils.checkInteger(txtIdGroup);
-      entity = businessDelegatorView.getGroup(idGroup);
-      action_delete();
-    } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
-    }
-
     return "";
   }
 
   public void action_delete() throws Exception {
     try {
       businessDelegatorView.deleteGroup(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
+      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("group.delete.success"));
       action_clear();
       data = null;
     } catch (Exception e) {
+      log.error("Falló la acción de eliminación del grupo", e);
       throw e;
     }
   }
@@ -278,63 +277,7 @@ public class GroupView implements Serializable {
   public String action_closeDialog() {
     setShowDialog(false);
     action_clear();
-
     return "";
-  }
-
-  public String action_modifyWitDTO(Date dateStart, Integer idGroup, String observations, Integer idCoach_Coach, Integer idCourse_Course) throws Exception {
-    try {
-      entity.setDateStart(FacesUtils.checkDate(dateStart));
-      entity.setObservations(FacesUtils.checkString(observations));
-      businessDelegatorView.updateGroup(entity);
-      FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYMODIFIED);
-    } catch (Exception e) {
-      // renderManager.getOnDemandRenderer("GroupView").requestRender();
-      FacesUtils.addErrorMessage(e.getMessage());
-      throw e;
-    }
-
-    return "";
-  }
-
-  public InputText getTxtObservations() {
-    return txtObservations;
-  }
-
-  public void setTxtObservations(InputText txtObservations) {
-    this.txtObservations = txtObservations;
-  }
-
-  public InputText getTxtIdCoach_Coach() {
-    return txtIdCoach_Coach;
-  }
-
-  public void setTxtIdCoach_Coach(InputText txtIdCoach_Coach) {
-    this.txtIdCoach_Coach = txtIdCoach_Coach;
-  }
-
-  public InputText getTxtIdCourse_Course() {
-    return txtIdCourse_Course;
-  }
-
-  public void setTxtIdCourse_Course(InputText txtIdCourse_Course) {
-    this.txtIdCourse_Course = txtIdCourse_Course;
-  }
-
-  public Calendar getTxtDateStart() {
-    return txtDateStart;
-  }
-
-  public void setTxtDateStart(Calendar txtDateStart) {
-    this.txtDateStart = txtDateStart;
-  }
-
-  public InputText getTxtIdGroup() {
-    return txtIdGroup;
-  }
-
-  public void setTxtIdGroup(InputText txtIdGroup) {
-    this.txtIdGroup = txtIdGroup;
   }
 
   public List<GroupDTO> getData() {
@@ -412,4 +355,101 @@ public class GroupView implements Serializable {
   public void setShowDialog(boolean showDialog) {
     this.showDialog = showDialog;
   }
+
+  public InputText getTxtDescription() {
+    return txtDescription;
+  }
+
+  public void setTxtDescription(InputText txtDescription) {
+    this.txtDescription = txtDescription;
+  }
+
+  public SelectOneMenu getCmbCoach() {
+    return cmbCoach;
+  }
+
+  public void setCmbCoach(SelectOneMenu cmbCoach) {
+    this.cmbCoach = cmbCoach;
+  }
+
+  public SelectOneMenu getCmbCourse() {
+    return cmbCourse;
+  }
+
+  public void setCmbCourse(SelectOneMenu cmbCourse) {
+    this.cmbCourse = cmbCourse;
+  }
+
+  public Calendar getCalDateStart() {
+    return calDateStart;
+  }
+
+  public void setCalDateStart(Calendar calDateStart) {
+    this.calDateStart = calDateStart;
+  }
+
+  public Calendar getCalDateEnd() {
+    return calDateEnd;
+  }
+
+  public void setCalDateEnd(Calendar calDateEnd) {
+    this.calDateEnd = calDateEnd;
+  }
+
+  public SelectBooleanButton getChkStatus() {
+    return chkStatus;
+  }
+
+  public void setChkStatus(SelectBooleanButton chkStatus) {
+    this.chkStatus = chkStatus;
+  }
+
+  public Group getEntity() {
+    return entity;
+  }
+
+  public void setEntity(Group entity) {
+    this.entity = entity;
+  }
+
+  public Integer getIdCoachSel() {
+    return idCoachSel;
+  }
+
+  public void setIdCoachSel(Integer idCoachSel) {
+    this.idCoachSel = idCoachSel;
+  }
+
+  public Integer getIdCourseSel() {
+    return idCourseSel;
+  }
+
+  public void setIdCourseSel(Integer idCourseSel) {
+    this.idCourseSel = idCourseSel;
+  }
+
+  public List<Course> getCourses() {
+    return courses;
+  }
+
+  public void setCourses(List<Course> courses) {
+    this.courses = courses;
+  }
+
+  public List<Coach> getCoaches() {
+    return coaches;
+  }
+
+  public void setCoaches(List<Coach> coaches) {
+    this.coaches = coaches;
+  }
+
+  public void setTxtObservations(InputTextarea txtObservations) {
+    this.txtObservations = txtObservations;
+  }
+
+  public InputTextarea getTxtObservations() {
+    return txtObservations;
+  }
+  
 }

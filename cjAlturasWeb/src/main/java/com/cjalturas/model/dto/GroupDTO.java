@@ -17,15 +17,21 @@ public class GroupDTO implements Serializable {
 
   private static final Logger log = LoggerFactory.getLogger(GroupDTO.class);
 
-  private Date dateStart;
-
   private Integer idGroup;
-
-  private String observations;
+  
+  private String description;
 
   private Integer idCoach_Coach;
 
   private Integer idCourse_Course;
+  
+  private Date dateStart;
+  
+  private Date dateEnd;
+  
+  private String observations;
+  
+  private Integer status;
 
   public Date getDateStart() {
     return dateStart;
@@ -66,4 +72,29 @@ public class GroupDTO implements Serializable {
   public void setIdCourse_Course(Integer idCourse_Course) {
     this.idCourse_Course = idCourse_Course;
   }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Date getDateEnd() {
+    return dateEnd;
+  }
+
+  public void setDateEnd(Date dateEnd) {
+    this.dateEnd = dateEnd;
+  }
+
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+  
 }

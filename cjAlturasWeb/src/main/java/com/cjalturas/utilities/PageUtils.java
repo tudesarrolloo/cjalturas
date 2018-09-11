@@ -1,9 +1,14 @@
 package com.cjalturas.utilities;
 
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+
+import com.cjalturas.date.DateProvider;
 
 
 /**
@@ -22,7 +27,7 @@ public class PageUtils {
       inputText.setValue(null);
     }
   }
-  
+
   /**
    * Limpia el valor de un inputNumber.
    * 
@@ -42,7 +47,7 @@ public class PageUtils {
   public static void clearComboBox(SelectOneMenu combo) {
     combo.resetValue();
   }
-  
+
   /**
    * Deshabilita un botón
    * @param button botón a deshabilitar.
@@ -70,7 +75,7 @@ public class PageUtils {
   public static void enableTextbox(InputText inputText) {
     inputText.setDisabled(false);
   }
-  
+
   /**
    * Habilita un inputNumber
    * @param inputNumber a habilitar.
@@ -78,7 +83,7 @@ public class PageUtils {
   public static void enableTextbox(InputNumber inputNumber) {
     inputNumber.setDisabled(false);
   }
-  
+
   /**
    * Habilita un comboBox
    * @param comboBox a habilitar.
@@ -94,7 +99,7 @@ public class PageUtils {
   public static void disableTextbox(InputText inputText) {
     inputText.setDisabled(true);
   }
-  
+
   /**
    * Deshabilita un inputNumber
    * @param inputNumber a deshabilitar.
@@ -109,6 +114,24 @@ public class PageUtils {
    */
   public static void disableComboBox(SelectOneMenu comboBox) {
     comboBox.setDisabled(true);
+  }
+
+  public static void clearCalendar(Calendar calendar) {
+    if (calendar != null) {
+      calendar.setValue(DateProvider.getInstance().getCurrentDate());
+    }
+  }
+
+  public static void clearBooleanButton(SelectBooleanButton selectBooleanButton, Boolean value) {
+    if (selectBooleanButton != null) {
+      selectBooleanButton.setValue(value);
+    }
+  }
+
+  public static void clearTextArea(InputTextarea inputTextarea) {
+    if (inputTextarea != null) {
+      inputTextarea.setValue(null);
+    }
   }
 
 }
