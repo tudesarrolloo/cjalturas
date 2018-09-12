@@ -720,3 +720,19 @@ body {
 		max-width: 180px;
 		max-height: 180px;
 	}
+	
+	.group-dialog-container .ui-selectonemenu{
+		width:100%;
+	}
+	
+	.group-dialog-container .ui-inputfield{
+		width:100%;
+	}
+	
+	.group-dialog-container .ui-calendar input{
+	width:30%;
+	}
+	
+	.ui-selectonemenu-filter-container{
+		width:100%;
+	}

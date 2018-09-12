@@ -138,7 +138,7 @@ public class GroupView implements Serializable {
     PageUtils.clearComboBox(cmbCourse);
     PageUtils.clearCalendar(calDateStart);
     PageUtils.clearCalendar(calDateEnd);
-    PageUtils.clearBooleanButton(chkStatus, false);
+    PageUtils.clearBooleanButton(chkStatus, true);
     PageUtils.clearTextArea(txtObservations);
     
     PageUtils.disableButton(btnDelete);

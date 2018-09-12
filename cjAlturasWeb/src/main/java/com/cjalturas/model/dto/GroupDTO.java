@@ -6,6 +6,10 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.cjalturas.model.Coach;
+import com.cjalturas.model.Course;
+import com.cjalturas.utilities.FormatUtils;
+
 
 /**
  *
@@ -32,9 +36,17 @@ public class GroupDTO implements Serializable {
   private String observations;
   
   private Integer status;
+  
+  private Coach coach;
+  
+  private Course course;
 
   public Date getDateStart() {
     return dateStart;
+  }
+  
+  public String getDateStartFormated() {
+    return FormatUtils.convertDate(dateStart);
   }
 
   public void setDateStart(Date dateStart) {
@@ -84,6 +96,10 @@ public class GroupDTO implements Serializable {
   public Date getDateEnd() {
     return dateEnd;
   }
+  
+  public String getDateEndFormated() {
+    return FormatUtils.convertDate(dateEnd);
+  }
 
   public void setDateEnd(Date dateEnd) {
     this.dateEnd = dateEnd;
@@ -95,6 +111,22 @@ public class GroupDTO implements Serializable {
 
   public void setStatus(Integer status) {
     this.status = status;
+  }
+
+  public Coach getCoach() {
+    return coach;
+  }
+
+  public void setCoach(Coach coach) {
+    this.coach = coach;
+  }
+
+  public Course getCourse() {
+    return course;
+  }
+
+  public void setCourse(Course course) {
+    this.course = course;
   }
   
 }

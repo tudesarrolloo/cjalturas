@@ -118,7 +118,7 @@ public class GroupLogic implements IGroupLogic {
 
       validateGroup(entity);
 
-      if (getGroup(entity.getIdGroup()) != null) {
+      if (entity.getIdGroup() != null && getGroup(entity.getIdGroup()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 
