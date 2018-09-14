@@ -728,4 +728,14 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     userLogic.validateUser(user);
   }
 
+  @Override
+  public Object getParam(String id) {
+    return params.get(id);
+  }
+
+  @Override
+  public void setParam(String id, String value) {
+    params.put(id, value);
+  }
+
 }

@@ -1,5 +1,6 @@
 package com.cjalturas.presentation.businessDelegate;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cjalturas.model.Coach;
@@ -290,5 +291,11 @@ public interface IBusinessDelegatorView {
   public List<UserDTO> getDataUser() throws Exception;
 
   public void validateUser(User user) throws Exception;
+  
+  public HashMap<String, Object> params = new HashMap<>();
+  
+  public Object getParam(String id);
+  
+  public void setParam(String id, String value);
 
 }
