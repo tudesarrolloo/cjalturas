@@ -49,16 +49,25 @@ public class GroupMapper implements IGroupMapper {
       GroupDTO groupDTO = new GroupDTO();
 
       groupDTO.setIdGroup(group.getIdGroup());
+      groupDTO.setDescription(group.getDescription());
       groupDTO.setDateStart(group.getDateStart());
+      groupDTO.setDateEnd(group.getDateEnd());
+      groupDTO.setStatus(group.getStatus());
       groupDTO.setObservations((group.getObservations() != null) ? group.getObservations() : null);
 
       if (group.getCoach() != null) {
         groupDTO.setIdCoach_Coach(group.getCoach().getIdCoach());
+        groupDTO.setCoach(group.getCoach());
       } else {
         groupDTO.setIdCoach_Coach(null);
       }
-
-      groupDTO.setIdCourse_Course((group.getCourse().getIdCourse() != null) ? group.getCourse().getIdCourse() : null);
+      
+      if (group.getCourse() != null) {
+        groupDTO.setIdCourse_Course(group.getCourse().getIdCourse());
+        groupDTO.setCourse(group.getCourse());
+      } else {
+        groupDTO.setIdCourse_Course(null);
+      }
 
       return groupDTO;
     } catch (Exception e) {

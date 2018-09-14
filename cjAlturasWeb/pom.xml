@@ -263,6 +263,13 @@
 	    <artifactId>commons-lang3</artifactId>
 	    <version>3.0</version>
 	</dependency>
+	
+<dependency>
+    <groupId>com.github.adminfaces</groupId>
+    <artifactId>admin-theme</artifactId>
+    <version>1.0.0-RC18</version>
+<!--<classifier>dev</classifier> uncompressed theme.css-->
+</dependency>
 
   </dependencies>
 

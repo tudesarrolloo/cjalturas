@@ -10,7 +10,7 @@
       <generator class="identity" />
     </id>
     <many-to-one name="coach" class="com.cjalturas.model.Coach"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="id_coach">
         <comment>Entrenador encargado del grupo</comment>
       </column>
@@ -21,7 +21,7 @@
       </column>
     </property>
     <many-to-one name="course" class="com.cjalturas.model.Course"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="id_course" not-null="true">
         <comment>Curso que se dictar&#225; para el grupo</comment>
       </column>
