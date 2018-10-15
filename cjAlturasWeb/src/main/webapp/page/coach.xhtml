@@ -133,18 +133,17 @@
               <p:inputText id="txtLicenseSst" disabled="true"
                 binding="#{coachView.txtLicenseSst}" />
 
-              <h:outputText id="msgSign" value="Firma digitals" />
+              <h:outputText id="msgSign" value="Firma digital" />
               <p:fileUpload
                 fileUploadListener="#{coachView.handleFileUpload}"
-                mode="advanced" skinSimple="true" update=":dialogCoach"
+                mode="advanced" skinSimple="true" update=":formDialog:sign-panel"
                 label="Seleccionar firma" auto="true"
                 sizeLimit="1000000"
                 allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
             </h:panelGrid>
             <div id="sign-content">
-              <label>Firma digital del entrenador</label>
-              <h:graphicImage
-                value="data:image/gif;base64,#{coachView.imgSign}" />
+                <label>Firma digital del entrenador</label>
+                <h:graphicImage id="sign-panel" value="data:image/gif;base64,#{coachView.imgSign}" />
             </div>
           </div>
 
