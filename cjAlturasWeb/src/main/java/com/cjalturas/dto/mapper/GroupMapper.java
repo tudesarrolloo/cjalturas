@@ -54,6 +54,7 @@ public class GroupMapper implements IGroupMapper {
       groupDTO.setDateEnd(group.getDateEnd());
       groupDTO.setStatus(group.getStatus());
       groupDTO.setObservations((group.getObservations() != null) ? group.getObservations() : null);
+      groupDTO.setLearnersInGroup(group.getInscriptions().size());
 
       if (group.getCoach() != null) {
         groupDTO.setIdCoach_Coach(group.getCoach().getIdCoach());

@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+  <ui:define name="content">
+    <h:form id="frm">
+      <p:messages id="msg" />
+      <h:panelGrid columns="2" id="panelGrid2">
+        <p:panel id="panelDetailGroup">
+          <p:focus context="panelDetailGroup" />
+          <h:panelGrid columns="2" id="panelGrid">
+            <h:outputText id="msgDescription" value="Descripción" />
+            <p:inputText id="txtDescription" binding="#{groupDetailView.txtDescription}"
+              value="#{groupDetailView.selectedGroup.description}" />
+            <h:outputText id="msgCoach" value="Entrenador" />
+            <p:selectOneMenu id="cmbCoach" value="#{groupDetailView.idCoachSel}"
+              binding="#{groupDetailView.cmbCoach}" filter="true" filterMatchMode="startsWith">
+              <f:selectItems value="#{groupDetailView.coaches}" var="coach"
+                itemLabel="#{coach.person.fullName}" itemValue="#{coach.idCoach}" />
+            </p:selectOneMenu>
+            <h:outputText id="msgCourse" value="Curso" />
+            <p:selectOneMenu id="cmbCourse" value="#{groupDetailView.idCourseSel}"
+              binding="#{groupDetailView.cmbCourse}" filter="true" filterMatchMode="startsWith">
+              <f:selectItems value="#{groupDetailView.courses}" var="course"
+                itemLabel="#{course.course}" itemValue="#{course.idCourse}" />
+            </p:selectOneMenu>
+            <h:outputText id="msgDateStart" value="Fecha Inicio" />
+            <p:calendar id="calDateStart" binding="#{groupDetailView.calDateStart}"
+              styleClass="calendar" />
+            <h:outputText id="msgDateEnd" value="Fecha Fin" />
+            <p:calendar id="calDateEnd" binding="#{groupDetailView.calDateEnd}"
+              styleClass="calendar" />
+            <h:outputText id="msgStatus" value="Estado" />
+            <p:selectBooleanButton id="chkStatus" binding="#{groupDetailView.chkStatus}"
+              onLabel="Activo" offLabel="Inactivo" />
+            <h:outputText id="msgObservations" value="Observaciones" />
+            <p:inputTextarea id="txtObservations" binding="#{groupDetailView.txtObservations}"
+              rows="6" cols="33" />
+          </h:panelGrid>
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar"
+              action="#{groupDetailView.action_save()}" update=":frm:panelDetailGroup" />
+            <p:commandButton id="btnClear" value="Limpiar"
+              action="#{groupDetailView.action_clear()}" update=":frm:panelDetailGroup" />
+            <p:commandButton id="btnExit" value="Salir"
+              action="#{groupDetailView.action_closeDialog()}" update=":frm:panelDetailGroup" />
+            <p:commandButton id="btnExit2" value="Update"
+              action="#{groupDetailView.loadInfoSelectectedGroup}" update=":frm:panelDetailGroup" />
+          </div>
+        </p:panel>
+        <p:panel id="panelTableGroup">
+          <f:facet name="header">
+            <p:outputLabel>Aprendices inscritos</p:outputLabel>
+            <p:commandButton id="btnInscribe" value="Inscribir aprendiz" style="float:right;"
+              action="#" />
+          </f:facet>
+          <p:dataTable value="#{groupDetailView.data}" var="inscription" selectionMode="single"
+            widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
+            rowKey="#{inscription.idInscription}" paginator="true" paginatorPosition="bottom"
+            rows="8">
+            <p:column filterBy="#{inscription.dateInscription}"
+              sortBy="#{inscription.dateInscription}">
+              <f:facet name="header">
+                <h:outputText value="Fecha de inscripción" />
+              </f:facet>
+              <h:outputText value="#{inscription.dateInscription}" />
+            </p:column>
+            <p:column filterBy="#{inscription.dateCertification}"
+              sortBy="#{inscription.dateCertification}">
+              <f:facet name="header">
+                <h:outputText value="Fecha de certificación" />
+              </f:facet>
+              <h:outputText value="#{inscription.dateCertification}" />
+            </p:column>
+            <p:column filterBy="#{inscription.fullNameLearner}"
+              sortBy="#{inscription.fullNameLearner}">
+              <f:facet name="header">
+                <h:outputText value="Aprendiz" />
+              </f:facet>
+              <h:outputText value="#{inscription.fullNameLearner}" />
+            </p:column>
+            <p:column filterBy="#{inscription.code_Status}" sortBy="#{inscription.code_Status}">
+              <f:facet name="header">
+                <h:outputText value="Estado" />
+              </f:facet>
+              <h:outputText value="#{inscription.code_Status}" />
+            </p:column>
+            <p:column width="40">
+              <p:commandLink id="btnCert" title="Certificar"
+                onclick="window.open('../certificado.pdf', '_blank');"
+                actionListener="#{groupDetailView.action_cert}">
+                <f:attribute name="inscriptionSel" value="#{inscription}" />
+                <span class="icon-table border fa fa-check-circle"></span>
+              </p:commandLink>
+            </p:column>
+          </p:dataTable>
+          <div style="text-align: end;">
+            Exportar a:
+            <h:commandLink>
+              <p:graphicImage value="../images/xls-icon.png" />
+              <p:dataExporter type="xls" target="tblLearners" fileName="Aprendices" />
+            </h:commandLink>
+            <h:commandLink>
+              <p:graphicImage value="../images/pdf-icon.png" />
+              <p:dataExporter type="pdf" target="tblLearners" fileName="Aprendices" />
+            </h:commandLink>
+          </div>
+        </p:panel>
+      </h:panelGrid>
+    </h:form>
+  </ui:define>
+</ui:composition>

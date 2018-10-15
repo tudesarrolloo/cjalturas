@@ -47,7 +47,7 @@
       </column>
     </property>
     <set name="inscriptions" table="inscription" inverse="true"
-      lazy="true" fetch="select">
+      lazy="false" fetch="select">
       <key>
         <column name="id_group" not-null="true">
           <comment>Grupo al que se realiz&#243; la inscripci&#243;n</comment>

@@ -16,12 +16,12 @@
       </column>
     </many-to-one>
     <many-to-one name="learner" class="com.cjalturas.model.Learner"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="id_learner" not-null="true">
         <comment>Aprendiz que realiz&#243; la inscripci&#243;n</comment>
       </column>
     </many-to-one>
-    <many-to-one name="status" class="com.cjalturas.model.Status"
+    <many-to-one name="status" class="com.cjalturas.model.Status" lazy="false"
       fetch="select">
       <column name="code_status" length="5" not-null="true" />
     </many-to-one>

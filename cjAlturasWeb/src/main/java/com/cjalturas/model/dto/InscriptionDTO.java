@@ -28,6 +28,8 @@ public class InscriptionDTO implements Serializable {
   private Integer idLearner_Learner;
 
   private String code_Status;
+  
+  private String fullNameLearner;
 
   public Date getDateCertification() {
     return dateCertification;
@@ -76,4 +78,13 @@ public class InscriptionDTO implements Serializable {
   public void setCode_Status(String code_Status) {
     this.code_Status = code_Status;
   }
+
+  public String getFullNameLearner() {
+    return fullNameLearner;
+  }
+
+  public void setFullNameLearner(String fullNameLearner) {
+    this.fullNameLearner = fullNameLearner;
+  }
+  
 }

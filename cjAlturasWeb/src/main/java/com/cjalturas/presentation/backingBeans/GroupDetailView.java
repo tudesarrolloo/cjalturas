@@ -1,10 +1,15 @@
 package com.cjalturas.presentation.backingBeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -19,18 +24,24 @@ import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cjalturas.dto.mapper.IInscriptionMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
+import com.cjalturas.model.Inscription;
 import com.cjalturas.model.dto.GroupDTO;
+import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
 import com.cjalturas.utilities.PageUtils;
+import com.cjalturas.utilities.PdfCreator;
 
 
 /**
@@ -39,10 +50,10 @@ import com.cjalturas.utilities.PageUtils;
  */
 @ManagedBean
 @ViewScoped
-public class GroupView implements Serializable {
+public class GroupDetailView implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private static final Logger log = LoggerFactory.getLogger(GroupView.class);
+  private static final Logger log = LoggerFactory.getLogger(GroupDetailView.class);
 
   private InputText txtDescription;
 
@@ -82,10 +93,15 @@ public class GroupView implements Serializable {
 
   private List<Coach> coaches;
 
+  private InscriptionDTO inscriptionSel;
+
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
 
-  public GroupView() {
+  @Autowired
+  private IInscriptionMapper inscriptionMapper;
+
+  public GroupDetailView() {
     super();
   }
 
@@ -93,6 +109,20 @@ public class GroupView implements Serializable {
   public void init() {
     loadCoaches();
     loadCourses();
+
+    GroupDTO group = (GroupDTO) this.businessDelegatorView.getParam("group");
+    if (group != null) {
+      this.setSelectedGroup(group);
+//      loadInfoSelectectedGroup();
+    }
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        loadInfoSelectectedGroup();
+      }
+    }, 2000);
+
   }
 
   private void loadCourses() {
@@ -102,7 +132,7 @@ public class GroupView implements Serializable {
       }
     } catch (Exception e) {
       log.error("Falló la carga de los cursos.");
-      throw new RuntimeException("Falló la carga de los cursos.");
+      throw new RuntimeException("sFalló la carga de los cursos.");
     }
   }
 
@@ -117,9 +147,28 @@ public class GroupView implements Serializable {
     }
   }
 
+  public String view_detail(ActionEvent evt) {
+    selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
+    System.out.println("ir ''' " + selectedGroup.getDescription());
+    return "learner.xhtml";
+  }
+
+//  public String view_detail(String action) {
+////    selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
+//    System.out.println("ir ''' " + action);
+//    return "learner.xhtml";
+//  }
+//  
+  public String view_detail(Group group) {
+//  selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
+    System.out.println("ir ''' " + group.getDescription());
+    return "learner.xhtml";
+  }
+
   public String view_detail() {
-    businessDelegatorView.setParam("group", this.getSelectedGroup());
-    return "group_detail.xhtml";
+    GroupDTO sg = this.getSelectedGroup();
+    System.out.println("ir ''' ");
+    return "learner.xhtml";
   }
 
   public String action_new() {
@@ -147,6 +196,14 @@ public class GroupView implements Serializable {
   public String action_edit(ActionEvent evt) {
     selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
 
+    loadInfoSelectectedGroup();
+
+    PageUtils.enableButton(btnSave);
+    setShowDialog(true);
+    return "";
+  }
+
+  public void loadInfoSelectectedGroup() {
     txtDescription.setValue(selectedGroup.getDescription());
     txtObservations.setValue(selectedGroup.getObservations());
 
@@ -157,9 +214,10 @@ public class GroupView implements Serializable {
     calDateEnd.setValue(selectedGroup.getDateEnd());
     chkStatus.setValue(selectedGroup.getStatus() != null && selectedGroup.getStatus() == 1);
 
-    PageUtils.enableButton(btnSave);
-    setShowDialog(true);
-    return "";
+  }
+
+  public void loadInfoSelectectedGroup1() {
+    RequestContext.getCurrentInstance().update("panelGrid");
   }
 
   public String action_save() {
@@ -279,16 +337,70 @@ public class GroupView implements Serializable {
     return "";
   }
 
-  public List<GroupDTO> getData() {
+  public List<InscriptionDTO> getData() {
     try {
-      if (data == null) {
-        data = businessDelegatorView.getDataGroup();
+      Group group = businessDelegatorView.getGroup(getSelectedGroup().getIdGroup());
+      Set<Inscription> list = group.getInscriptions();
+
+      try {
+
+        List<InscriptionDTO> inscriptionDTO = new ArrayList<InscriptionDTO>();
+
+        for (Inscription inscriptionTmp : list) {
+          InscriptionDTO ins = new InscriptionDTO();
+          ins.setIdInscription(inscriptionTmp.getIdInscription());
+          ins.setCode_Status(inscriptionTmp.getStatus().getStatus());
+          ins.setDateInscription(inscriptionTmp.getDateInscription());
+          ;
+          ins.setFullNameLearner(inscriptionTmp.getLearner().getPerson().getFullName());
+
+//            InscriptionDTO inscriptionDTO2 = inscriptionMapper.inscriptionToInscriptionDTO(inscriptionTmp);
+          inscriptionDTO.add(ins);
+        }
+
+        return inscriptionDTO;
+      } catch (Exception e) {
+        throw e;
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return null;
+  }
 
-    return data;
+  public String action_cert(ActionEvent evt) {
+    inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
+
+    System.out.println("certificar a: " + inscriptionSel.getFullNameLearner());
+
+    HashMap<String, String> map = new HashMap<>();
+    map.put("#-NAME-#", inscriptionSel.getFullNameLearner());
+    map.put("#-DOCUMENT-#", "C.C. 4158585");
+    map.put("#-NIVEL-#", "BÁSICO");
+    map.put("#-HORAS-#", "8");
+    map.put("#-DIAS-#", "15");
+    map.put("#-MES-#", "Octubre");
+    map.put("#-ANIO-#", "2018");
+    map.put("#-INSTRUCTOR1-#", "Uriel Castro");
+    map.put("#-INSTRUCTOR1-CHARGE-#", "Entrenador Especializado");
+    map.put("#-INSTRUCTOR2-#", "Astrid Elena Jaramillo Torres");
+    map.put("#-INSTRUCTOR2-CHARGE-#", "Directora de operaciones");
+
+    new PdfCreator().createPDf2(map);
+
+//    txtDescription.setValue(selectedGroup.getDescription());
+//    txtObservations.setValue(selectedGroup.getObservations());
+//    
+//    cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
+//    cmbCourse.setValue(selectedGroup.getIdCourse_Course());
+//    
+//    calDateStart.setValue(selectedGroup.getDateStart());
+//    calDateEnd.setValue(selectedGroup.getDateEnd());
+//    chkStatus.setValue(selectedGroup.getStatus()!=null && selectedGroup.getStatus() == 1);
+//    
+//    PageUtils.enableButton(btnSave);
+//    setShowDialog(true);
+    return "";
   }
 
   public boolean filterByDate(Object value, Object filter, Locale locale) {
@@ -462,6 +574,14 @@ public class GroupView implements Serializable {
 
   public InputTextarea getTxtObservations() {
     return txtObservations;
+  }
+
+  public InscriptionDTO getInscriptionSel() {
+    return inscriptionSel;
+  }
+
+  public void setInscriptionSel(InscriptionDTO inscriptionSel) {
+    this.inscriptionSel = inscriptionSel;
   }
 
 }
