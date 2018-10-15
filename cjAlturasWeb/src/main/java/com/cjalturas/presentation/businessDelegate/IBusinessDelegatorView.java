@@ -296,6 +296,6 @@ public interface IBusinessDelegatorView {
   
   public Object getParam(String id);
   
-  public void setParam(String id, String value);
+  public void setParam(String id, Object value);
 
 }
