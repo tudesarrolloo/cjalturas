@@ -734,7 +734,7 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
   }
 
   @Override
-  public void setParam(String id, String value) {
+  public void setParam(String id, Object value) {
     params.put(id, value);
   }
 
