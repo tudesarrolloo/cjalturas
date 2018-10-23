@@ -36,6 +36,7 @@ import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
+import com.cjalturas.model.Learner;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
@@ -55,6 +56,19 @@ public class GroupDetailView implements Serializable {
 
   private static final Logger log = LoggerFactory.getLogger(GroupDetailView.class);
 
+  
+  
+  private InputText txtIdLearner;
+
+  private SelectOneMenu cmbLearner;
+  
+  private Integer idLearnerSel;
+
+  private List<Learner> learners;
+  
+  
+  
+  
   private InputText txtDescription;
 
   private SelectOneMenu cmbCoach;
@@ -109,6 +123,8 @@ public class GroupDetailView implements Serializable {
   public void init() {
     loadCoaches();
     loadCourses();
+    loadLearners();
+    
 
     GroupDTO group = (GroupDTO) this.businessDelegatorView.getParam("group");
     if (group != null) {
@@ -116,13 +132,24 @@ public class GroupDetailView implements Serializable {
 //      loadInfoSelectectedGroup();
     }
 
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        loadInfoSelectectedGroup();
-      }
-    }, 2000);
+//    new Timer().schedule(new TimerTask() {
+//      @Override
+//      public void run() {
+//        loadInfoSelectectedGroup();
+//      }
+//    }, 2000);
 
+  }
+  
+  private void loadLearners() {
+    try {
+      if (learners == null) {
+        learners = businessDelegatorView.getLearner();
+      }
+    } catch (Exception e) {
+      log.error("Falló la carga de los aprendices.");
+      throw new RuntimeException("Falló la carga de los aprendices.");
+    }
   }
 
   private void loadCourses() {
@@ -171,8 +198,10 @@ public class GroupDetailView implements Serializable {
     return "learner.xhtml";
   }
 
-  public String action_new() {
-    action_clear();
+  public String action_inscribe() {
+    //Se limpian los campos desde los cuales se realiza la inscripción.
+    PageUtils.clearTextBox(txtDescription);
+    PageUtils.clearComboBox(cmbCoach);
     selectedGroup = null;
     setShowDialog(true);
     return "";
@@ -214,10 +243,6 @@ public class GroupDetailView implements Serializable {
     calDateEnd.setValue(selectedGroup.getDateEnd());
     chkStatus.setValue(selectedGroup.getStatus() != null && selectedGroup.getStatus() == 1);
 
-  }
-
-  public void loadInfoSelectectedGroup1() {
-    RequestContext.getCurrentInstance().update("panelGrid");
   }
 
   public String action_save() {
@@ -584,4 +609,36 @@ public class GroupDetailView implements Serializable {
     this.inscriptionSel = inscriptionSel;
   }
 
+  public InputText getTxtIdLearner() {
+    return txtIdLearner;
+  }
+
+  public void setTxtIdLearner(InputText txtIdLearner) {
+    this.txtIdLearner = txtIdLearner;
+  }
+
+  public SelectOneMenu getCmbLearner() {
+    return cmbLearner;
+  }
+
+  public void setCmbLearner(SelectOneMenu cmbLearner) {
+    this.cmbLearner = cmbLearner;
+  }
+
+  public Integer getIdLearnerSel() {
+    return idLearnerSel;
+  }
+
+  public void setIdLearnerSel(Integer idLearnerSel) {
+    this.idLearnerSel = idLearnerSel;
+  }
+
+  public List<Learner> getLearners() {
+    return learners;
+  }
+
+  public void setLearners(List<Learner> learners) {
+    this.learners = learners;
+  }
+  
 }

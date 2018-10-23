@@ -5,6 +5,10 @@
     <h:form id="frm">
       <p:messages id="msg" />
       <h:panelGrid columns="2" id="panelGrid2">
+      
+<!--         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> -->
+        <f:event type="preRenderView" listener="#{groupDetailView.loadInfoSelectectedGroup()}"/>
+        
         <p:panel id="panelDetailGroup">
           <p:focus context="panelDetailGroup" />
           <h:panelGrid columns="2" id="panelGrid">
@@ -43,15 +47,17 @@
               action="#{groupDetailView.action_clear()}" update=":frm:panelDetailGroup" />
             <p:commandButton id="btnExit" value="Salir"
               action="#{groupDetailView.action_closeDialog()}" update=":frm:panelDetailGroup" />
-            <p:commandButton id="btnExit2" value="Update"
-              action="#{groupDetailView.loadInfoSelectectedGroup}" update=":frm:panelDetailGroup" />
           </div>
         </p:panel>
         <p:panel id="panelTableGroup">
           <f:facet name="header">
             <p:outputLabel>Aprendices inscritos</p:outputLabel>
             <p:commandButton id="btnInscribe" value="Inscribir aprendiz" style="float:right;"
-              action="#" />
+              action="#{groupDetailView.action_inscribe()}" update=":dialogInscription" />
+            
+<!--             <p:commandButton id="btnNew" value="Crear grupo" style="float:right;" -->
+<!--             action="#{groupView.action_new()}" update=":dialogInscription" /> -->
+              
           </f:facet>
           <p:dataTable value="#{groupDetailView.data}" var="inscription" selectionMode="single"
             widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
@@ -107,5 +113,37 @@
         </p:panel>
       </h:panelGrid>
     </h:form>
+    
+    <p:dialog id="dialogInscription" appendTo="@(body)" draggable="true" closable="true"
+      visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="500"
+      header="Inscripción de aptrendiz al grupo">
+      <div id="group-dialog-container" class="group-dialog-container">
+        <p:focus context="dialogInscription" />
+        <h:form id="formDialog">
+          <p:messages id="msg" />
+          <div id="edit-content">
+            <h:panelGrid columns="2" id="panelGrid">
+              <h:outputText id="msgIdLearner" value="Documento" />
+              <p:inputText id="txtIdLearner" binding="#{groupDetailView.txtIdLearner}" />
+              <h:outputText id="msgLearner" value="Aprendiz" />
+              <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}"
+                binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith">
+                <f:selectItems value="#{groupDetailView.learners}" var="learner"
+                  itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" />
+              </p:selectOneMenu>
+            </h:panelGrid>
+          </div>
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar"
+              action="#{groupDetailView.action_save()}" update=":dialogInscription" />
+            <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}"
+              update=":dialogInscription" />
+            <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}"
+              update=":dialogInscription" />
+          </div>
+        </h:form>
+      </div>
+    </p:dialog>
+    
   </ui:define>
 </ui:composition>
