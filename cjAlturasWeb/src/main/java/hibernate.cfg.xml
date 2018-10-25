@@ -6,10 +6,10 @@
   <session-factory>
     <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.password">admin123</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cjalturas</property>
-    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.url">jdbc:mysql://mysql23757.cjalturas.node23757-cjalturas.jelastic.saveincloud.net:3306/cjalturas</property>
     <property name="hibernate.default_schema">cjalturas</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">GLRbob82585</property>
     <mapping resource="com/cjalturas/model/Person.hbm.xml" />
     <mapping resource="com/cjalturas/model/Group.hbm.xml" />
     <mapping resource="com/cjalturas/model/Coach.hbm.xml" />
