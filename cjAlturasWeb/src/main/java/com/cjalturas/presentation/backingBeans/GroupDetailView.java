@@ -20,6 +20,7 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.lang3.time.DateUtils;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
@@ -37,6 +38,7 @@ import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
+import com.cjalturas.model.Person;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
@@ -58,7 +60,7 @@ public class GroupDetailView implements Serializable {
 
   
   
-  private InputText txtIdLearner;
+  private InputNumber txtIdLearner;
 
   private SelectOneMenu cmbLearner;
   
@@ -198,13 +200,13 @@ public class GroupDetailView implements Serializable {
     return "learner.xhtml";
   }
 
-  public String action_inscribe() {
+  public void action_inscribe() {
     //Se limpian los campos desde los cuales se realiza la inscripción.
     PageUtils.clearTextBox(txtDescription);
     PageUtils.clearComboBox(cmbCoach);
-    selectedGroup = null;
+//    selectedGroup = null;
     setShowDialog(true);
-    return "";
+//    return "";
   }
 
   public String action_clear() {
@@ -428,6 +430,60 @@ public class GroupDetailView implements Serializable {
     return "";
   }
 
+  
+  public void listener_txtIdLearner() {
+//    try {
+//      Integer document = FacesUtils.checkInteger(txtIdLearner);
+//      entity = findLearnerByDocumentPerson(document);
+//    } catch (Exception e) {
+//      entity = null;
+//    }
+//
+//    PageUtils.enableTextbox(txtDocument);
+//    PageUtils.enableComboBox(cmbTypeId);
+//    PageUtils.enableTextbox(txtName);
+//    PageUtils.enableTextbox(txtLastname);
+//    PageUtils.enableTextbox(txtPhone);
+//    PageUtils.enableTextbox(txtEmail);
+//    PageUtils.enableComboBox(cmbEconomicSector);
+//    PageUtils.enableComboBox(cmbEnterprise);
+//
+//    if (entity != null) {
+//      PageUtils.disableTextbox(txtDocument);
+//      PageUtils.enableButton(btnDelete);
+//
+//      Person person = entity.getPerson();
+//      txtDocument.setValue(person.getDocument());
+//      cmbTypeId.setValue(person.getDocumentType());
+//      txtName.setValue(person.getName());
+//      txtLastname.setValue(person.getLastname());
+//      txtPhone.setValue(person.getPhone());
+//      txtEmail.setValue(person.getEmail());
+//      cmbEconomicSector.setValue(person.getDocumentType());
+//      cmbEnterprise.setValue(person.getDocumentType());
+//    }
+  }
+  
+  /**
+   * Encuentra un aprendiz por el documento de la persona.
+   * @param documentPerson documento de la persona con la que se buscará el aprendiz.
+   * @return instancia del aprendiz en caso de que exista.
+   * @throws Exception
+   */
+  private Learner findLearnerByDocumentPerson(Integer documentPerson) throws Exception {
+    if (documentPerson != null) {
+      List<Learner> listPersons = businessDelegatorView.findLearnerByProperty("person.document", String.valueOf(documentPerson));
+      if (listPersons.isEmpty()) {
+        return null;
+      } else if (listPersons.size() > 1) {
+        log.error("Se encontró más de un aprendiz con el mismo documento: " + documentPerson);
+        throw new RuntimeException("Se encontró más de un aprendiz con el mismo documento: " + documentPerson);
+      }
+      return listPersons.get(0);
+    }
+    return null;
+  }
+  
   public boolean filterByDate(Object value, Object filter, Locale locale) {
 
     if (filter == null) {
@@ -609,11 +665,13 @@ public class GroupDetailView implements Serializable {
     this.inscriptionSel = inscriptionSel;
   }
 
-  public InputText getTxtIdLearner() {
+
+
+  public InputNumber getTxtIdLearner() {
     return txtIdLearner;
   }
 
-  public void setTxtIdLearner(InputText txtIdLearner) {
+  public void setTxtIdLearner(InputNumber txtIdLearner) {
     this.txtIdLearner = txtIdLearner;
   }
 

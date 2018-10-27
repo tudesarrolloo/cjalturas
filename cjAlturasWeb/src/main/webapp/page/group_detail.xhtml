@@ -120,26 +120,32 @@
       <div id="group-dialog-container" class="group-dialog-container">
         <p:focus context="dialogInscription" />
         <h:form id="formDialog">
-          <p:messages id="msg" />
+          <p:messages id="msgInscription" />
           <div id="edit-content">
             <h:panelGrid columns="2" id="panelGrid">
-              <h:outputText id="msgIdLearner" value="Documento" />
-              <p:inputText id="txtIdLearner" binding="#{groupDetailView.txtIdLearner}" />
-              <h:outputText id="msgLearner" value="Aprendiz" />
-              <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}"
-                binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith">
-                <f:selectItems value="#{groupDetailView.learners}" var="learner"
-                  itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" />
-              </p:selectOneMenu>
+            
+<!--               <h:outputText id="msgIdLearner" value="Documento" /> -->
+<!--               <p:inputNumber id="txtIdLearner" decimalPlaces="0" -->
+<!--                 binding="#{groupDetailView.txtIdLearner}"> -->
+<!--                 <p:ajax update=":dialogInscription" listener="#{groupDetailView.listener_txtIdLearner}" /> -->
+<!--               </p:inputNumber> -->
+              
+<!--               <h:outputText id="msgLearner" value="Aprendiz" /> -->
+<!--               <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}" -->
+<!--                 binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith"> -->
+<!--                 <f:selectItems value="#{groupDetailView.learners}" var="learner" -->
+<!--                   itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" /> -->
+<!--               </p:selectOneMenu> -->
+              
             </h:panelGrid>
-          </div>
-          <div align="center" class="panel-boton">
-            <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar"
-              action="#{groupDetailView.action_save()}" update=":dialogInscription" />
-            <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}"
-              update=":dialogInscription" />
-            <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}"
-              update=":dialogInscription" />
+<!--           </div> -->
+<!--           <div align="center" class="panel-boton"> -->
+<!--             <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar" -->
+<!--               action="#{groupDetailView.action_save()}" update=":dialogInscription" /> -->
+<!--             <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}" -->
+<!--               update=":dialogInscription" /> -->
+<!--             <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}" -->
+<!--               update=":dialogInscription" /> -->
           </div>
         </h:form>
       </div>
