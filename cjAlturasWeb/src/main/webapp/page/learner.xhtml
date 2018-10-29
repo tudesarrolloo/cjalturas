@@ -18,7 +18,71 @@
         </f:facet>
 
         <p:growl id="men" />
-        <ui:include src="learner_table.xhtml"></ui:include>
+        <p:dataTable value="#{learnerView.data}" var="learner"
+          selectionMode="single"
+          selection="#{learnerView.selectedLearner}"
+          rowKey="#{learner.idLearner}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+
+          <p:column filterBy="#{learner.person.document}"
+            sortBy="#{learner.person.document}">
+            <f:facet name="header">
+              <h:outputText value="Documento" />
+            </f:facet>
+            <h:outputText value="#{learner.person.document}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.name}"
+            sortBy="#{learner.person.name}">
+            <f:facet name="header">
+              <h:outputText value="Nombre" />
+            </f:facet>
+            <h:outputText value="#{learner.person.name}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.lastname}"
+            sortBy="#{learner.person.lastname}">
+            <f:facet name="header">
+              <h:outputText value="Apellidos" />
+            </f:facet>
+            <h:outputText value="#{learner.person.lastname}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.phone}"
+            sortBy="#{learner.person.phone}">
+            <f:facet name="header">
+              <h:outputText value="Teléfono" />
+            </f:facet>
+            <h:outputText value="#{learner.person.phone}" />
+          </p:column>
+
+          <p:column filterBy="#{learner.person.email}"
+            sortBy="#{learner.person.email}">
+            <f:facet name="header">
+              <h:outputText value="E-mail" />
+            </f:facet>
+            <h:outputText value="#{learner.person.email}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogLearner"
+              actionListener="#{learnerView.action_edit}">
+              <f:attribute name="selectedLearner" value="#{learner}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{learnerView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['learner.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedLearner" value="#{learner}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
       </p:panel>
     </h:form>
     <p:dialog id="dialogLearner" appendTo="@(body)" draggable="true"

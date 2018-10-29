@@ -3,6 +3,8 @@ package com.cjalturas.model.control;
 import java.util.List;
 
 import com.cjalturas.model.Group;
+import com.cjalturas.model.Inscription;
+import com.cjalturas.model.Learner;
 import com.cjalturas.model.dto.GroupDTO;
 
 
@@ -45,4 +47,12 @@ public interface IGroupLogic {
   public List<GroupDTO> getDataGroup() throws Exception;
 
   public void validateGroup(Group group) throws Exception;
+  
+  /**
+   * Encuentra una inscripción de un aprendiz a un grupo.
+   * @param idGroup identificación del grupo.
+   * @param idLearner identificación del aprendiz que se desea buscar en el grupo.
+   * @return instancia de la inscripción del aprendiz al grupo o null en caso de que no exista una inscripción.
+   */
+  public Inscription findInscription(Integer idGroup,Integer idLearner);
 }

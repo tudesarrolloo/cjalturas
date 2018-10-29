@@ -18,8 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cjalturas.dataaccess.dao.IInscriptionDAO;
 import com.cjalturas.dto.mapper.IInscriptionMapper;
+import com.cjalturas.exceptions.CustomException;
 import com.cjalturas.exceptions.ZMessManager;
+import com.cjalturas.messages.ApplicationMessages;
+import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
+import com.cjalturas.model.Learner;
 import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.utilities.Utilities;
 
@@ -80,7 +84,7 @@ public class InscriptionLogic implements IInscriptionLogic {
           strMessage.append(constraintViolation.getMessage());
           strMessage.append(". \n");
         }
-
+        
         throw new Exception(strMessage.toString());
       }
     } catch (Exception e) {
@@ -108,7 +112,6 @@ public class InscriptionLogic implements IInscriptionLogic {
   @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
   public void saveInscription(Inscription entity) throws Exception {
     log.debug("saving Inscription instance");
-
     try {
       if (entity == null) {
         throw new ZMessManager().new NullEntityExcepcion("Inscription");
@@ -116,16 +119,26 @@ public class InscriptionLogic implements IInscriptionLogic {
 
       validateInscription(entity);
 
-      if (getInscription(entity.getIdInscription()) != null) {
+      if (entity.getIdInscription() != null && getInscription(entity.getIdInscription()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 
+      Learner learner = entity.getLearner();
+      Group group = entity.getGroup();
+      Inscription inscription = logicGroup1.findInscription(group.getIdGroup(), learner.getIdLearner());
+      if (inscription != null) {
+        String message = ApplicationMessages.getInstance().getMessage("inscription.learnerExistInGroup", learner.getPerson().getName(), group.getDescription());
+        throw new CustomException(message, message, null);
+      }
       inscriptionDAO.save(entity);
-
       log.debug("save Inscription successful");
+    } catch (CustomException e) {
+      throw e;
     } catch (Exception e) {
       log.error("save Inscription failed", e);
-      throw e;
+      Learner learner = entity.getLearner();
+      Group group = entity.getGroup();
+      throw new Exception(ApplicationMessages.getInstance().getMessage("inscription.save.failure", learner.getPerson().getName(), group.getDescription()));
     } finally {
     }
   }

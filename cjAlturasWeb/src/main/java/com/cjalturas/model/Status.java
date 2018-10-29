@@ -20,6 +20,15 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "status", schema = "${schema}")
 public class Status implements java.io.Serializable {
+
+  /** Estado que indica que una inscripción se encuentra activa */
+  public static final String ACTIVE_CODE = "ACT";
+
+  /** Estado que indica que una inscripción se encuentra activa */
+  public static final String ACTIVE_DESCRIPTION = "Activo";
+
+  public static final Status ACTIVE = new Status(ACTIVE_CODE, ACTIVE_DESCRIPTION);
+
   @Id
   @NotNull
   private String code;
@@ -32,6 +41,12 @@ public class Status implements java.io.Serializable {
   private Set<Inscription> inscriptions = new HashSet<Inscription>(0);
 
   public Status() {
+  }
+
+  public Status(String code, String status) {
+    super();
+    this.code = code;
+    this.status = status;
   }
 
   public Status(String code, Set<Inscription> inscriptions, String status) {

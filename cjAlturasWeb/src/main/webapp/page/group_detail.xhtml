@@ -5,10 +5,8 @@
     <h:form id="frm">
       <p:messages id="msg" />
       <h:panelGrid columns="2" id="panelGrid2">
-      
-<!--         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> -->
-        <f:event type="preRenderView" listener="#{groupDetailView.loadInfoSelectectedGroup()}"/>
-        
+        <!--         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> -->
+        <f:event type="preRenderView" listener="#{groupDetailView.loadInfoSelectectedGroup()}" />
         <p:panel id="panelDetailGroup">
           <p:focus context="panelDetailGroup" />
           <h:panelGrid columns="2" id="panelGrid">
@@ -54,10 +52,8 @@
             <p:outputLabel>Aprendices inscritos</p:outputLabel>
             <p:commandButton id="btnInscribe" value="Inscribir aprendiz" style="float:right;"
               action="#{groupDetailView.action_inscribe()}" update=":dialogInscription" />
-            
-<!--             <p:commandButton id="btnNew" value="Crear grupo" style="float:right;" -->
-<!--             action="#{groupView.action_new()}" update=":dialogInscription" /> -->
-              
+            <!--             <p:commandButton id="btnNew" value="Crear grupo" style="float:right;" -->
+            <!--             action="#{groupView.action_new()}" update=":dialogInscription" /> -->
           </f:facet>
           <p:dataTable value="#{groupDetailView.data}" var="inscription" selectionMode="single"
             widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
@@ -113,43 +109,78 @@
         </p:panel>
       </h:panelGrid>
     </h:form>
-    
     <p:dialog id="dialogInscription" appendTo="@(body)" draggable="true" closable="true"
       visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="500"
       header="Inscripción de aptrendiz al grupo">
       <div id="group-dialog-container" class="group-dialog-container">
         <p:focus context="dialogInscription" />
+        <!--         <ui:include src="learner_table.xhtml"></ui:include> -->
         <h:form id="formDialog">
-          <p:messages id="msgInscription" />
+          <!--           <p:messages id="msgInscription" /> -->
           <div id="edit-content">
-            <h:panelGrid columns="2" id="panelGrid">
-            
-<!--               <h:outputText id="msgIdLearner" value="Documento" /> -->
-<!--               <p:inputNumber id="txtIdLearner" decimalPlaces="0" -->
-<!--                 binding="#{groupDetailView.txtIdLearner}"> -->
-<!--                 <p:ajax update=":dialogInscription" listener="#{groupDetailView.listener_txtIdLearner}" /> -->
-<!--               </p:inputNumber> -->
-              
-<!--               <h:outputText id="msgLearner" value="Aprendiz" /> -->
-<!--               <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}" -->
-<!--                 binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith"> -->
-<!--                 <f:selectItems value="#{groupDetailView.learners}" var="learner" -->
-<!--                   itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" /> -->
-<!--               </p:selectOneMenu> -->
-              
-            </h:panelGrid>
-<!--           </div> -->
-<!--           <div align="center" class="panel-boton"> -->
-<!--             <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar" -->
-<!--               action="#{groupDetailView.action_save()}" update=":dialogInscription" /> -->
-<!--             <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}" -->
-<!--               update=":dialogInscription" /> -->
-<!--             <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}" -->
-<!--               update=":dialogInscription" /> -->
+            <p:dataTable value="#{groupDetailView.learners}" var="learner" selectionMode="single"
+              selection="#{groupDetailView.selectedLearner}" rowKey="#{learner.idLearner}"
+              paginator="true" paginatorPosition="bottom" rows="8">
+<!--               <p:ajax event="rowSelect" listener="#{groupDetailView.onLearnerSelect}" update="@this" /> -->
+              <p:column filterBy="#{learner.person.document}" sortBy="#{learner.person.document}">
+                <f:facet name="header">
+                  <h:outputText value="Documento" />
+                </f:facet>
+                <h:outputText value="#{learner.person.document}" />
+              </p:column>
+              <p:column filterBy="#{learner.person.name}" sortBy="#{learner.person.name}">
+                <f:facet name="header">
+                  <h:outputText value="Nombre" />
+                </f:facet>
+                <h:outputText value="#{learner.person.name}" />
+              </p:column>
+              <p:column filterBy="#{learner.person.lastname}" sortBy="#{learner.person.lastname}">
+                <f:facet name="header">
+                  <h:outputText value="Apellidos" />
+                </f:facet>
+                <h:outputText value="#{learner.person.lastname}" />
+              </p:column>
+              <p:column filterBy="#{learner.person.phone}" sortBy="#{learner.person.phone}">
+                <f:facet name="header">
+                  <h:outputText value="Teléfono" />
+                </f:facet>
+                <h:outputText value="#{learner.person.phone}" />
+              </p:column>
+              <p:column filterBy="#{learner.person.email}" sortBy="#{learner.person.email}">
+                <f:facet name="header">
+                  <h:outputText value="E-mail" />
+                </f:facet>
+                <h:outputText value="#{learner.person.email}" />
+              </p:column>
+            </p:dataTable>
+            <!--             <h:panelGrid columns="2" id="panelGrid"> -->
+            <!--               <h:outputText id="msgIdLearner" value="Documento" /> -->
+            <!--               <p:inputNumber id="txtIdLearner" decimalPlaces="0" -->
+            <!--                 binding="#{groupDetailView.txtIdLearner}"> -->
+            <!--                 <p:ajax update=":dialogInscription" listener="#{groupDetailView.listener_txtIdLearner}" /> -->
+            <!--               </p:inputNumber> -->
+            <!--               <h:outputText id="msgLearner" value="Aprendiz" /> -->
+            <!--               <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}" -->
+            <!--                 binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith"> -->
+            <!--                 <f:selectItems value="#{groupDetailView.learners}" var="learner" -->
+            <!--                   itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" /> -->
+            <!--               </p:selectOneMenu> -->
+            <!--             </h:panelGrid> -->
+            <!--           </div> -->
+            <!--           <div align="center" class="panel-boton"> -->
+            <!--             <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar" -->
+            <!--               action="#{groupDetailView.action_save()}" update=":dialogInscription" /> -->
+            <!--             <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}" -->
+            <!--               update=":dialogInscription" /> -->
+            <!--             <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}" -->
+            <!--               update=":dialogInscription" /> -->
+          </div>
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave" binding="#{groupDetailView.btnConfirmInscribe}" value="Confirmar inscripción"
+              action="#{groupDetailView.action_confirm_inscribe()}" update=":frm:msg :frm:panelTableGroup :dialogInscription" />
           </div>
         </h:form>
       </div>
     </p:dialog>
-    
   </ui:define>
 </ui:composition>

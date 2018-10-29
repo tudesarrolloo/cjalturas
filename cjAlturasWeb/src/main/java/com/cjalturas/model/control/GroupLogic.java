@@ -22,6 +22,7 @@ import com.cjalturas.dto.mapper.IGroupMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
+import com.cjalturas.model.Learner;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.utilities.Utilities;
 
@@ -375,5 +376,10 @@ public class GroupLogic implements IGroupLogic {
     }
 
     return list;
+  }
+
+  @Override
+  public Inscription findInscription(Integer idGroup, Integer idLearner) {
+    return groupDAO.findInscription(idGroup, idLearner);
   }
 }

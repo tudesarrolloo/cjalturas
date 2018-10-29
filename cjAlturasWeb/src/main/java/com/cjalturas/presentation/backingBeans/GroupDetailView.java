@@ -30,17 +30,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cjalturas.date.DateProvider;
 import com.cjalturas.dto.mapper.IInscriptionMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
+import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
 import com.cjalturas.model.Person;
+import com.cjalturas.model.Status;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
+import com.cjalturas.model.dto.LearnerDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
 import com.cjalturas.utilities.PageUtils;
@@ -58,19 +62,6 @@ public class GroupDetailView implements Serializable {
 
   private static final Logger log = LoggerFactory.getLogger(GroupDetailView.class);
 
-  
-  
-  private InputNumber txtIdLearner;
-
-  private SelectOneMenu cmbLearner;
-  
-  private Integer idLearnerSel;
-
-  private List<Learner> learners;
-  
-  
-  
-  
   private InputText txtDescription;
 
   private SelectOneMenu cmbCoach;
@@ -111,6 +102,12 @@ public class GroupDetailView implements Serializable {
 
   private InscriptionDTO inscriptionSel;
 
+  private List<Learner> learners;
+
+  private Learner selectedLearner;
+
+  private CommandButton btnConfirmInscribe;
+
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
 
@@ -125,8 +122,7 @@ public class GroupDetailView implements Serializable {
   public void init() {
     loadCoaches();
     loadCourses();
-    loadLearners();
-    
+//    loadLearners();
 
     GroupDTO group = (GroupDTO) this.businessDelegatorView.getParam("group");
     if (group != null) {
@@ -142,7 +138,7 @@ public class GroupDetailView implements Serializable {
 //    }, 2000);
 
   }
-  
+
   private void loadLearners() {
     try {
       if (learners == null) {
@@ -201,7 +197,10 @@ public class GroupDetailView implements Serializable {
   }
 
   public void action_inscribe() {
-    //Se limpian los campos desde los cuales se realiza la inscripción.
+    // Se limpian los campos desde los cuales se realiza la inscripción.
+
+    loadLearners();
+
     PageUtils.clearTextBox(txtDescription);
     PageUtils.clearComboBox(cmbCoach);
 //    selectedGroup = null;
@@ -247,41 +246,6 @@ public class GroupDetailView implements Serializable {
 
   }
 
-  public String action_save() {
-    try {
-      if ((selectedGroup == null) && (entity == null)) {
-        action_create();
-      } else {
-        action_modify();
-      }
-      data = null;
-    } catch (Exception e) {
-      ZMessManager.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de guardado del grupo", e);
-    }
-    return "";
-  }
-
-  public String action_create() {
-    try {
-      entity = new Group();
-      entity.setDescription(FacesUtils.checkString(txtDescription));
-      entity.setCoach(getCoach());
-      entity.setCourse(getCourse());
-      entity.setDateStart(FacesUtils.checkDate(calDateStart));
-      entity.setDateEnd(FacesUtils.checkDate(calDateEnd));
-      entity.setObservations(FacesUtils.checkString(txtObservations));
-
-      businessDelegatorView.saveGroup(entity);
-      ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("group.save.success"));
-      action_clear();
-    } catch (Exception e) {
-      entity = null;
-      FacesUtils.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de creación del grupo", e);
-    }
-    return "";
-  }
 
   private Coach getCoach() {
     Integer idCoach = getIdCoachSel();
@@ -333,31 +297,6 @@ public class GroupDetailView implements Serializable {
     return "";
   }
 
-  public String action_delete_datatable(ActionEvent evt) {
-    try {
-      selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
-      Integer idGroup = new Integer(selectedGroup.getIdGroup());
-      entity = businessDelegatorView.getGroup(idGroup);
-      action_delete();
-    } catch (Exception e) {
-      FacesUtils.addErrorMessage(e.getMessage());
-      log.error("Falló la acción de eliminación del grupo", e);
-    }
-    return "";
-  }
-
-  public void action_delete() throws Exception {
-    try {
-      businessDelegatorView.deleteGroup(entity);
-      ZMessManager.addDeleteMessage(ApplicationMessages.getInstance().getMessage("group.delete.success"));
-      action_clear();
-      data = null;
-    } catch (Exception e) {
-      log.error("Falló la acción de eliminación del grupo", e);
-      throw e;
-    }
-  }
-
   public String action_closeDialog() {
     setShowDialog(false);
     action_clear();
@@ -395,6 +334,38 @@ public class GroupDetailView implements Serializable {
     return null;
   }
 
+  public void action_confirm_inscribe() {
+    String message;
+    ApplicationMessages applicationMessages = ApplicationMessages.getInstance();
+    try {
+      Learner learnerToInscribe = this.selectedLearner;
+      Group group = findGroupById(selectedGroup.getIdGroup());
+
+      Inscription inscription = new Inscription();
+      inscription.setDateInscription(DateProvider.getInstance().getCurrentDate());
+      inscription.setGroup(group);
+      inscription.setLearner(learnerToInscribe);
+      inscription.setStatus(Status.ACTIVE);
+      businessDelegatorView.saveInscription(inscription);
+      message = applicationMessages.getMessage("inscription.save.success");
+      ZMessManager.addSaveMessage(message);
+    } catch (Exception e) {
+      message = e.getMessage();
+      ZMessManager.addErrorMessage(message);
+      log.error(message, e);
+    }
+    setShowDialog(false);
+  }
+
+  private Group findGroupById(Integer idGroup) {
+    try {
+      return businessDelegatorView.getGroup(idGroup);
+    } catch (Exception e) {
+      log.error("No se logró encontrar el grupo con el id: " + getSelectedGroup().getIdGroup(), e);
+      throw new RuntimeException("No se logró encontrar el grupo con el id: " + getSelectedGroup().getIdGroup());
+    }
+  }
+
   public String action_cert(ActionEvent evt) {
     inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
 
@@ -430,40 +401,6 @@ public class GroupDetailView implements Serializable {
     return "";
   }
 
-  
-  public void listener_txtIdLearner() {
-//    try {
-//      Integer document = FacesUtils.checkInteger(txtIdLearner);
-//      entity = findLearnerByDocumentPerson(document);
-//    } catch (Exception e) {
-//      entity = null;
-//    }
-//
-//    PageUtils.enableTextbox(txtDocument);
-//    PageUtils.enableComboBox(cmbTypeId);
-//    PageUtils.enableTextbox(txtName);
-//    PageUtils.enableTextbox(txtLastname);
-//    PageUtils.enableTextbox(txtPhone);
-//    PageUtils.enableTextbox(txtEmail);
-//    PageUtils.enableComboBox(cmbEconomicSector);
-//    PageUtils.enableComboBox(cmbEnterprise);
-//
-//    if (entity != null) {
-//      PageUtils.disableTextbox(txtDocument);
-//      PageUtils.enableButton(btnDelete);
-//
-//      Person person = entity.getPerson();
-//      txtDocument.setValue(person.getDocument());
-//      cmbTypeId.setValue(person.getDocumentType());
-//      txtName.setValue(person.getName());
-//      txtLastname.setValue(person.getLastname());
-//      txtPhone.setValue(person.getPhone());
-//      txtEmail.setValue(person.getEmail());
-//      cmbEconomicSector.setValue(person.getDocumentType());
-//      cmbEnterprise.setValue(person.getDocumentType());
-//    }
-  }
-  
   /**
    * Encuentra un aprendiz por el documento de la persona.
    * @param documentPerson documento de la persona con la que se buscará el aprendiz.
@@ -483,7 +420,7 @@ public class GroupDetailView implements Serializable {
     }
     return null;
   }
-  
+
   public boolean filterByDate(Object value, Object filter, Locale locale) {
 
     if (filter == null) {
@@ -665,32 +602,6 @@ public class GroupDetailView implements Serializable {
     this.inscriptionSel = inscriptionSel;
   }
 
-
-
-  public InputNumber getTxtIdLearner() {
-    return txtIdLearner;
-  }
-
-  public void setTxtIdLearner(InputNumber txtIdLearner) {
-    this.txtIdLearner = txtIdLearner;
-  }
-
-  public SelectOneMenu getCmbLearner() {
-    return cmbLearner;
-  }
-
-  public void setCmbLearner(SelectOneMenu cmbLearner) {
-    this.cmbLearner = cmbLearner;
-  }
-
-  public Integer getIdLearnerSel() {
-    return idLearnerSel;
-  }
-
-  public void setIdLearnerSel(Integer idLearnerSel) {
-    this.idLearnerSel = idLearnerSel;
-  }
-
   public List<Learner> getLearners() {
     return learners;
   }
@@ -698,5 +609,21 @@ public class GroupDetailView implements Serializable {
   public void setLearners(List<Learner> learners) {
     this.learners = learners;
   }
-  
+
+  public Learner getSelectedLearner() {
+    return selectedLearner;
+  }
+
+  public void setSelectedLearner(Learner selectedLearner) {
+    this.selectedLearner = selectedLearner;
+  }
+
+  public CommandButton getBtnConfirmInscribe() {
+    return btnConfirmInscribe;
+  }
+
+  public void setBtnConfirmInscribe(CommandButton btnConfirmInscribe) {
+    this.btnConfirmInscribe = btnConfirmInscribe;
+  }
+
 }

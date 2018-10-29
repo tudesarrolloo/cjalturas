@@ -1,33 +1,19 @@
 package com.cjalturas.dataaccess.dao;
 
-import com.cjalturas.dataaccess.api.HibernateDaoImpl;
-
-import com.cjalturas.model.Group;
+import javax.annotation.Resource;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-
-import org.hibernate.criterion.Example;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
+import com.cjalturas.dataaccess.api.HibernateDaoImpl;
+import com.cjalturas.model.Group;
+import com.cjalturas.model.Inscription;
 
 
 /**
@@ -47,5 +33,20 @@ public class GroupDAO extends HibernateDaoImpl<Group, Integer> implements IGroup
 
   public static IGroupDAO getFromApplicationContext(ApplicationContext ctx) {
     return (IGroupDAO) ctx.getBean("GroupDAO");
+  }
+  
+  public Inscription findInscription(Integer idGroup,Integer idLearner) {
+    try {
+      String queryString = "from Inscription i where i.learner.idLearner= :idLearner and i.group.idGroup= :idGroup";
+      Query queryObject = sessionFactory.getCurrentSession().createQuery(queryString);
+      queryObject.setParameter("idLearner", idLearner);
+      queryObject.setParameter("idGroup", idGroup);
+      return (Inscription) queryObject.getSingleResult();
+    } catch (NoResultException nr) {
+      return null;
+    } catch (RuntimeException re) {
+      log.error("No se pudo encontrar la inscripción del aprendiz al grupo.", re);
+      throw re;
+    }
   }
 }

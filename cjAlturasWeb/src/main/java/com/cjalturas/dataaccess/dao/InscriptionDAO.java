@@ -48,4 +48,5 @@ public class InscriptionDAO extends HibernateDaoImpl<Inscription, Integer> imple
   public static IInscriptionDAO getFromApplicationContext(ApplicationContext ctx) {
     return (IInscriptionDAO) ctx.getBean("InscriptionDAO");
   }
+  
 }
