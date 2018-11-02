@@ -55,7 +55,7 @@
             <!--             <p:commandButton id="btnNew" value="Crear grupo" style="float:right;" -->
             <!--             action="#{groupView.action_new()}" update=":dialogInscription" /> -->
           </f:facet>
-          <p:dataTable value="#{groupDetailView.data}" var="inscription" selectionMode="single"
+          <p:dataTable id="tblInscriptions" value="#{groupDetailView.data}" var="inscription" selectionMode="single"
             widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
             rowKey="#{inscription.idInscription}" paginator="true" paginatorPosition="bottom"
             rows="8">
@@ -99,11 +99,12 @@
             Exportar a:
             <h:commandLink>
               <p:graphicImage value="../images/xls-icon.png" />
-              <p:dataExporter type="xls" target="tblLearners" fileName="Aprendices" />
+              <p:dataExporter type="xls" postProcessor="#{groupDetailView.postProcessXLS}"
+              target="tblInscriptions" fileName="Aprendices" />
             </h:commandLink>
             <h:commandLink>
               <p:graphicImage value="../images/pdf-icon.png" />
-              <p:dataExporter type="pdf" target="tblLearners" fileName="Aprendices" />
+              <p:dataExporter type="pdf" target="tblInscriptions" fileName="Aprendices" />
             </h:commandLink>
           </div>
         </p:panel>
@@ -113,7 +114,7 @@
       visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="500"
       header="Inscripción de aptrendiz al grupo">
       <div id="group-dialog-container" class="group-dialog-container">
-        <p:focus context="dialogInscription" />
+<!--         <p:focus context="dialogInscription" /> -->
         <!--         <ui:include src="learner_table.xhtml"></ui:include> -->
         <h:form id="formDialog">
           <!--           <p:messages id="msgInscription" /> -->
@@ -153,27 +154,6 @@
                 <h:outputText value="#{learner.person.email}" />
               </p:column>
             </p:dataTable>
-            <!--             <h:panelGrid columns="2" id="panelGrid"> -->
-            <!--               <h:outputText id="msgIdLearner" value="Documento" /> -->
-            <!--               <p:inputNumber id="txtIdLearner" decimalPlaces="0" -->
-            <!--                 binding="#{groupDetailView.txtIdLearner}"> -->
-            <!--                 <p:ajax update=":dialogInscription" listener="#{groupDetailView.listener_txtIdLearner}" /> -->
-            <!--               </p:inputNumber> -->
-            <!--               <h:outputText id="msgLearner" value="Aprendiz" /> -->
-            <!--               <p:selectOneMenu id="cmbLearner" value="#{groupDetailView.idLearnerSel}" -->
-            <!--                 binding="#{groupDetailView.cmbLearner}" filter="true" filterMatchMode="startsWith"> -->
-            <!--                 <f:selectItems value="#{groupDetailView.learners}" var="learner" -->
-            <!--                   itemLabel="#{learner.person.fullName}" itemValue="#{learner.idLearner}" /> -->
-            <!--               </p:selectOneMenu> -->
-            <!--             </h:panelGrid> -->
-            <!--           </div> -->
-            <!--           <div align="center" class="panel-boton"> -->
-            <!--             <p:commandButton id="btnSave" binding="#{groupDetailView.btnSave}" value="Guardar" -->
-            <!--               action="#{groupDetailView.action_save()}" update=":dialogInscription" /> -->
-            <!--             <p:commandButton id="btnClear" value="Limpiar" action="#{groupDetailView.action_clear()}" -->
-            <!--               update=":dialogInscription" /> -->
-            <!--             <p:commandButton id="btnExit" value="Salir" action="#{groupDetailView.action_closeDialog()}" -->
-            <!--               update=":dialogInscription" /> -->
           </div>
           <div align="center" class="panel-boton">
             <p:commandButton id="btnSave" binding="#{groupDetailView.btnConfirmInscribe}" value="Confirmar inscripción"

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -18,14 +16,18 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +38,12 @@ import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
-import com.cjalturas.model.Enterprise;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
-import com.cjalturas.model.Person;
 import com.cjalturas.model.Status;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
-import com.cjalturas.model.dto.LearnerDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
 import com.cjalturas.utilities.FacesUtils;
 import com.cjalturas.utilities.PageUtils;
@@ -172,11 +171,11 @@ public class GroupDetailView implements Serializable {
     }
   }
 
-  public String view_detail(ActionEvent evt) {
-    selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
-    System.out.println("ir ''' " + selectedGroup.getDescription());
-    return "learner.xhtml";
-  }
+//  public String view_detail(ActionEvent evt) {
+//    selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
+//    System.out.println("ir ''' " + selectedGroup.getDescription());
+//    return "learner.xhtml";
+//  }
 
 //  public String view_detail(String action) {
 ////    selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
@@ -184,17 +183,17 @@ public class GroupDetailView implements Serializable {
 //    return "learner.xhtml";
 //  }
 //  
-  public String view_detail(Group group) {
-//  selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
-    System.out.println("ir ''' " + group.getDescription());
-    return "learner.xhtml";
-  }
+//  public String view_detail(Group group) {
+////  selectedGroup = (GroupDTO) (evt.getComponent().getAttributes().get("selectedGroup"));
+//    System.out.println("ir ''' " + group.getDescription());
+//    return "learner.xhtml";
+//  }
 
-  public String view_detail() {
-    GroupDTO sg = this.getSelectedGroup();
-    System.out.println("ir ''' ");
-    return "learner.xhtml";
-  }
+//  public String view_detail() {
+//    GroupDTO sg = this.getSelectedGroup();
+//    System.out.println("ir ''' ");
+//    return "learner.xhtml";
+//  }
 
   public void action_inscribe() {
     // Se limpian los campos desde los cuales se realiza la inscripción.
@@ -317,7 +316,6 @@ public class GroupDetailView implements Serializable {
           ins.setIdInscription(inscriptionTmp.getIdInscription());
           ins.setCode_Status(inscriptionTmp.getStatus().getStatus());
           ins.setDateInscription(inscriptionTmp.getDateInscription());
-          ;
           ins.setFullNameLearner(inscriptionTmp.getLearner().getPerson().getFullName());
 
 //            InscriptionDTO inscriptionDTO2 = inscriptionMapper.inscriptionToInscriptionDTO(inscriptionTmp);
@@ -624,6 +622,51 @@ public class GroupDetailView implements Serializable {
 
   public void setBtnConfirmInscribe(CommandButton btnConfirmInscribe) {
     this.btnConfirmInscribe = btnConfirmInscribe;
+  }
+  
+  public void postProcessXLS(Object document) {
+    HSSFWorkbook wb = (HSSFWorkbook) document;
+    HSSFSheet sheet = wb.getSheetAt(0);
+    HSSFRow header = sheet.getRow(0);
+    
+//    HSSFRow row = sheet.createRow(0);
+//    HSSFCell cellSpecial = row.createCell(0);
+//    cellSpecial.setCellValue("increible");
+    
+    int rows = sheet.getLastRowNum();
+    sheet.shiftRows(0,rows,4);   
+    
+    sheet.getRow(0).createCell(0).setCellValue("Curso");
+    sheet.getRow(0).createCell(1).setCellValue("Aqui curso...");
+    
+    sheet.getRow(1).createCell(0).setCellValue("Grupo");
+    sheet.getRow(1).createCell(1).setCellValue("Aqui grupo...");
+    
+    sheet.getRow(2).createCell(0).setCellValue("Entrenador");
+    sheet.getRow(2).createCell(1).setCellValue("Aqui entrenador...");
+    
+     
+    HSSFCellStyle cellStyle = wb.createCellStyle();  
+    cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
+    cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+     
+    for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+        HSSFCell cell = header.getCell(i);
+         
+        cell.setCellStyle(cellStyle);
+    }
+    
+//    HSSFWorkbook wb = (HSSFWorkbook) document;
+//    HSSFSheet sheet = wb.getSheetAt(0);
+//    CellStyle style = wb.createCellStyle();
+//    style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
+//
+//    for (Row row : sheet) {
+//      for (Cell cell : row) {
+//        cell.setCellValue(cell.getStringCellValue().toUpperCase());
+//        cell.setCellStyle(style);
+//      }
+//    }
   }
 
 }
