@@ -7,7 +7,7 @@
       <h:panelGrid columns="2" id="panelGrid2">
         <!--         <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> -->
         <f:event type="preRenderView" listener="#{groupDetailView.loadInfoSelectectedGroup()}" />
-        <p:panel id="panelDetailGroup">
+        <p:panel id="panelDetailGroup" style="min-height:450px;">
           <p:focus context="panelDetailGroup" />
           <h:panelGrid columns="2" id="panelGrid">
             <h:outputText id="msgDescription" value="Descripción" />
@@ -47,36 +47,47 @@
               action="#{groupDetailView.action_closeDialog()}" update=":frm:panelDetailGroup" />
           </div>
         </p:panel>
-        <p:panel id="panelTableGroup">
+        <p:panel id="panelTableGroup"  style="min-height:450px;">
           <f:facet name="header">
             <p:outputLabel>Aprendices inscritos</p:outputLabel>
+            
             <p:commandButton id="btnInscribe" value="Inscribir aprendiz" style="float:right;"
               action="#{groupDetailView.action_inscribe()}" update=":dialogInscription" />
-            <!--             <p:commandButton id="btnNew" value="Crear grupo" style="float:right;" -->
-            <!--             action="#{groupView.action_new()}" update=":dialogInscription" /> -->
+            
+            <p:commandButton id="btnExport" value="Formato asistencia" style="float:right;" ajax="false">
+              <p:dataExporter type="xls" postProcessor="#{groupDetailView.postProcessXLS}"
+              target="tblInscriptions" fileName="Aprendices" />
+            </p:commandButton>
+            
+            <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                <p:fileDownload value="#{groupDetailView.fileCert}" />
+            </p:commandButton>
+              
+              
+            
           </f:facet>
           <p:dataTable id="tblInscriptions" value="#{groupDetailView.data}" var="inscription" selectionMode="single"
             widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
             rowKey="#{inscription.idInscription}" paginator="true" paginatorPosition="bottom"
-            rows="8">
-            <p:column filterBy="#{inscription.dateInscription}"
-              sortBy="#{inscription.dateInscription}">
+            rows="8" emptyMessage="No existen aprendices inscritos en el grupo">
+            <p:column filterBy="#{inscription.typeDocument}"
+              sortBy="#{inscription.typeDocument}">
               <f:facet name="header">
-                <h:outputText value="Fecha de inscripción" />
+                <h:outputText value="Tipo Documento" />
               </f:facet>
-              <h:outputText value="#{inscription.dateInscription}" />
+              <h:outputText value="#{inscription.typeDocument}" />
             </p:column>
-            <p:column filterBy="#{inscription.dateCertification}"
-              sortBy="#{inscription.dateCertification}">
+            <p:column filterBy="#{inscription.document}"
+              sortBy="#{inscription.document}">
               <f:facet name="header">
-                <h:outputText value="Fecha de certificación" />
+                <h:outputText value="Documento" />
               </f:facet>
-              <h:outputText value="#{inscription.dateCertification}" />
+              <h:outputText value="#{inscription.document}" />
             </p:column>
             <p:column filterBy="#{inscription.fullNameLearner}"
               sortBy="#{inscription.fullNameLearner}">
               <f:facet name="header">
-                <h:outputText value="Aprendiz" />
+                <h:outputText value="Nombre" />
               </f:facet>
               <h:outputText value="#{inscription.fullNameLearner}" />
             </p:column>
@@ -86,7 +97,7 @@
               </f:facet>
               <h:outputText value="#{inscription.code_Status}" />
             </p:column>
-            <p:column width="40">
+            <p:column width="40" exportable="false">
               <p:commandLink id="btnCert" title="Certificar"
                 onclick="window.open('../certificado.pdf', '_blank');"
                 actionListener="#{groupDetailView.action_cert}">
@@ -95,18 +106,6 @@
               </p:commandLink>
             </p:column>
           </p:dataTable>
-          <div style="text-align: end;">
-            Exportar a:
-            <h:commandLink>
-              <p:graphicImage value="../images/xls-icon.png" />
-              <p:dataExporter type="xls" postProcessor="#{groupDetailView.postProcessXLS}"
-              target="tblInscriptions" fileName="Aprendices" />
-            </h:commandLink>
-            <h:commandLink>
-              <p:graphicImage value="../images/pdf-icon.png" />
-              <p:dataExporter type="pdf" target="tblInscriptions" fileName="Aprendices" />
-            </h:commandLink>
-          </div>
         </p:panel>
       </h:panelGrid>
     </h:form>

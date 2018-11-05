@@ -30,6 +30,10 @@ public class InscriptionDTO implements Serializable {
   private String code_Status;
   
   private String fullNameLearner;
+  
+  private String typeDocument;
+  
+  private String document;
 
   public Date getDateCertification() {
     return dateCertification;
@@ -85,6 +89,22 @@ public class InscriptionDTO implements Serializable {
 
   public void setFullNameLearner(String fullNameLearner) {
     this.fullNameLearner = fullNameLearner;
+  }
+
+  public String getDocument() {
+    return document;
+  }
+
+  public void setDocument(String document) {
+    this.document = document;
+  }
+
+  public String getTypeDocument() {
+    return typeDocument;
+  }
+
+  public void setTypeDocument(String typeDocument) {
+    this.typeDocument = typeDocument;
   }
   
 }

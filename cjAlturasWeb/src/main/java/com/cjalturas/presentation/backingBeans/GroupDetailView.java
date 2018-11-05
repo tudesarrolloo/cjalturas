@@ -16,23 +16,29 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cjalturas.date.DateProvider;
+import com.cjalturas.dto.mapper.IGroupMapper;
 import com.cjalturas.dto.mapper.IInscriptionMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
@@ -41,6 +47,7 @@ import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
+import com.cjalturas.model.Person;
 import com.cjalturas.model.Status;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
@@ -106,12 +113,20 @@ public class GroupDetailView implements Serializable {
   private Learner selectedLearner;
 
   private CommandButton btnConfirmInscribe;
+  
+  
+  private StreamedContent fileCert; 
+  
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
 
   @Autowired
   private IInscriptionMapper inscriptionMapper;
+
+  //temporal
+  @Autowired
+  private IGroupMapper groupMapper;
 
   public GroupDetailView() {
     super();
@@ -124,6 +139,21 @@ public class GroupDetailView implements Serializable {
 //    loadLearners();
 
     GroupDTO group = (GroupDTO) this.businessDelegatorView.getParam("group");
+        
+        
+    
+    
+//  Temporal  
+//    if (group==null) {
+//      try {
+//        GroupDTO group1 = this.businessDelegatorView.getGroup(1, true);
+//      } catch (Exception e) {
+//        // TODO Auto-generated catch block
+//        e.printStackTrace();
+//      }
+//    }
+    
+    
     if (group != null) {
       this.setSelectedGroup(group);
 //      loadInfoSelectectedGroup();
@@ -233,6 +263,8 @@ public class GroupDetailView implements Serializable {
   }
 
   public void loadInfoSelectectedGroup() {
+    if (selectedGroup==null) return;
+    
     txtDescription.setValue(selectedGroup.getDescription());
     txtObservations.setValue(selectedGroup.getObservations());
 
@@ -316,7 +348,11 @@ public class GroupDetailView implements Serializable {
           ins.setIdInscription(inscriptionTmp.getIdInscription());
           ins.setCode_Status(inscriptionTmp.getStatus().getStatus());
           ins.setDateInscription(inscriptionTmp.getDateInscription());
-          ins.setFullNameLearner(inscriptionTmp.getLearner().getPerson().getFullName());
+          
+          Person learner = inscriptionTmp.getLearner().getPerson();
+          ins.setFullNameLearner(learner.getFullName());
+          ins.setTypeDocument(learner.getDocumentType());
+          ins.setDocument(learner.getDocument());
 
 //            InscriptionDTO inscriptionDTO2 = inscriptionMapper.inscriptionToInscriptionDTO(inscriptionTmp);
           inscriptionDTO.add(ins);
@@ -633,40 +669,180 @@ public class GroupDetailView implements Serializable {
 //    HSSFCell cellSpecial = row.createCell(0);
 //    cellSpecial.setCellValue("increible");
     
+    
+    
     int rows = sheet.getLastRowNum();
+    
+    if (rows<5) {
+      createMinRows(sheet);
+    }
+    
     sheet.shiftRows(0,rows,4);   
     
     sheet.getRow(0).createCell(0).setCellValue("Curso");
-    sheet.getRow(0).createCell(1).setCellValue("Aqui curso...");
+    sheet.getRow(0).createCell(1).setCellValue(this.getSelectedGroup().getCourse().getCourse());
     
     sheet.getRow(1).createCell(0).setCellValue("Grupo");
-    sheet.getRow(1).createCell(1).setCellValue("Aqui grupo...");
+    sheet.getRow(1).createCell(1).setCellValue(this.getSelectedGroup().getDescription());
     
     sheet.getRow(2).createCell(0).setCellValue("Entrenador");
-    sheet.getRow(2).createCell(1).setCellValue("Aqui entrenador...");
+    sheet.getRow(2).createCell(1).setCellValue(this.getSelectedGroup().getCoach().getPerson().getFullName());
+    
+//    sheet.getRow(0).createCell(1);
+    sheet.getRow(0).createCell(2);
+    sheet.getRow(0).createCell(3);
+    sheet.getRow(0).createCell(4);
+    sheet.getRow(1).createCell(2);
+    sheet.getRow(1).createCell(3);
+    sheet.getRow(1).createCell(4);
+    sheet.getRow(2).createCell(2);
+    sheet.getRow(2).createCell(3);
+    sheet.getRow(2).createCell(4);
+    
+    sheet.getRow(3).createCell(0);
+    sheet.getRow(3).createCell(1);
+    sheet.getRow(3).createCell(2);
+    sheet.getRow(3).createCell(3);
+    sheet.getRow(3).createCell(4);
+    
+    sheet.addMergedRegion(new CellRangeAddress(0,0,1,4));
+    sheet.addMergedRegion(new CellRangeAddress(1,1,1,4));
+    sheet.addMergedRegion(new CellRangeAddress(2,2,1,4));
+    
+//    CellRangeAddress 
+//    sheet.addMergedRegion(0,0,1,4);
+    
     
      
-    HSSFCellStyle cellStyle = wb.createCellStyle();  
-    cellStyle.setFillForegroundColor(HSSFColor.GREEN.index);
-    cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-     
-    for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
-        HSSFCell cell = header.getCell(i);
-         
-        cell.setCellStyle(cellStyle);
+    HSSFCellStyle cellWithBorderAndWhite = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_THIN);
+  
+    
+    for (Row row : sheet) {
+      for (Cell cell : row) {
+//        cell.setCellValue(cell.getStringCellValue().toUpperCase());
+        cell.setCellStyle(cellWithBorderAndWhite);
+        
+        if (row.getRowNum()==4 && cell.getColumnIndex()==3) {
+          Cell cellAsistencia = row.createCell(4);
+          cellAsistencia.setCellValue("Asistencia");
+          cellAsistencia.setCellStyle(cellWithBorderAndWhite);
+          sheet.autoSizeColumn(4);
+        }
+        if (row.getRowNum()>4 && cell.getColumnIndex()==3) {
+          Cell cellAsistencia = row.createCell(4);
+//          cellAsistencia.setCellValue("Asistencia");
+          cellAsistencia.setCellStyle(cellWithBorderAndWhite);
+        }
+        
+      }
     }
+    
+    
+    
+    
+    HSSFCellStyle cellNoBorder = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_NONE);
+    HSSFCellStyle cellBold = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_THIN, HSSFFont.BOLDWEIGHT_BOLD);
+    
+    sheet.getRow(0).getCell(0).setCellStyle(cellBold);
+    sheet.getRow(1).getCell(0).setCellStyle(cellBold);
+    sheet.getRow(2).getCell(0).setCellStyle(cellBold);
+    sheet.getRow(4).getCell(0).setCellStyle(cellBold);
+    sheet.getRow(4).getCell(1).setCellStyle(cellBold);
+    sheet.getRow(4).getCell(2).setCellStyle(cellBold);
+    sheet.getRow(4).getCell(3).setCellStyle(cellBold);
+    sheet.getRow(4).getCell(4).setCellStyle(cellBold);
+    
+    sheet.getRow(3).getCell(0).setCellStyle(cellNoBorder);
+    sheet.getRow(3).getCell(1).setCellStyle(cellNoBorder);
+    sheet.getRow(3).getCell(2).setCellStyle(cellNoBorder);
+    sheet.getRow(3).getCell(3).setCellStyle(cellNoBorder);
+    sheet.getRow(3).getCell(4).setCellStyle(cellNoBorder);
+    
+    
+//    DataFormatter formatter = new DataFormatter();
+//
+//    String empno = formatter.formatCellValue(cell0);
+//    sheet.getRow(5).getCell(1)
+//    
+    
+//    sheet.getRow(5).getCell(1).setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+     
+//    for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
+//        HSSFCell cell = header.getCell(i);
+//         
+//        cell.setCellStyle(cellStyle);
+//    }
     
 //    HSSFWorkbook wb = (HSSFWorkbook) document;
 //    HSSFSheet sheet = wb.getSheetAt(0);
 //    CellStyle style = wb.createCellStyle();
 //    style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
 //
-//    for (Row row : sheet) {
-//      for (Cell cell : row) {
-//        cell.setCellValue(cell.getStringCellValue().toUpperCase());
-//        cell.setCellStyle(style);
-//      }
-//    }
+    
   }
+
+  private int createMinRows(HSSFSheet sheet) {
+    int noRows = sheet.getLastRowNum();
+    if (noRows<5) {
+      sheet.createRow(noRows+1);
+      return createMinRows(sheet);
+    }
+    return noRows;
+  }
+
+
+  private HSSFCellStyle getCellStyle(HSSFWorkbook wb, short indexColor, short borderStyle, short boldWeight) {
+    HSSFCellStyle cellStyle = getCellStyle(wb, indexColor, borderStyle);
+    HSSFFont font = wb.createFont();
+    font.setBoldweight(boldWeight);
+    cellStyle.setFont(font);
+    return cellStyle;
+  }
+
+  private HSSFCellStyle getCellStyle(HSSFWorkbook wb, short indexColor, short borderStyle) {
+    HSSFCellStyle cellStyle = wb.createCellStyle();  
+//    cellStyle.setFillBackgroundColor(indexColor);
+//    cellStyle.setFillForegroundColor(indexColor);
+//    cellStyle.setFillBackgroundColor(IndexedColors.GREEN.getIndex());
+//    cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
+    
+    cellStyle.setFillForegroundColor(indexColor);
+    cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+    cellStyle.setBorderLeft(borderStyle);
+    cellStyle.setBorderRight(borderStyle);
+    cellStyle.setBorderTop(borderStyle);
+    cellStyle.setBorderBottom(borderStyle);
+    return cellStyle;
+  }
+
+  public StreamedContent getFileCert() {
+    
+    HashMap<String, String> map = new HashMap<>();
+    map.put("#-NAME-#", "Edison Santiago");
+    map.put("#-DOCUMENT-#", "C.C. 4158585");
+    map.put("#-NIVEL-#", "BÁSICO");
+    map.put("#-HORAS-#", "8");
+    map.put("#-DIAS-#", "15");
+    map.put("#-MES-#", "Octubre");
+    map.put("#-ANIO-#", "2018");
+    map.put("#-INSTRUCTOR1-#", "Uriel Castro");
+    map.put("#-INSTRUCTOR1-CHARGE-#", "Entrenador Especializado");
+    map.put("#-INSTRUCTOR2-#", "Astrid Elena Jaramillo Torres");
+    map.put("#-INSTRUCTOR2-CHARGE-#", "Directora de operaciones");
+
+    DefaultStreamedContent resul = new PdfCreator().createPDf2AndDownload(map);
+
+    
+    
+    
+    return resul;
+  }
+
+  public void setFileCert(StreamedContent fileCert) {
+    this.fileCert = fileCert;
+  }
+
+  
+  
 
 }

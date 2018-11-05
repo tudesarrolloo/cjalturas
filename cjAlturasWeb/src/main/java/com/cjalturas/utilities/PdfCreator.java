@@ -1,11 +1,9 @@
 package com.cjalturas.utilities;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -14,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.DefaultStreamedContent;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
@@ -139,13 +138,13 @@ public class PdfCreator {
   public void createPDf2(HashMap<String, String> map) {
     try {
 
-      String str = obtenerContenidoArchivo("E:\\tmp\\base2.html");
+//      String str = obtenerContenidoArchivo("E:\\tmp\\base2.html");
 
       URL file2 = this.getClass().getResource("/templateCert.html");
       String pp = file2.getPath();
 
       pp = StringUtils.removeStart(pp, "/");
-      str = obtenerContenidoArchivo(pp);
+      String str = obtenerContenidoArchivo(pp);
 
       for (Map.Entry<String, String> entry : map.entrySet()) {
         str = str.replaceAll(entry.getKey(), entry.getValue());
@@ -157,7 +156,8 @@ public class PdfCreator {
 //      Document document = new Document(PageSize.A5.rotate(), 0f, 0f, 0f, 0f);
 
       // step 2
-      PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("E:\\tmp\\HTMLtoPDF.pdf"));
+      FileOutputStream os = new FileOutputStream("E:\\tmp\\HTMLtoPDF.pdf");
+      PdfWriter writer = PdfWriter.getInstance(document, os);
 //      PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file2.getPath()));
       // step 3
       document.open();
@@ -191,6 +191,74 @@ public class PdfCreator {
       document.close();
     } catch (Exception e) {
       e.printStackTrace();
+    }
+
+  }
+  
+  public DefaultStreamedContent createPDf2AndDownload(HashMap<String, String> map) {
+    try {
+
+//      String str = obtenerContenidoArchivo("E:\\tmp\\base2.html");
+
+      URL file2 = this.getClass().getResource("/templateCert.html");
+      String pp = file2.getPath();
+
+      pp = StringUtils.removeStart(pp, "/");
+      String str = obtenerContenidoArchivo(pp);
+
+      for (Map.Entry<String, String> entry : map.entrySet()) {
+        str = str.replaceAll(entry.getKey(), entry.getValue());
+      }
+
+      // step 1
+//      Document document = new Document();
+      Document document = new Document(PageSize.A5.rotate(), 0f, 0f, 0f, 0f);
+//      Document document = new Document(PageSize.A5.rotate(), 0f, 0f, 0f, 0f);
+
+      // step 2
+//      FileOutputStream os = new FileOutputStream("E:\\tmp\\HTMLtoPDF.pdf");
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      PdfWriter writer = PdfWriter.getInstance(document, os);
+//      PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file2.getPath()));
+      // step 3
+      document.open();
+      // step 4
+
+      // CSS
+      CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+
+      // HTML
+      HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+      htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+      htmlContext.setImageProvider(new Base64ImageProvider());
+
+      // Pipelines
+      PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+      HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+      CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
+
+      // XML Worker
+      XMLWorker worker = new XMLWorker(css, true);
+      XMLParser p = new XMLParser(worker);
+      p.parse(new ByteArrayInputStream(str.getBytes()));
+
+      PdfContentByte canvas = writer.getDirectContentUnder();
+      Image image = Image.getInstance("E:\\tmp\\bck1.jpg");
+      image.scaleAbsolute(PageSize.A5.rotate());
+      image.setAbsolutePosition(0, 0);
+      canvas.addImage(image);
+
+      // step 5
+      document.close();
+      
+      ByteArrayInputStream stream = new ByteArrayInputStream(os.toByteArray());
+      DefaultStreamedContent fileDownload = new DefaultStreamedContent(stream, "application/pdf", "certificadoooo.pdf");
+      
+      return fileDownload;
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
     }
 
   }
