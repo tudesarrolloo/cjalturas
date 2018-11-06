@@ -631,6 +631,22 @@ body {
 
 /** Estilos Propios */
 
+.validate-certificate .content-wrap{
+  min-height: 160px;
+}
+
+.certificate-message-container{
+  display:none;
+}
+
+.certificate-message{
+    display: block;
+    margin: 20px;
+    font-size: 18px;
+    color: gray;
+}
+
+
 /* Logo & Navigation */
 
 	.header{
