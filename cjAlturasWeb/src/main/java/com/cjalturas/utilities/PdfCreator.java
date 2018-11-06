@@ -182,7 +182,7 @@ public class PdfCreator {
       p.parse(new ByteArrayInputStream(str.getBytes()));
 
       PdfContentByte canvas = writer.getDirectContentUnder();
-      Image image = Image.getInstance("E:\\tmp\\bck1.jpg");
+      Image image = Image.getInstance("bck1.jpg");
       image.scaleAbsolute(PageSize.A5.rotate());
       image.setAbsolutePosition(0, 0);
       canvas.addImage(image);
@@ -246,7 +246,7 @@ public class PdfCreator {
       p.parse(new ByteArrayInputStream(str.getBytes()));
 
       PdfContentByte canvas = writer.getDirectContentUnder();
-      Image image = Image.getInstance("E:\\tmp\\bck1.jpg");
+      Image image = Image.getInstance("bck1.jpg");
       image.scaleAbsolute(PageSize.A5.rotate());
       image.setAbsolutePosition(0, 0);
       canvas.addImage(image);
@@ -255,7 +255,7 @@ public class PdfCreator {
       document.close();
       
       ByteArrayInputStream stream = new ByteArrayInputStream(os.toByteArray());
-      DefaultStreamedContent fileDownload = new DefaultStreamedContent(stream, "application/pdf", "certificadoooo.pdf");
+      DefaultStreamedContent fileDownload = new DefaultStreamedContent(stream, "application/pdf", "CertificadoCJT.pdf");
       
       return fileDownload;
       
