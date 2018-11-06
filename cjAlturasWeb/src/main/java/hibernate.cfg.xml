@@ -14,6 +14,7 @@
     <mapping resource="com/cjalturas/model/Group.hbm.xml" />
     <mapping resource="com/cjalturas/model/Coach.hbm.xml" />
     <mapping resource="com/cjalturas/model/Inscription.hbm.xml" />
+    <mapping resource="com/cjalturas/model/Certificate.hbm.xml" />
     <mapping resource="com/cjalturas/model/Rol.hbm.xml" />
     <mapping resource="com/cjalturas/model/User.hbm.xml" />
     <mapping resource="com/cjalturas/model/Economicsector.hbm.xml" />

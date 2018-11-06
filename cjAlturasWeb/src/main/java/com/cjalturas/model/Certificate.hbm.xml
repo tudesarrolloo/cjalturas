@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2018 10:50:35 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+  <class name="com.cjalturas.model.Certificate" table="certificate" catalog="cjalturas"
+    optimistic-lock="version">
+    <id name="idCertificate" type="java.lang.Integer">
+      <column name="id_certificate" />
+      <generator class="identity" />
+    </id>
+    <many-to-one name="inscription" class="com.cjalturas.model.Inscription"
+      fetch="select" lazy="false">
+      <column name="id_inscription" not-null="true">
+        <comment>Inscripción para la cual se generó el certificado</comment>
+      </column>
+    </many-to-one>
+    <property name="date" type="java.lang.String">
+      <column name="date" length="20" not-null="true">
+        <comment>Fecha en la que se emitió el certificado</comment>
+      </column>
+    </property>
+    <property name="code" type="java.lang.String">
+      <column name="code" length="20" not-null="false">
+        <comment>Código único del certificado</comment>
+      </column>
+    </property>
+    <property name="certification" type="java.lang.String">
+      <column name="certification" length="20" not-null="true">
+        <comment>Información del certificado a través de la cual la empresa puede emitir
+          certificados</comment>
+      </column>
+    </property>
+    <property name="learner" type="java.lang.String">
+      <column name="learner" length="100" not-null="true">
+        <comment>Aprendiz certificados</comment>
+      </column>
+    </property>
+    <property name="learnerDocument" type="java.lang.String">
+      <column name="learnerDocument" length="30" not-null="true">
+        <comment>Documento del aprendiz</comment>
+      </column>
+    </property>
+    <property name="level" type="java.lang.String">
+      <column name="level" length="20" not-null="true">
+        <comment>Nivel del curso certificado</comment>
+      </column>
+    </property>
+    <property name="intensity" type="java.lang.String">
+      <column name="intensity" length="20" not-null="true">
+        <comment>Intensidad del curso certificado</comment>
+      </column>
+    </property>
+    <property name="days" type="java.lang.String">
+      <column name="days" length="100" not-null="true">
+        <comment>Días en los que se recibio el curso certificado</comment>
+      </column>
+    </property>
+    <property name="city" type="java.lang.String">
+      <column name="city" length="20" not-null="true">
+        <comment>Ciudad en la que se emitió la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor1" type="java.lang.String">
+      <column name="instructor1" length="100" not-null="true">
+        <comment>Nombre del primer instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor1Charge" type="java.lang.String">
+      <column name="instructor1_charge" length="30" not-null="true">
+        <comment>Cargo del primer instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor1Sign" type="java.lang.String">
+      <column name="instructor1_sign">
+        <comment>Firma del primer instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor2" type="java.lang.String">
+      <column name="instructor2" length="100" not-null="true">
+        <comment>Nombre del segundo instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor2Charge" type="java.lang.String">
+      <column name="instructor2_charge" length="30" not-null="true">
+        <comment>Cargo del segundo instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+    <property name="instructor2Sign" type="java.lang.String">
+      <column name="instructor2_sign">
+        <comment>Firma del segundo instructor que aprobó la certificación</comment>
+      </column>
+    </property>
+  </class>
+</hibernate-mapping>
