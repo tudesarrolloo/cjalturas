@@ -1,5 +1,7 @@
 package com.cjalturas.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -98,6 +100,9 @@ public class Certificate implements java.io.Serializable {
   @NotNull
   @NotEmpty
   private String instructor2Sign;
+  
+  @NotNull
+  private Date dateExpiration;
 
   public Certificate() {
   }
@@ -263,4 +268,12 @@ public class Certificate implements java.io.Serializable {
     this.instructor2Sign = instructor2Sign;
   }
 
+  public Date getDateExpiration() {
+    return dateExpiration;
+  }
+
+  public void setDateExpiration(Date dateExpiration) {
+    this.dateExpiration = dateExpiration;
+  }
+  
 }

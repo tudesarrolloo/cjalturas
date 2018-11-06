@@ -37,6 +37,8 @@ public class GroupDTO implements Serializable {
   
   private Integer status;
   
+  private String daysCourse;
+  
   private Coach coach;
   
   private Course course;
@@ -137,6 +139,14 @@ public class GroupDTO implements Serializable {
 
   public void setLearnersInGroup(Integer learnersInGroup) {
     this.learnersInGroup = learnersInGroup;
+  }
+
+  public String getDaysCourse() {
+    return daysCourse;
+  }
+
+  public void setDaysCourse(String daysCourse) {
+    this.daysCourse = daysCourse;
   }
   
 }

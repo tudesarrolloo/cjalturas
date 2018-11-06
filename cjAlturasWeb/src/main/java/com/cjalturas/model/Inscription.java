@@ -97,4 +97,8 @@ public class Inscription implements java.io.Serializable {
   public void setDateInscription(Date dateInscription) {
     this.dateInscription = dateInscription;
   }
+
+  public boolean isCertified() {
+    return Status.CERTIFICATE_CODE.equals(this.getStatus().getCode());
+  }
 }

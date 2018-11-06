@@ -14,6 +14,10 @@ public class CourseDTO implements Serializable {
 
   private Integer idCourse;
 
+  private String intensity;
+
+  private Integer validityDaysCertificate;
+
   public String getCourse() {
     return course;
   }
@@ -29,4 +33,21 @@ public class CourseDTO implements Serializable {
   public void setIdCourse(Integer idCourse) {
     this.idCourse = idCourse;
   }
+
+  public String getIntensity() {
+    return intensity;
+  }
+
+  public void setIntensity(String intensity) {
+    this.intensity = intensity;
+  }
+
+  public Integer getValidityDaysCertificate() {
+    return validityDaysCertificate;
+  }
+
+  public void setValidityDaysCertificate(Integer validityDaysCertificate) {
+    this.validityDaysCertificate = validityDaysCertificate;
+  }
+
 }

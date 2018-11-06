@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,10 @@ public class CourseView implements Serializable {
   private static final Logger log = LoggerFactory.getLogger(CourseView.class);
 
   private InputText txtCourse;
+  
+  private InputText txtIntensity;
+  
+  private InputNumber txtValidityDaysCertificate;
 
   private CommandButton btnSave;
 
@@ -69,6 +74,8 @@ public class CourseView implements Serializable {
     entity = null;
     selectedCourse = null;
     PageUtils.clearTextBox(txtCourse);
+    PageUtils.clearTextBox(txtIntensity);
+    PageUtils.clearTextBox(txtValidityDaysCertificate);
     PageUtils.disableButton(btnDelete);
     return "";
   }
@@ -76,6 +83,8 @@ public class CourseView implements Serializable {
   public String action_edit(ActionEvent evt) {
     selectedCourse = (CourseDTO) (evt.getComponent().getAttributes().get("selectedCourse"));
     txtCourse.setValue(selectedCourse.getCourse());
+    txtIntensity.setValue(selectedCourse.getIntensity());
+    txtValidityDaysCertificate.setValue(selectedCourse.getValidityDaysCertificate());
     setShowDialog(true);
     return "";
   }
@@ -99,6 +108,8 @@ public class CourseView implements Serializable {
     try {
       entity = new Course();
       entity.setCourse(FacesUtils.checkString(txtCourse));
+      entity.setIntensity(FacesUtils.checkString(txtIntensity));
+      entity.setValidityDaysCertificate(FacesUtils.checkInteger(txtValidityDaysCertificate));
       businessDelegatorView.saveCourse(entity);
       ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("course.save.success"));
       action_clear();
@@ -117,6 +128,8 @@ public class CourseView implements Serializable {
         entity = businessDelegatorView.getCourse(idCourse);
       }
       entity.setCourse(FacesUtils.checkString(txtCourse));
+      entity.setIntensity(FacesUtils.checkString(txtIntensity));
+      entity.setValidityDaysCertificate(FacesUtils.checkInteger(txtValidityDaysCertificate));
       businessDelegatorView.updateCourse(entity);
       ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("course.edit.success"));
     } catch (Exception e) {
@@ -236,6 +249,22 @@ public class CourseView implements Serializable {
 
   public void setShowDialog(boolean showDialog) {
     this.showDialog = showDialog;
+  }
+
+  public InputText getTxtIntensity() {
+    return txtIntensity;
+  }
+
+  public void setTxtIntensity(InputText txtIntensity) {
+    this.txtIntensity = txtIntensity;
+  }
+
+  public InputNumber getTxtValidityDaysCertificate() {
+    return txtValidityDaysCertificate;
+  }
+
+  public void setTxtValidityDaysCertificate(InputNumber txtValidityDaysCertificate) {
+    this.txtValidityDaysCertificate = txtValidityDaysCertificate;
   }
 
 }

@@ -14,6 +14,16 @@
         <comment>Nombre del curso de formaci&#243;n</comment>
       </column>
     </property>
+    <property name="intensity" type="java.lang.String">
+      <column name="intensity" length="50" not-null="true">
+        <comment>Intensidad con la que se dicta el curso</comment>
+      </column>
+    </property>
+    <property name="validityDaysCertificate" type="java.lang.Integer">
+      <column name="validityDaysCertificate" not-null="true">
+        <comment>Días de vigencia por los cuales se expide un certificado para este curso</comment>
+      </column>
+    </property>
     <set name="groups" table="group" inverse="true" lazy="true"
       fetch="select">
       <key>

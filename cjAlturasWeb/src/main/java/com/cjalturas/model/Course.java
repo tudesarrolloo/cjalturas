@@ -32,6 +32,14 @@ public class Course implements java.io.Serializable {
   @NotEmpty
   @Size(max = 20)
   private String course;
+  
+  @NotNull
+  @NotEmpty
+  @Size(max = 50)
+  private String intensity;
+  
+  @NotNull
+  private Integer validityDaysCertificate;
 
   private Set<Group> groups = new HashSet<Group>(0);
 
@@ -58,6 +66,22 @@ public class Course implements java.io.Serializable {
 
   public void setCourse(String course) {
     this.course = course;
+  }
+  
+  public String getIntensity() {
+    return intensity;
+  }
+
+  public void setIntensity(String intensity) {
+    this.intensity = intensity;
+  }
+
+  public Integer getValidityDaysCertificate() {
+    return validityDaysCertificate;
+  }
+
+  public void setValidityDaysCertificate(Integer validityDaysCertificate) {
+    this.validityDaysCertificate = validityDaysCertificate;
   }
 
   public Set<Group> getGroups() {

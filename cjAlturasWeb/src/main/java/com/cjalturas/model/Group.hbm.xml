@@ -46,6 +46,11 @@
         <comment>Observaciones generales para el curso</comment>
       </column>
     </property>
+    <property name="daysCourse" type="java.lang.String">
+      <column name="daysCourse" length="100" not-null="true">
+        <comment>Días en los que se dictará el curso incluido el mes y año ejemplo (2,3,4,5 de mayo de 2018) esto se usa para la generación del certificado</comment>
+      </column>
+    </property>
     <set name="inscriptions" table="inscription" inverse="true"
       lazy="false" fetch="select">
       <key>

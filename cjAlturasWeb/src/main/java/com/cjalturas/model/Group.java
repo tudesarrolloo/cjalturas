@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -20,6 +23,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "group", schema = "${schema}")
 public class Group implements java.io.Serializable {
   
+  private static final long serialVersionUID = -2263201452118633041L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer idGroup;
@@ -40,6 +45,11 @@ public class Group implements java.io.Serializable {
   private String observations;
 
   private Integer status;
+  
+  @NotNull
+  @NotEmpty
+  @Size(max = 100)
+  private String daysCourse;
 
   private Set<Inscription> inscriptions = new HashSet<Inscription>(0);
 
@@ -130,4 +140,12 @@ public class Group implements java.io.Serializable {
     this.status = status;
   }
 
+  public String getDaysCourse() {
+    return daysCourse;
+  }
+
+  public void setDaysCourse(String daysCourse) {
+    this.daysCourse = daysCourse;
+  }
+  
 }

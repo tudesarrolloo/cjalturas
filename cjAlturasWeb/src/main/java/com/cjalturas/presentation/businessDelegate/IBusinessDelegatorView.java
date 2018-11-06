@@ -301,4 +301,6 @@ public interface IBusinessDelegatorView {
   
   public void setParam(String id, Object value);
 
+  public Certificate getCertificate(Integer idInscription) throws Exception;
+
 }

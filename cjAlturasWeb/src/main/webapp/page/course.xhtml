@@ -31,6 +31,22 @@
             </f:facet>
             <h:outputText value="#{course.course}" />
           </p:column>
+          
+          <p:column filterBy="#{course.intensity}"
+            sortBy="#{course.intensity}">
+            <f:facet name="header">
+              <h:outputText value="Intensidad" />
+            </f:facet>
+            <h:outputText value="#{course.intensity}" />
+          </p:column>
+          
+          <p:column filterBy="#{course.validityDaysCertificate}"
+            sortBy="#{course.validityDaysCertificate}">
+            <f:facet name="header">
+              <h:outputText value="Días Vigencia Certificado" />
+            </f:facet>
+            <h:outputText value="#{course.validityDaysCertificate}" />
+          </p:column>
 
           <p:column width="70">
             <p:commandLink id="btnEdit" title="Editar"
@@ -62,6 +78,12 @@
         <h:panelGrid columns="2" id="panelGrid" style="margin:auto;">
           <h:outputText id="msgCourse" value="Nombre del curso" />
           <p:inputText id="txtCourse" binding="#{courseView.txtCourse}" />
+          
+          <h:outputText id="msgIntensity" value="Intensidad" />
+          <p:inputText id="txtIntensity" binding="#{courseView.txtIntensity}" />
+          
+          <h:outputText id="msgValidityDaysCertificate" value="Días Vigencia Certificado" />
+          <p:inputNumber id="txtValidityDaysCertificate" binding="#{courseView.txtValidityDaysCertificate}" />
         </h:panelGrid>
         <div align="center" class="panel-boton">
           <p:commandButton id="btnSave" binding="#{courseView.btnSave}"

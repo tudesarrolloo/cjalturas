@@ -744,4 +744,9 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     return inscriptionLogic.certificate(entity);
   }
 
+  @Override
+  public Certificate getCertificate(Integer idInscription) throws Exception {
+    return inscriptionLogic.getCertificate(idInscription);
+  }
+
 }

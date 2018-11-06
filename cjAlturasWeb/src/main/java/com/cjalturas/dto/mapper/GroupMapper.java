@@ -53,6 +53,7 @@ public class GroupMapper implements IGroupMapper {
       groupDTO.setDateStart(group.getDateStart());
       groupDTO.setDateEnd(group.getDateEnd());
       groupDTO.setStatus(group.getStatus());
+      groupDTO.setDaysCourse(group.getDaysCourse());
       groupDTO.setObservations((group.getObservations() != null) ? group.getObservations() : null);
       groupDTO.setLearnersInGroup(group.getInscriptions().size());
 
@@ -84,6 +85,7 @@ public class GroupMapper implements IGroupMapper {
       group.setIdGroup(groupDTO.getIdGroup());
       group.setDateStart(groupDTO.getDateStart());
       group.setObservations((groupDTO.getObservations() != null) ? groupDTO.getObservations() : null);
+      group.setDaysCourse((groupDTO.getDaysCourse() != null) ? groupDTO.getDaysCourse() : null);
 
       Coach coach = new Coach();
 

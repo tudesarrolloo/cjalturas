@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -427,8 +428,8 @@ public class InscriptionLogic implements IInscriptionLogic {
       certificate.setLearner(learner.getFullName());
       certificate.setLearnerDocument(learner.getDocumentType() + " " + learner.getDocument());
       certificate.setLevel(course.getCourse());
-      certificate.setIntensity("PENDIENTE");
-      certificate.setDays("#### de xxxxx ");
+      certificate.setIntensity(course.getIntensity());
+      certificate.setDays(entity.getGroup().getDaysCourse());
       certificate.setCity(messages.getMessage("certificate.city"));
       certificate.setInstructor1(personCoach1.getFullName());
       certificate.setInstructor1Charge(coach1.getCharge());
@@ -440,6 +441,8 @@ public class InscriptionLogic implements IInscriptionLogic {
       certificate.setInstructor2Charge(coach2.getCharge());
       certificate.setInstructor2Sign(coach2.getSign());
       
+      Date dateExpiration = DateUtils.addDays(currentDate, course.getValidityDaysCertificate());
+      certificate.setDateExpiration(dateExpiration);
       certificateDAO.save(certificate);
       
       String code = String.format("%03d", certificate.getIdCertificate());
@@ -455,6 +458,26 @@ public class InscriptionLogic implements IInscriptionLogic {
     } catch (Exception e) {
       log.error("update Inscription failed", e);
       throw e;
+    } finally {
+    }
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Certificate getCertificate(Integer idInscription) throws Exception {
+    log.debug("Buscando certificado de una inscripción ya certificada");
+    try {
+      List<Certificate> result = certificateDAO.findByProperty("inscription.idInscription", idInscription);
+      if (result.size()>1) {
+        throw new CustomException("Existe más de un certificado generado para el aprendiz en este grupo.");
+      }
+      if (result == null || result.isEmpty()) {
+        throw new CustomException("No se encontró la información del certificado para un aprendiz que ya está certificado en este grupo.");
+      }
+      return result.get(0);
+    } catch (Exception e) {
+      log.error("get Inscription failed", e);
+      throw new ZMessManager().new FindingException("Inscription");
     } finally {
     }
   }

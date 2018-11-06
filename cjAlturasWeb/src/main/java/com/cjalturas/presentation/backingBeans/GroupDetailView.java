@@ -386,66 +386,18 @@ public class GroupDetailView implements Serializable {
     }
   }
 
-  public String action_cert(ActionEvent evt) {
-    inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
-
-    System.out.println("certificar a: " + inscriptionSel.getFullNameLearner());
-
-    HashMap<String, String> map = new HashMap<>();
-    map.put("#-NAME-#", inscriptionSel.getFullNameLearner());
-    map.put("#-DOCUMENT-#", "C.C. 4158585");
-    map.put("#-NIVEL-#", "BÁSICO");
-    map.put("#-HORAS-#", "8");
-    map.put("#-DIAS-#", "15");
-    map.put("#-MES-#", "Octubre");
-    map.put("#-ANIO-#", "2018");
-    map.put("#-INSTRUCTOR1-#", "Uriel Castro");
-    map.put("#-INSTRUCTOR1-CHARGE-#", "Entrenador Especializado");
-    map.put("#-INSTRUCTOR2-#", "Astrid Elena Jaramillo Torres");
-    map.put("#-INSTRUCTOR2-CHARGE-#", "Directora de operaciones");
-
-    new PdfCreator().createPDf2(map);
-
-//    txtDescription.setValue(selectedGroup.getDescription());
-//    txtObservations.setValue(selectedGroup.getObservations());
-//    
-//    cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
-//    cmbCourse.setValue(selectedGroup.getIdCourse_Course());
-//    
-//    calDateStart.setValue(selectedGroup.getDateStart());
-//    calDateEnd.setValue(selectedGroup.getDateEnd());
-//    chkStatus.setValue(selectedGroup.getStatus()!=null && selectedGroup.getStatus() == 1);
-//    
-//    PageUtils.enableButton(btnSave);
-//    setShowDialog(true);
-    return "";
-  }
-
-//  public void test(ActionEvent evt) {
-//    inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
-//    System.out.println(inscriptionSel.getFullNameLearner());
-//  }
-
-//  public void selG() {
-////    switch (getAction()) {
-////      case GENERATE_CERTIFICATE:
-//////        this.generateCertificate();
-////        break;
-////      default:
-////        break;
-////    }
-//  }
-
-//  public void action_generateCertificate(ActionEvent evt) {
-//    this.setAction(GENERATE_CERTIFICATE);
-//    this.generateCertificate();
-//  }
-
   public void action_certify() {
     DelayUtils.delay(DelayUtils.SEC_1);
     Inscription inscriptionToCertify = findSelectedInscription();
+    
+    
     try {
-      Certificate certificate = businessDelegatorView.certificate(inscriptionToCertify);
+      Certificate certificate;
+      if (inscriptionToCertify.isCertified()) {
+        certificate = businessDelegatorView.getCertificate(inscriptionToCertify.getIdInscription());
+      }else {
+        certificate = businessDelegatorView.certificate(inscriptionToCertify);
+      }
       generateCertificate(certificate);
     } catch (Exception e) {
       FacesUtils.addErrorMessage(e.getMessage());
@@ -484,7 +436,7 @@ public class GroupDetailView implements Serializable {
     map.put("#-CERTIFICATION-#", certificate.getCertification());
     map.put("#-NAME-#", certificate.getLearner());
     map.put("#-DOCUMENT-#", certificate.getLearnerDocument());
-    map.put("#-LEVEL-#", certificate.getLevel());
+    map.put("#-LEVEL-#", certificate.getLevel().toUpperCase());
     map.put("#-INTENSITY-#", certificate.getIntensity());
     map.put("#-DAYS-#", certificate.getDays());
     map.put("#-CITY-#", certificate.getCity());

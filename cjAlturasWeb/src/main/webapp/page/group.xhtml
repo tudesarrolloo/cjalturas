@@ -111,9 +111,14 @@
                 styleClass="calendar" />
               <h:outputText id="msgDateEnd" value="Fecha Fin" />
               <p:calendar id="calDateEnd" binding="#{groupView.calDateEnd}" styleClass="calendar" />
+              
               <h:outputText id="msgStatus" value="Estado" />
               <p:selectBooleanButton id="chkStatus" binding="#{groupView.chkStatus}"
                 onLabel="Activo" offLabel="Inactivo" />
+                
+              <h:outputText id="msgDaysCourse" value="Días del curso" />
+              <p:inputText id="txtDaysCourse" binding="#{groupView.txtDaysCourse}" />
+                
               <h:outputText id="msgObservations" value="Observaciones" />
               <p:inputTextarea id="txtObservations" binding="#{groupView.txtObservations}" rows="6"
                 cols="33" />

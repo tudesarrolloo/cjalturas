@@ -86,4 +86,5 @@ public class Status implements java.io.Serializable {
   public void setInscriptions(Set<Inscription> inscriptions) {
     this.inscriptions = inscriptions;
   }
+
 }

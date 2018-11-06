@@ -8,9 +8,10 @@ public class TypeId {
   
   static {
     typesId = new HashMap<String, String>();
-    typesId.put("CC", "Cédula de ciudadanía");
-    typesId.put("CE","Cédula extranjería");
-    typesId.put("PP","Pasaporte");
+    typesId.put("Cédula de ciudadanía","CC" );
+    typesId.put("Cédula extranjería","CE");
+    typesId.put("Pasaporte","PP");
+    typesId.put("Tarjeta Identidad","TI");
   }
   
   public static HashMap<String, String> getTypesId() {

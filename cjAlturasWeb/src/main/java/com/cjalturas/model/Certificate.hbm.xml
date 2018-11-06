@@ -91,5 +91,10 @@
         <comment>Firma del segundo instructor que aprobó la certificación</comment>
       </column>
     </property>
+    <property name="dateExpiration" type="java.util.Date">
+      <column name="dateExpiration" length="19" not-null="true">
+        <comment>Fecha en la que expira el certificado</comment>
+      </column>
+    </property>
   </class>
 </hibernate-mapping>

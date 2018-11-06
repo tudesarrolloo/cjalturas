@@ -57,6 +57,8 @@ public class GroupView implements Serializable {
   private SelectBooleanButton chkStatus;
 
   private InputTextarea txtObservations;
+  
+  private InputText txtDaysCourse;
 
   private CommandButton btnSave;
 
@@ -139,6 +141,7 @@ public class GroupView implements Serializable {
     PageUtils.clearCalendar(calDateEnd);
     PageUtils.clearBooleanButton(chkStatus, true);
     PageUtils.clearTextArea(txtObservations);
+    PageUtils.clearTextBox(txtDaysCourse);
 
     PageUtils.disableButton(btnDelete);
     return "";
@@ -149,6 +152,7 @@ public class GroupView implements Serializable {
 
     txtDescription.setValue(selectedGroup.getDescription());
     txtObservations.setValue(selectedGroup.getObservations());
+    txtDaysCourse.setValue(selectedGroup.getDaysCourse());
 
     cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
     cmbCourse.setValue(selectedGroup.getIdCourse_Course());
@@ -186,6 +190,7 @@ public class GroupView implements Serializable {
       entity.setDateStart(FacesUtils.checkDate(calDateStart));
       entity.setDateEnd(FacesUtils.checkDate(calDateEnd));
       entity.setObservations(FacesUtils.checkString(txtObservations));
+      entity.setDaysCourse(FacesUtils.checkString(txtDaysCourse));
 
       businessDelegatorView.saveGroup(entity);
       ZMessManager.addSaveMessage(ApplicationMessages.getInstance().getMessage("group.save.success"));
@@ -237,6 +242,7 @@ public class GroupView implements Serializable {
       entity.setDateStart(FacesUtils.checkDate(calDateStart));
       entity.setDateEnd(FacesUtils.checkDate(calDateEnd));
       entity.setObservations(FacesUtils.checkString(txtObservations));
+      entity.setDaysCourse(FacesUtils.checkString(txtDaysCourse));
 
       businessDelegatorView.updateGroup(entity);
       ZMessManager.addEditMessage(ApplicationMessages.getInstance().getMessage("group.edit.success"));
@@ -464,4 +470,12 @@ public class GroupView implements Serializable {
     return txtObservations;
   }
 
+  public InputText getTxtDaysCourse() {
+    return txtDaysCourse;
+  }
+
+  public void setTxtDaysCourse(InputText txtDaysCourse) {
+    this.txtDaysCourse = txtDaysCourse;
+  }
+  
 }

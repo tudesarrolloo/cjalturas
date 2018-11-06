@@ -29,6 +29,8 @@ public class CourseMapper implements ICourseMapper {
 
       courseDTO.setIdCourse(course.getIdCourse());
       courseDTO.setCourse((course.getCourse() != null) ? course.getCourse() : null);
+      courseDTO.setIntensity((course.getIntensity() != null) ? course.getIntensity() : null);
+      courseDTO.setValidityDaysCertificate((course.getValidityDaysCertificate() != null) ? course.getValidityDaysCertificate() : null);
 
       return courseDTO;
     } catch (Exception e) {
@@ -44,6 +46,8 @@ public class CourseMapper implements ICourseMapper {
 
       course.setIdCourse(courseDTO.getIdCourse());
       course.setCourse((courseDTO.getCourse() != null) ? courseDTO.getCourse() : null);
+      course.setIntensity((courseDTO.getIntensity() != null) ? courseDTO.getIntensity() : null);
+      course.setValidityDaysCertificate((courseDTO.getValidityDaysCertificate() != null) ? courseDTO.getValidityDaysCertificate() : null);
 
       return course;
     } catch (Exception e) {
