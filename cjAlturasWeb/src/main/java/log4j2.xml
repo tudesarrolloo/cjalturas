@@ -14,9 +14,9 @@
   <Loggers>
     <!-- Hibernate Logger -->
     <!-- -->
-    <Logger name="org.hibernate" level="info" />
-    <Logger name="org.hibernate.SQL" level="debug" />
-    <Logger name="org.hibernate.type.descriptor.sql" level="trace" />
+    <Logger name="org.hibernate" level="error" />
+    <Logger name="org.hibernate.SQL" level="error" />
+    <Logger name="org.hibernate.type.descriptor.sql" level="error" />
 
 
 
