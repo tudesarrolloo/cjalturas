@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+  <title>Ingreso CJAlturas</title>
+  <meta name="content-type" content="text/html; charset=UTF-8" />
+  <title>Bootstrap Admin Theme v3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/bootstrap/css/bootstrap.min.css"
+    rel="stylesheet" />
+  <link
+    href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/styles.css"
+    rel="stylesheet" />
+  <link REL="SHORTCUT ICON"
+    href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/icon.png" />
+</h:head>
+<h:body>
+  <h:form styleClass="form-signin">
+    <p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
+    <div class="validate-certificate page-content container">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <div id="divForm" class="login-wrapper">
+            <div class="box">
+              <div class="content-wrap">
+                <h6>Validación de certificado</h6>
+                <p:inputText value="#{validateCertificateView.codeCertificate}"
+                  placeholder="Ingrese el código del certificado" styleClass="form-control" />
+                <p:commandButton styleClass="btn btn-primary signup" value="Validar"
+                  actionListener="#{validateCertificateView.validate}" update="@form" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+          <div id="divResult" class="certificate-message-container login-wrapper">
+            <div class="box">
+              <div class="content-wrap">
+                <img id="imgCert" src="./images/valid-certificate.png"></img>
+                <span class="certificate-message"><h:outputText value="#{validateCertificateView.message}" /></span>
+                <p:commandButton styleClass="btn btn-primary signup" value="Regresar" onclick="hideDivResult()" ajax="false"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      </div>
+  </h:form>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script>
+  	function showDivResult(valid){
+  		if (!valid){
+  			$("#imgCert").attr("src","./images/invalid-certificate.png");
+  		}
+  		$("#divResult").show(500);
+  		$("#divForm").hide();
+  	}
+  	function hideDivResult(){
+  		$("#divForm").show(500);
+  		$("#divResult").hide();
+  	}
+  </script>
+  
+</h:body>
+</html>

@@ -429,8 +429,6 @@ public class GroupDetailView implements Serializable {
   }
 
   public void generateCertificate(Certificate certificate) {
-    System.err.println("certificar a: " + inscriptionSel.getFullNameLearner());
-
     ApplicationMessages applicationMessages = ApplicationMessages.getInstance();
     HashMap<String, String> map = new HashMap<>();
     map.put("#-CERTIFICATION-#", certificate.getCertification());
@@ -454,19 +452,6 @@ public class GroupDetailView implements Serializable {
     DefaultStreamedContent pdfCertificate = new PdfCreator().createPDf2AndDownload(map);
 
     setFileCert(pdfCertificate);
-
-//    txtDescription.setValue(selectedGroup.getDescription());
-//    txtObservations.setValue(selectedGroup.getObservations());
-//    
-//    cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
-//    cmbCourse.setValue(selectedGroup.getIdCourse_Course());
-//    
-//    calDateStart.setValue(selectedGroup.getDateStart());
-//    calDateEnd.setValue(selectedGroup.getDateEnd());
-//    chkStatus.setValue(selectedGroup.getStatus()!=null && selectedGroup.getStatus() == 1);
-//    
-//    PageUtils.enableButton(btnSave);
-//    setShowDialog(true);
   }
 
   /**

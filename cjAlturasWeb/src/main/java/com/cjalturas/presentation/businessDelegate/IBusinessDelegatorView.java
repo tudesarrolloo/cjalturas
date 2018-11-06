@@ -1,5 +1,6 @@
 package com.cjalturas.presentation.businessDelegate;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -302,5 +303,7 @@ public interface IBusinessDelegatorView {
   public void setParam(String id, Object value);
 
   public Certificate getCertificate(Integer idInscription) throws Exception;
+
+  public Date validateCertificate(String codeCertificate) throws Exception;
 
 }

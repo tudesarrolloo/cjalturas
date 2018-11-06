@@ -56,7 +56,7 @@
             
             <p:commandButton id="btnExport" value="Formato asistencia" style="float:right;" ajax="false">
               <p:dataExporter type="xls" postProcessor="#{groupDetailView.postProcessXLS}"
-              target="tblInscriptions" fileName="Aprendices" />
+              target="tblInscriptions" fileName="ListadoAsistencia" />
             </p:commandButton>
             
 <!--             <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s"> -->
@@ -155,7 +155,7 @@
     }
     </script>
     <p:dialog id="dialogInscription" appendTo="@(body)" draggable="true" closable="true"
-      visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="500"
+      visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="700"
       header="Inscripción de aptrendiz al grupo">
       <div id="group-dialog-container" class="group-dialog-container">
 <!--         <p:focus context="dialogInscription" /> -->

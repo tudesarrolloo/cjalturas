@@ -1,5 +1,6 @@
 package com.cjalturas.model.control;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cjalturas.model.Certificate;
@@ -50,5 +51,7 @@ public interface IInscriptionLogic {
   public Certificate certificate(Inscription entity) throws Exception;
 
   public Certificate getCertificate(Integer idInscription) throws Exception;
+
+  public Date validateCertificate(String codeCertificate) throws Exception;
   
 }

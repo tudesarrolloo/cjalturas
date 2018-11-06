@@ -481,4 +481,25 @@ public class InscriptionLogic implements IInscriptionLogic {
     } finally {
     }
   }
+
+  @Transactional(readOnly = true)
+  public Date validateCertificate(String codeCertificate) throws Exception {
+    log.debug("Validando un certificado");
+    try {
+      List<Certificate> result = certificateDAO.findByProperty("code", codeCertificate);
+      if (result == null || result.isEmpty()) {
+        return null;
+      }
+      Date dateExpiration = result.get(0).getDateExpiration();
+      Date currentDate = DateProvider.getInstance().getCurrentDate();
+      if (dateExpiration.after(currentDate)) {
+        return dateExpiration;
+      }
+      return null;
+    } catch (Exception e) {
+      log.error("Falló la validación del certificado", e);
+      throw new ZMessManager().new FindingException("validación del certificado");
+    } finally {
+    }
+  }
 }
