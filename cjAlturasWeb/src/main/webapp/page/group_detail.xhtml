@@ -59,17 +59,24 @@
               target="tblInscriptions" fileName="Aprendices" />
             </p:commandButton>
             
-            <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
-                <p:fileDownload value="#{groupDetailView.fileCert}" />
-            </p:commandButton>
+<!--             <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s"> -->
+<!--                 <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--             </p:commandButton> -->
               
               
             
           </f:facet>
-          <p:dataTable id="tblInscriptions" value="#{groupDetailView.data}" var="inscription" selectionMode="single"
-            widgetVar="inscriptionTable" selection="#{groupDetailView.inscriptionSel}"
-            rowKey="#{inscription.idInscription}" paginator="true" paginatorPosition="bottom"
-            rows="8" emptyMessage="No existen aprendices inscritos en el grupo">
+          <p:dataTable id="tblInscriptions" value="#{groupDetailView.data}" 
+            var="inscription" selectionMode="single"
+            selection="#{groupDetailView.inscriptionSel}"
+            rowKey="#{inscription.idInscription}" paginator="true"
+            paginatorPosition="bottom" rows="8"
+            widgetVar="inscriptionTable"
+            emptyMessage="No existen aprendices inscritos en el grupo">
+            
+<!--             <p:ajax event="rowSelect" listener="#{groupDetailView.selG}" update="@none"/> -->
+            <p:ajax event="rowSelect" update="@none"/>
+            
             <p:column filterBy="#{inscription.typeDocument}"
               sortBy="#{inscription.typeDocument}">
               <f:facet name="header">
@@ -98,17 +105,55 @@
               <h:outputText value="#{inscription.code_Status}" />
             </p:column>
             <p:column width="40" exportable="false">
-              <p:commandLink id="btnCert" title="Certificar"
-                onclick="window.open('../certificado.pdf', '_blank');"
-                actionListener="#{groupDetailView.action_cert}">
-                <f:attribute name="inscriptionSel" value="#{inscription}" />
-                <span class="icon-table border fa fa-check-circle"></span>
-              </p:commandLink>
+<!--                 <p:commandLink id="btnEdit" title="Editar" -->
+<!--                   actionListener="#{groupDetailView.test}"> -->
+<!--                   <f:attribute name="inscriptionSel" value="#{inscription}" /> -->
+<!--                   <span class="icon-table border fa fa-edit"></span> -->
+<!--                 </p:commandLink> -->
+            
+                <p:commandLink title="Certificar" ajax="false"
+                  onclick="PrimeFaces.monitorDownload(start, stop);"
+                  actionListener="#{groupDetailView.action_certify}" >
+                  <f:attribute name="inscriptionSel" value="#{inscription}" />
+                  <span class="icon-table border fa fa-check-circle"></span>
+                  <p:fileDownload value="#{groupDetailView.fileCert}" />
+                </p:commandLink>
+
+<!--                   <p:commandButton value="Download" ajax="false" actionListener="#{groupDetailView.action_cert}" -->
+<!--                    onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s"> -->
+<!--                     <f:attribute name="inscriptionSel" value="#{inscription}" /> -->
+<!--                     <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--                   </p:commandButton> -->
+              
+<!--               <p:commandLink title="Certificar" ajax="true" -->
+<!--                 onclick="PrimeFaces.monitorDownload(start, stop);"> -->
+<!--                 <span class="icon-table border fa fa-check-circle"></span> -->
+<!--                 <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--               </p:commandLink> -->
+              
+<!--               <p:commandLink value="Download" ajax="true" icon="print" > -->
+<!--                   <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--               </p:commandLink> -->
+                    
+<!--               <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s"> -->
+<!--                 <f:attribute name="inscriptionSel" value="#{inscription}" /> -->
+<!--                 <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--               </p:commandButton> -->
+              
             </p:column>
           </p:dataTable>
         </p:panel>
       </h:panelGrid>
     </h:form>
+    <script type="text/javascript">
+    function start() {
+        PF('statusDialog').show();
+    }
+     
+    function stop() {
+        PF('statusDialog').hide();
+    }
+    </script>
     <p:dialog id="dialogInscription" appendTo="@(body)" draggable="true" closable="true"
       visible="#{groupDetailView.showDialog}" resizable="false" modal="true" width="500"
       header="Inscripción de aptrendiz al grupo">

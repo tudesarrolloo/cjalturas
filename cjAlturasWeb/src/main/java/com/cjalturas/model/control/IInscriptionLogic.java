@@ -2,6 +2,7 @@ package com.cjalturas.model.control;
 
 import java.util.List;
 
+import com.cjalturas.model.Certificate;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.dto.InscriptionDTO;
 
@@ -45,4 +46,7 @@ public interface IInscriptionLogic {
   public List<InscriptionDTO> getDataInscription() throws Exception;
 
   public void validateInscription(Inscription inscription) throws Exception;
+
+  public Certificate certificate(Inscription entity) throws Exception;
+  
 }

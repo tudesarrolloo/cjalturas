@@ -42,6 +42,7 @@ import com.cjalturas.dto.mapper.IGroupMapper;
 import com.cjalturas.dto.mapper.IInscriptionMapper;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
+import com.cjalturas.model.Certificate;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
@@ -52,6 +53,7 @@ import com.cjalturas.model.Status;
 import com.cjalturas.model.dto.GroupDTO;
 import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.presentation.businessDelegate.IBusinessDelegatorView;
+import com.cjalturas.utilities.DelayUtils;
 import com.cjalturas.utilities.FacesUtils;
 import com.cjalturas.utilities.PageUtils;
 import com.cjalturas.utilities.PdfCreator;
@@ -67,6 +69,8 @@ public class GroupDetailView implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private static final Logger log = LoggerFactory.getLogger(GroupDetailView.class);
+
+//  private static final String GENERATE_CERTIFICATE = "GENERATE_CERTIFICATE";
 
   private InputText txtDescription;
 
@@ -113,20 +117,16 @@ public class GroupDetailView implements Serializable {
   private Learner selectedLearner;
 
   private CommandButton btnConfirmInscribe;
-  
-  
-  private StreamedContent fileCert; 
-  
+
+  private StreamedContent fileCert;
+
+//  private String action;
 
   @ManagedProperty(value = "#{BusinessDelegatorView}")
   private IBusinessDelegatorView businessDelegatorView;
 
-  @Autowired
-  private IInscriptionMapper inscriptionMapper;
-
-  //temporal
-  @Autowired
-  private IGroupMapper groupMapper;
+//  @Autowired
+//  private IInscriptionMapper inscriptionMapper;
 
   public GroupDetailView() {
     super();
@@ -139,21 +139,7 @@ public class GroupDetailView implements Serializable {
 //    loadLearners();
 
     GroupDTO group = (GroupDTO) this.businessDelegatorView.getParam("group");
-        
-        
-    
-    
-//  Temporal  
-//    if (group==null) {
-//      try {
-//        GroupDTO group1 = this.businessDelegatorView.getGroup(1, true);
-//      } catch (Exception e) {
-//        // TODO Auto-generated catch block
-//        e.printStackTrace();
-//      }
-//    }
-    
-    
+
     if (group != null) {
       this.setSelectedGroup(group);
 //      loadInfoSelectectedGroup();
@@ -435,6 +421,102 @@ public class GroupDetailView implements Serializable {
     return "";
   }
 
+//  public void test(ActionEvent evt) {
+//    inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
+//    System.out.println(inscriptionSel.getFullNameLearner());
+//  }
+
+//  public void selG() {
+////    switch (getAction()) {
+////      case GENERATE_CERTIFICATE:
+//////        this.generateCertificate();
+////        break;
+////      default:
+////        break;
+////    }
+//  }
+
+//  public void action_generateCertificate(ActionEvent evt) {
+//    this.setAction(GENERATE_CERTIFICATE);
+//    this.generateCertificate();
+//  }
+
+  public void action_certify() {
+    DelayUtils.delay(DelayUtils.SEC_1);
+    Inscription inscriptionToCertify = findSelectedInscription();
+    try {
+      Certificate certificate = businessDelegatorView.certificate(inscriptionToCertify);
+      generateCertificate(certificate);
+    } catch (Exception e) {
+      FacesUtils.addErrorMessage(e.getMessage());
+      log.error("Falló la acción de certificación del aprendiz", e);
+    }
+    
+    
+    
+//    inscriptionToCertify.setStatus(Status.CERTIFICATE);
+//    this.businessDelegatorView.saveInscription(inscriptionToCertify);
+//    
+//
+//    this.inscriptionSel.setCode_Status(Status.ACTIVE_CODE);
+//
+//    return findSelectedInscription();
+//
+//    this.businessDelegatorView.saveInscription(entity);
+
+  }
+
+  private Inscription findSelectedInscription() {
+    try {
+      return businessDelegatorView.getInscription(this.inscriptionSel.getIdInscription());
+    } catch (Exception e) {
+      FacesUtils.addErrorMessage("No se puede completar la certificación en este momento.");
+      log.error("No se logró encontrar la inscripción que se desea certificar.", e);
+    }
+    return null;
+  }
+
+  public void generateCertificate(Certificate certificate) {
+    System.err.println("certificar a: " + inscriptionSel.getFullNameLearner());
+
+    ApplicationMessages applicationMessages = ApplicationMessages.getInstance();
+    HashMap<String, String> map = new HashMap<>();
+    map.put("#-CERTIFICATION-#", certificate.getCertification());
+    map.put("#-NAME-#", certificate.getLearner());
+    map.put("#-DOCUMENT-#", certificate.getLearnerDocument());
+    map.put("#-LEVEL-#", certificate.getLevel());
+    map.put("#-INTENSITY-#", certificate.getIntensity());
+    map.put("#-DAYS-#", certificate.getDays());
+    map.put("#-CITY-#", certificate.getCity());
+    map.put("#-COACH1-#", certificate.getInstructor1());
+    map.put("#-COACH1_CHARGE-#", certificate.getInstructor1Charge());
+    map.put("#-COACH1_SIGN-#", certificate.getInstructor1Sign());
+    map.put("#-COACH2-#", certificate.getInstructor2());
+    map.put("#-COACH2_CHARGE-#", certificate.getInstructor2Charge());
+    map.put("#-COACH2_SIGN-#", certificate.getInstructor2Sign());
+    map.put("#-DATE-#", certificate.getDate());
+    map.put("#-CODE-#", certificate.getCode());
+    map.put("#-EMAIL-#", applicationMessages.getMessage("certificate.email"));
+    map.put("#-PHONES-#", applicationMessages.getMessage("certificate.phones"));
+
+    DefaultStreamedContent pdfCertificate = new PdfCreator().createPDf2AndDownload(map);
+
+    setFileCert(pdfCertificate);
+
+//    txtDescription.setValue(selectedGroup.getDescription());
+//    txtObservations.setValue(selectedGroup.getObservations());
+//    
+//    cmbCoach.setValue(selectedGroup.getIdCoach_Coach());
+//    cmbCourse.setValue(selectedGroup.getIdCourse_Course());
+//    
+//    calDateStart.setValue(selectedGroup.getDateStart());
+//    calDateEnd.setValue(selectedGroup.getDateEnd());
+//    chkStatus.setValue(selectedGroup.getStatus()!=null && selectedGroup.getStatus() == 1);
+//    
+//    PageUtils.enableButton(btnSave);
+//    setShowDialog(true);
+  }
+
   /**
    * Encuentra un aprendiz por el documento de la persona.
    * @param documentPerson documento de la persona con la que se buscará el aprendiz.
@@ -659,35 +741,33 @@ public class GroupDetailView implements Serializable {
   public void setBtnConfirmInscribe(CommandButton btnConfirmInscribe) {
     this.btnConfirmInscribe = btnConfirmInscribe;
   }
-  
+
   public void postProcessXLS(Object document) {
     HSSFWorkbook wb = (HSSFWorkbook) document;
     HSSFSheet sheet = wb.getSheetAt(0);
     HSSFRow header = sheet.getRow(0);
-    
+
 //    HSSFRow row = sheet.createRow(0);
 //    HSSFCell cellSpecial = row.createCell(0);
 //    cellSpecial.setCellValue("increible");
-    
-    
-    
+
     int rows = sheet.getLastRowNum();
-    
-    if (rows<5) {
+
+    if (rows < 5) {
       createMinRows(sheet);
     }
-    
-    sheet.shiftRows(0,rows,4);   
-    
+
+    sheet.shiftRows(0, rows, 4);
+
     sheet.getRow(0).createCell(0).setCellValue("Curso");
     sheet.getRow(0).createCell(1).setCellValue(this.getSelectedGroup().getCourse().getCourse());
-    
+
     sheet.getRow(1).createCell(0).setCellValue("Grupo");
     sheet.getRow(1).createCell(1).setCellValue(this.getSelectedGroup().getDescription());
-    
+
     sheet.getRow(2).createCell(0).setCellValue("Entrenador");
     sheet.getRow(2).createCell(1).setCellValue(this.getSelectedGroup().getCoach().getPerson().getFullName());
-    
+
 //    sheet.getRow(0).createCell(1);
     sheet.getRow(0).createCell(2);
     sheet.getRow(0).createCell(3);
@@ -698,51 +778,45 @@ public class GroupDetailView implements Serializable {
     sheet.getRow(2).createCell(2);
     sheet.getRow(2).createCell(3);
     sheet.getRow(2).createCell(4);
-    
+
     sheet.getRow(3).createCell(0);
     sheet.getRow(3).createCell(1);
     sheet.getRow(3).createCell(2);
     sheet.getRow(3).createCell(3);
     sheet.getRow(3).createCell(4);
-    
-    sheet.addMergedRegion(new CellRangeAddress(0,0,1,4));
-    sheet.addMergedRegion(new CellRangeAddress(1,1,1,4));
-    sheet.addMergedRegion(new CellRangeAddress(2,2,1,4));
-    
+
+    sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 4));
+    sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 4));
+    sheet.addMergedRegion(new CellRangeAddress(2, 2, 1, 4));
+
 //    CellRangeAddress 
 //    sheet.addMergedRegion(0,0,1,4);
-    
-    
-     
+
     HSSFCellStyle cellWithBorderAndWhite = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_THIN);
-  
-    
+
     for (Row row : sheet) {
       for (Cell cell : row) {
 //        cell.setCellValue(cell.getStringCellValue().toUpperCase());
         cell.setCellStyle(cellWithBorderAndWhite);
-        
-        if (row.getRowNum()==4 && cell.getColumnIndex()==3) {
+
+        if (row.getRowNum() == 4 && cell.getColumnIndex() == 3) {
           Cell cellAsistencia = row.createCell(4);
           cellAsistencia.setCellValue("Asistencia");
           cellAsistencia.setCellStyle(cellWithBorderAndWhite);
           sheet.autoSizeColumn(4);
         }
-        if (row.getRowNum()>4 && cell.getColumnIndex()==3) {
+        if (row.getRowNum() > 4 && cell.getColumnIndex() == 3) {
           Cell cellAsistencia = row.createCell(4);
 //          cellAsistencia.setCellValue("Asistencia");
           cellAsistencia.setCellStyle(cellWithBorderAndWhite);
         }
-        
+
       }
     }
-    
-    
-    
-    
+
     HSSFCellStyle cellNoBorder = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_NONE);
     HSSFCellStyle cellBold = getCellStyle(wb, HSSFColor.WHITE.index, HSSFCellStyle.BORDER_THIN, HSSFFont.BOLDWEIGHT_BOLD);
-    
+
     sheet.getRow(0).getCell(0).setCellStyle(cellBold);
     sheet.getRow(1).getCell(0).setCellStyle(cellBold);
     sheet.getRow(2).getCell(0).setCellStyle(cellBold);
@@ -751,45 +825,43 @@ public class GroupDetailView implements Serializable {
     sheet.getRow(4).getCell(2).setCellStyle(cellBold);
     sheet.getRow(4).getCell(3).setCellStyle(cellBold);
     sheet.getRow(4).getCell(4).setCellStyle(cellBold);
-    
+
     sheet.getRow(3).getCell(0).setCellStyle(cellNoBorder);
     sheet.getRow(3).getCell(1).setCellStyle(cellNoBorder);
     sheet.getRow(3).getCell(2).setCellStyle(cellNoBorder);
     sheet.getRow(3).getCell(3).setCellStyle(cellNoBorder);
     sheet.getRow(3).getCell(4).setCellStyle(cellNoBorder);
-    
-    
+
 //    DataFormatter formatter = new DataFormatter();
 //
 //    String empno = formatter.formatCellValue(cell0);
 //    sheet.getRow(5).getCell(1)
 //    
-    
+
 //    sheet.getRow(5).getCell(1).setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-     
+
 //    for(int i=0; i < header.getPhysicalNumberOfCells();i++) {
 //        HSSFCell cell = header.getCell(i);
 //         
 //        cell.setCellStyle(cellStyle);
 //    }
-    
+
 //    HSSFWorkbook wb = (HSSFWorkbook) document;
 //    HSSFSheet sheet = wb.getSheetAt(0);
 //    CellStyle style = wb.createCellStyle();
 //    style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
 //
-    
+
   }
 
   private int createMinRows(HSSFSheet sheet) {
     int noRows = sheet.getLastRowNum();
-    if (noRows<5) {
-      sheet.createRow(noRows+1);
+    if (noRows < 5) {
+      sheet.createRow(noRows + 1);
       return createMinRows(sheet);
     }
     return noRows;
   }
-
 
   private HSSFCellStyle getCellStyle(HSSFWorkbook wb, short indexColor, short borderStyle, short boldWeight) {
     HSSFCellStyle cellStyle = getCellStyle(wb, indexColor, borderStyle);
@@ -800,12 +872,12 @@ public class GroupDetailView implements Serializable {
   }
 
   private HSSFCellStyle getCellStyle(HSSFWorkbook wb, short indexColor, short borderStyle) {
-    HSSFCellStyle cellStyle = wb.createCellStyle();  
+    HSSFCellStyle cellStyle = wb.createCellStyle();
 //    cellStyle.setFillBackgroundColor(indexColor);
 //    cellStyle.setFillForegroundColor(indexColor);
 //    cellStyle.setFillBackgroundColor(IndexedColors.GREEN.getIndex());
 //    cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND); 
-    
+
     cellStyle.setFillForegroundColor(indexColor);
     cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
     cellStyle.setBorderLeft(borderStyle);
@@ -816,33 +888,41 @@ public class GroupDetailView implements Serializable {
   }
 
   public StreamedContent getFileCert() {
-    
-    HashMap<String, String> map = new HashMap<>();
-    map.put("#-NAME-#", "Edison Santiago");
-    map.put("#-DOCUMENT-#", "C.C. 4158585");
-    map.put("#-NIVEL-#", "BÁSICO");
-    map.put("#-HORAS-#", "8");
-    map.put("#-DIAS-#", "15");
-    map.put("#-MES-#", "Octubre");
-    map.put("#-ANIO-#", "2018");
-    map.put("#-INSTRUCTOR1-#", "Uriel Castro");
-    map.put("#-INSTRUCTOR1-CHARGE-#", "Entrenador Especializado");
-    map.put("#-INSTRUCTOR2-#", "Astrid Elena Jaramillo Torres");
-    map.put("#-INSTRUCTOR2-CHARGE-#", "Directora de operaciones");
 
-    DefaultStreamedContent resul = new PdfCreator().createPDf2AndDownload(map);
+//    inscriptionSel = (InscriptionDTO) (evt.getComponent().getAttributes().get("inscriptionSel"));
 
-    
-    
-    
-    return resul;
+//    HashMap<String, String> map = new HashMap<>();
+//    map.put("#-NAME-#", "Edison Santiago");
+//    map.put("#-DOCUMENT-#", "C.C. 4158585");
+//    map.put("#-NIVEL-#", "BÁSICO");
+//    map.put("#-HORAS-#", "8");
+//    map.put("#-DIAS-#", "15");
+//    map.put("#-MES-#", "Octubre");
+//    map.put("#-ANIO-#", "2018");
+//    map.put("#-INSTRUCTOR1-#", "Uriel Castro");
+//    map.put("#-INSTRUCTOR1-CHARGE-#", "Entrenador Especializado");
+//    map.put("#-INSTRUCTOR2-#", "Astrid Elena Jaramillo Torres");
+//    map.put("#-INSTRUCTOR2-CHARGE-#", "Directora de operaciones");
+//
+//    DefaultStreamedContent resul = new PdfCreator().createPDf2AndDownload(map);
+//
+//    
+//    
+//    
+//    return resul;
+    return this.fileCert;
   }
 
   public void setFileCert(StreamedContent fileCert) {
     this.fileCert = fileCert;
   }
 
-  
-  
+//  public String getAction() {
+//    return action;
+//  }
+//
+//  public void setAction(String action) {
+//    this.action = action;
+//  }
 
 }

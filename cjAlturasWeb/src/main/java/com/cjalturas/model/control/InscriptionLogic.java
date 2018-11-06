@@ -16,15 +16,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cjalturas.dataaccess.dao.ICertificateDAO;
+import com.cjalturas.dataaccess.dao.ICoachDAO;
 import com.cjalturas.dataaccess.dao.IInscriptionDAO;
+import com.cjalturas.date.DateProvider;
 import com.cjalturas.dto.mapper.IInscriptionMapper;
 import com.cjalturas.exceptions.CustomException;
 import com.cjalturas.exceptions.ZMessManager;
 import com.cjalturas.messages.ApplicationMessages;
+import com.cjalturas.model.Certificate;
+import com.cjalturas.model.Coach;
+import com.cjalturas.model.Course;
 import com.cjalturas.model.Group;
 import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
+import com.cjalturas.model.Person;
+import com.cjalturas.model.Status;
 import com.cjalturas.model.dto.InscriptionDTO;
+import com.cjalturas.utilities.FormatUtils;
 import com.cjalturas.utilities.Utilities;
 
 
@@ -43,6 +52,13 @@ public class InscriptionLogic implements IInscriptionLogic {
    */
   @Autowired
   private IInscriptionDAO inscriptionDAO;
+  
+  @Autowired
+  private ICoachDAO coachDAO;
+  
+  @Autowired
+  private ICertificateDAO certificateDAO;
+
 
   @Autowired
   private IInscriptionMapper inscriptionMapper;
@@ -378,5 +394,68 @@ public class InscriptionLogic implements IInscriptionLogic {
     }
 
     return list;
+  }
+
+  @Override
+  @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+  public Certificate certificate(Inscription entity) throws Exception {
+    log.debug("Certificando una inscripción");
+    try {
+      if (entity == null) {
+        String message = "No se recibió la información del aprendiz a certificar";
+        throw new CustomException(message, message, null);
+      }
+      
+      //Marcamos la inscripción como certificada
+      entity.setStatus(Status.CERTIFICATE);
+      inscriptionDAO.update(entity);
+      
+      //Generamos el certificado. 
+      ApplicationMessages messages = ApplicationMessages.getInstance();
+      Person learner = entity.getLearner().getPerson();
+      Coach coach1 = entity.getGroup().getCoach();
+      Person personCoach1 = coach1.getPerson();
+      Course course = entity.getGroup().getCourse();
+      
+      Certificate certificate = new Certificate();
+      certificate.setInscription(entity);
+      
+      Date currentDate = DateProvider.getInstance().getCurrentDate();
+      certificate.setDate(FormatUtils.convertDate(currentDate, FormatUtils.CERTIFICATE_DATE));
+      
+      certificate.setCertification(messages.getMessage("certificate.certification"));
+      certificate.setLearner(learner.getFullName());
+      certificate.setLearnerDocument(learner.getDocumentType() + " " + learner.getDocument());
+      certificate.setLevel(course.getCourse());
+      certificate.setIntensity("PENDIENTE");
+      certificate.setDays("#### de xxxxx ");
+      certificate.setCity(messages.getMessage("certificate.city"));
+      certificate.setInstructor1(personCoach1.getFullName());
+      certificate.setInstructor1Charge(coach1.getCharge());
+      certificate.setInstructor1Sign(coach1.getSign());
+      
+      Integer idCoach2= Integer.parseInt(messages.getMessage("certificate.instructor2"));
+      Coach coach2 = coachDAO.findById(idCoach2);
+      certificate.setInstructor2(coach2.getPerson().getFullName());
+      certificate.setInstructor2Charge(coach2.getCharge());
+      certificate.setInstructor2Sign(coach2.getSign());
+      
+      certificateDAO.save(certificate);
+      
+      String code = String.format("%03d", certificate.getIdCertificate());
+      certificate.setCode(messages.getMessage("certificate.code", code));
+      
+      certificateDAO.update(certificate);
+      
+      System.out.println(certificate.getLearner());
+     
+      log.debug("update Inscription successful");
+      
+      return certificate;
+    } catch (Exception e) {
+      log.error("update Inscription failed", e);
+      throw e;
+    } finally {
+    }
   }
 }

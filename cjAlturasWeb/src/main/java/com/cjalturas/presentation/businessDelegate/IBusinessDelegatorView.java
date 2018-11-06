@@ -3,6 +3,7 @@ package com.cjalturas.presentation.businessDelegate;
 import java.util.HashMap;
 import java.util.List;
 
+import com.cjalturas.model.Certificate;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
 import com.cjalturas.model.Economicsector;
@@ -159,6 +160,8 @@ public interface IBusinessDelegatorView {
   public void deleteInscription(Inscription entity) throws Exception;
 
   public void updateInscription(Inscription entity) throws Exception;
+  
+  public Certificate certificate(Inscription entity) throws Exception;
 
   public Inscription getInscription(Integer idInscription) throws Exception;
 

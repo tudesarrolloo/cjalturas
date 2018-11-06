@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.cjalturas.model.Certificate;
 import com.cjalturas.model.Coach;
 import com.cjalturas.model.Course;
 import com.cjalturas.model.Economicsector;
@@ -736,6 +737,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
   @Override
   public void setParam(String id, Object value) {
     params.put(id, value);
+  }
+
+  @Override
+  public Certificate certificate(Inscription entity) throws Exception {
+    return inscriptionLogic.certificate(entity);
   }
 
 }

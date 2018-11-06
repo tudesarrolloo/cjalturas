@@ -11,7 +11,10 @@ import java.util.Date;
 public class FormatUtils {
 
   /** Formato de fecha simple sin tiempo. */
-  private static final String SIMPLE_FORMAT_DATE = "dd/MM/yyyy";
+  public static final String SIMPLE_FORMAT_DATE = "dd/MM/yyyy";
+
+  /** Formato de fecha usado en la generación del certificado. */
+  public static final String CERTIFICATE_DATE = "dd 'de' MMMMM 'de' yyyy";
 
   /**
    * Realiza la conversión de una fecha al formato de fechas por defecto.
@@ -28,7 +31,7 @@ public class FormatUtils {
    * @param formatDate formato de fecha al que se desea convertir.
    * @return cadena de texto con el formato de fecha recibido.
    */
-  private static String convertDate(Date date, String formatDate) {
+  public static String convertDate(Date date, String formatDate) {
     SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
     return sdf.format(date);
   }

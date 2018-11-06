@@ -1,16 +1,15 @@
 package com.cjalturas.model;
 
-import org.hibernate.validator.constraints.*;
-
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -21,13 +20,22 @@ import javax.validation.constraints.*;
 @Table(name = "status", schema = "${schema}")
 public class Status implements java.io.Serializable {
 
+  private static final long serialVersionUID = -8479193777777997287L;
+
   /** Estado que indica que una inscripción se encuentra activa */
   public static final String ACTIVE_CODE = "ACT";
+  
+  /** Estado que indica que una inscripción ya se ceritificó */
+  public static final String CERTIFICATE_CODE = "CER";
 
   /** Estado que indica que una inscripción se encuentra activa */
   public static final String ACTIVE_DESCRIPTION = "Activo";
+  
+  /** Estado que indica que una inscripción ya se ceritificó */
+  public static final String CERTIFICATE_DESCRIPTION = "Certificado";
 
   public static final Status ACTIVE = new Status(ACTIVE_CODE, ACTIVE_DESCRIPTION);
+  public static final Status CERTIFICATE = new Status(CERTIFICATE_CODE, CERTIFICATE_DESCRIPTION);
 
   @Id
   @NotNull
