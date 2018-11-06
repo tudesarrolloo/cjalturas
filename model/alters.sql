@@ -35,3 +35,16 @@ CREATE TABLE IF NOT EXISTS `cjalturas`.`certificate` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+ALTER TABLE `cjalturas`.`course` 
+ADD COLUMN `intensity` VARCHAR(50) NOT NULL DEFAULT ' ' COMMENT 'Intensidad con la que se dicta el curso' AFTER `course`;
+
+ALTER TABLE `cjalturas`.`course` 
+ADD COLUMN `validityDaysCertificate` INT NOT NULL DEFAULT 0 COMMENT 'Días de vigencia por los cuales se expide un certificado para este curso' AFTER `intensity`;
+
+ALTER TABLE `cjalturas`.`group` 
+ADD COLUMN `daysCourse` VARCHAR(100) NOT NULL COMMENT 'Días en los que se dictará el curso incluido el mes y año ejemplo (2,3,4,5 de mayo de 2018) esto se usa para la generación del certificado' AFTER `status`;
+
+ALTER TABLE `cjalturas`.`certificate` 
+ADD COLUMN `dateExpiration` DATE NOT NULL COMMENT 'Fecha en la que expira el certificado' AFTER `instructor2_sign`;
+
