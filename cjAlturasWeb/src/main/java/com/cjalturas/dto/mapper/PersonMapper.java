@@ -41,6 +41,7 @@ public class PersonMapper implements IPersonMapper {
       personDTO.setLastname((person.getLastname() != null) ? person.getLastname() : null);
       personDTO.setName((person.getName() != null) ? person.getName() : null);
       personDTO.setPhone((person.getPhone() != null) ? person.getPhone() : null);
+      personDTO.setBirthDate((person.getBirthDate() != null) ? person.getBirthDate() : null);
 
       return personDTO;
     } catch (Exception e) {
@@ -60,6 +61,7 @@ public class PersonMapper implements IPersonMapper {
       person.setLastname((personDTO.getLastname() != null) ? personDTO.getLastname() : null);
       person.setName((personDTO.getName() != null) ? personDTO.getName() : null);
       person.setPhone((personDTO.getPhone() != null) ? personDTO.getPhone() : null);
+      person.setBirthDate((personDTO.getBirthDate() != null) ? personDTO.getBirthDate() : null);
 
       return person;
     } catch (Exception e) {

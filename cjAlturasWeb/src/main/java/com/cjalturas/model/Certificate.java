@@ -52,6 +52,11 @@ public class Certificate implements java.io.Serializable {
   @NotEmpty
   @Size(max = 30)
   private String learnerDocument;
+  
+  @NotNull
+  @NotEmpty
+  @Size(max = 5)
+  private String learnerTypeDocument;
 
   @NotNull
   @NotEmpty
@@ -274,6 +279,14 @@ public class Certificate implements java.io.Serializable {
 
   public void setDateExpiration(Date dateExpiration) {
     this.dateExpiration = dateExpiration;
+  }
+
+  public String getLearnerTypeDocument() {
+    return learnerTypeDocument;
+  }
+
+  public void setLearnerTypeDocument(String learnerTypeDocument) {
+    this.learnerTypeDocument = learnerTypeDocument;
   }
   
 }

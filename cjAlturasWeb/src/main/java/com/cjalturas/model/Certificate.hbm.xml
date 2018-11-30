@@ -36,6 +36,11 @@
         <comment>Aprendiz certificados</comment>
       </column>
     </property>
+    <property name="learnerTypeDocument" type="java.lang.String">
+      <column name="learnerTypeDocument" length="5" not-null="true">
+        <comment>Tipo de Documento del aprendiz</comment>
+      </column>
+    </property>
     <property name="learnerDocument" type="java.lang.String">
       <column name="learnerDocument" length="30" not-null="true">
         <comment>Documento del aprendiz</comment>

@@ -41,6 +41,11 @@
         <comment>Direcci&#243;n de correo electr&#243;nico de la persona</comment>
       </column>
     </property>
+    <property name="birthDate" type="java.util.Date">
+      <column name="birthDate" length="19">
+        <comment>Fecha de nacimiento de la persona</comment>
+      </column>
+    </property>
     <set name="coaches" table="coach" inverse="true" lazy="true"
       fetch="select">
       <key>

@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" template="/WEB-INF/template.xhtml">
+  
+  <ui:define name="content">
+    <h:form id="frm">
+      <p:panel id="panelDataTableGroup">
+        <f:facet name="header">
+          <p:outputLabel>Reporte de Inscripciones</p:outputLabel>
+          <p:commandButton id="btnExport" value="Exportar a Excel" style="float:right;" ajax="false">
+              <p:dataExporter type="xls" target="tblInscriptions" fileName="ReporteInscripciones" />
+            </p:commandButton>
+        </f:facet>
+        <p:growl id="men" />
+        <p:dataTable id="tblInscriptions" value="#{reportInscriptionsView.data}" var="inscription" selectionMode="single"
+          widgetVar="inscriptionTable" selection="#{reportInscriptionsView.selectedInscription}" rowKey="#{inscription.idInscription}"
+          paginator="true" paginatorPosition="bottom" rows="8">
+          <p:column sortBy="#{inscription.dateInscription}">
+            <f:facet name="header">
+              <h:outputText value="Fecha Inscripción" />
+            </f:facet>
+            <h:outputText value="#{inscription.dateInscription}">
+              <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+          </p:column>
+          <p:column filterBy="#{inscription.group.description}" sortBy="#{inscription.group.description}">
+            <f:facet name="header">
+              <h:outputText value="Grupo" />
+            </f:facet>
+            <h:outputText value="#{inscription.group.description}" />
+          </p:column>
+          <p:column filterBy="#{inscription.group.course.course}" sortBy="#{inscription.group.course.course}">
+            <f:facet name="header">
+              <h:outputText value="Curso" />
+            </f:facet>
+            <h:outputText value="#{inscription.group.course.course}" />
+          </p:column>
+          <p:column filterBy="#{inscription.group.coach.person.fullName}" sortBy="#{inscription.group.coach.person.fullName}">
+            <f:facet name="header">
+              <h:outputText value="Entrenador" />
+            </f:facet>
+            <h:outputText value="#{inscription.group.coach.person.fullName}" />
+          </p:column>
+          <p:column filterBy="#{inscription.learner.person.fullName}" sortBy="#{inscription.learner.person.fullName}">
+            <f:facet name="header">
+              <h:outputText value="Aprendiz" />
+            </f:facet>
+            <h:outputText value="#{inscription.learner.person.fullName}" />
+          </p:column>
+          <p:column filterBy="#{inscription.status.status}" sortBy="#{inscription.status.status}">
+            <f:facet name="header">
+              <h:outputText value="Estado" />
+            </f:facet>
+            <f:facet name="filter">
+              <p:selectOneButton onchange="PF('inscriptionTable').filter()">
+                <f:selectItem itemLabel="*" itemValue="" />
+                <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                <f:selectItem itemLabel="Certificado" itemValue="Certificado" />
+              </p:selectOneButton>
+            </f:facet>
+            <h:outputText value="#{inscription.status.status}" />
+          </p:column>
+
+          
+          
+<!--           <p:column filterBy="#{inscription.coach.person.name}" sortBy="#{inscription.coach.person.name}"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Entrenador" /> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.coach.person.name}" /> -->
+<!--           </p:column> -->
+<!--           <p:column filterBy="#{inscription.course.course}" sortBy="#{inscription.course.course}"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Curso" /> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.course.course}" /> -->
+<!--           </p:column> -->
+<!--           <p:column filterBy="#{inscription.dateStart}" sortBy="#{inscription.dateStart}"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Fecha Inicio" /> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.dateStartFormated}" /> -->
+<!--           </p:column> -->
+<!--           <p:column filterBy="#{inscription.dateEnd}" sortBy="#{inscription.dateEnd}" filterMatchMode="contains"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Fecha Fin" /> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.dateEndFormated}" /> -->
+<!--           </p:column> -->
+<!--           <p:column filterBy="#{inscription.status}" sortBy="#{inscription.status}"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Estado" /> -->
+<!--             </f:facet> -->
+<!--             <f:facet name="filter"> -->
+<!--               <p:selectOneButton onchange="PF('groupTable').filter()"> -->
+<!--                 <f:selectItem itemLabel="Todos" itemValue="" /> -->
+<!--                 <f:selectItem itemLabel="Activos" itemValue="1" /> -->
+<!--                 <f:selectItem itemLabel="Inactivos" itemValue="0" /> -->
+<!--               </p:selectOneButton> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.status == 1 ? 'Activo' : 'Inactivo'}" /> -->
+<!--           </p:column> -->
+<!--           <p:column sortBy="#{inscription.learnersInGroup}"> -->
+<!--             <f:facet name="header"> -->
+<!--               <h:outputText value="Aprendices" /> -->
+<!--             </f:facet> -->
+<!--             <h:outputText value="#{inscription.learnersInGroup}" /> -->
+<!--           </p:column> -->
+          <p:column width="100" exportable="false">
+            <p:commandLink id="btnView" title="Ver detalle" ajax="false" actionListener="#{reportInscriptionsView.certificate}"
+             styleClass="linkAction"> 
+              <f:setPropertyActionListener target="#{reportInscriptionsView.selectedInscription}" value="#{inscription}" />
+              <h:outputText value="#{inscription.status.code == 'ACT' ? 'Certificar' : 'Ver certificado'}" /> 
+              <p:fileDownload value="#{reportInscriptionsView.fileCert}" />
+              <p:ajax update="tblInscriptions" />
+            </p:commandLink>
+            
+<!--                           onclick="PrimeFaces.monitorDownload(start, stop);" -->
+<!--               styleClass="linkAction">  -->
+<!--               <f:setPropertyActionListener target="#{reportInscriptionsView.selectedInscription}" value="#{inscription}" /> -->
+<!--               <h:outputText value="#{inscription.status.code == 'ACT' ? 'Certificar' : 'Ver certificado'}" />  -->
+<!--                <p:fileDownload value="#{reportInscriptionsView.certificate}" /> -->
+<!--             </p:commandLink> -->
+            
+<!--             <p:commandLink title="Certificar" ajax="false" -->
+<!--                   onclick="PrimeFaces.monitorDownload(start, stop);" -->
+<!--                   actionListener="#{groupDetailView.action_certify}" > -->
+<!--                   <f:attribute name="inscriptionSel" value="#{inscription}" /> -->
+<!--                   <span class="icon-table border fa fa-check-circle"></span> -->
+<!--                   <p:fileDownload value="#{groupDetailView.fileCert}" /> -->
+<!--                 </p:commandLink> -->
+          
+<!--             <p:commandLink id="btnView" title="Ver detalle" action="#{reportInscriptionsView.view_detail}"> -->
+<!--               <f:setPropertyActionListener target="#{reportInscriptionsView.selectedGroup}" value="#{group}" /> -->
+<!--               <span class="icon-table border fa fa-eye"></span> -->
+<!--             </p:commandLink> -->
+<!--             <p:commandLink id="btnEdit" title="Editar" update=":dialogGroup" -->
+<!--               actionListener="#{reportInscriptionsView.action_edit}"> -->
+<!--               <f:attribute name="selectedGroup" value="#{group}" /> -->
+<!--               <span class="icon-table border fa fa-edit"></span> -->
+<!--             </p:commandLink> -->
+<!--             <p:commandLink id="btnDelete" title="Eliminar" -->
+<!--               actionListener="#{reportInscriptionsView.action_delete_datatable}" update="@form"> -->
+<!--               <p:confirm header="Confirmation" message="#{msg['inscription.delete.confirm']}" -->
+<!--                 icon="ui-icon-alert" /> -->
+<!--               <f:attribute name="selectedGroup" value="#{group}" /> -->
+<!--               <span class="icon-table fa fa-trash-o"></span> -->
+<!--             </p:commandLink> -->
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+  </ui:define>
+</ui:composition>

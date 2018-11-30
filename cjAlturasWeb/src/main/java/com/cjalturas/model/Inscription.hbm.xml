@@ -10,7 +10,7 @@
       <generator class="identity" />
     </id>
     <many-to-one name="group" class="com.cjalturas.model.Group"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="id_group" not-null="true">
         <comment>Grupo al que se realiz&#243; la inscripci&#243;n</comment>
       </column>

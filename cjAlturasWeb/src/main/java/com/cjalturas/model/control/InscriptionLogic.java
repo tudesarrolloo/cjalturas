@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ import com.cjalturas.model.Inscription;
 import com.cjalturas.model.Learner;
 import com.cjalturas.model.Person;
 import com.cjalturas.model.Status;
+import com.cjalturas.model.dto.CertificateValidationDto;
 import com.cjalturas.model.dto.InscriptionDTO;
 import com.cjalturas.utilities.FormatUtils;
 import com.cjalturas.utilities.Utilities;
@@ -426,7 +428,8 @@ public class InscriptionLogic implements IInscriptionLogic {
       
       certificate.setCertification(messages.getMessage("certificate.certification"));
       certificate.setLearner(learner.getFullName());
-      certificate.setLearnerDocument(learner.getDocumentType() + " " + learner.getDocument());
+      certificate.setLearnerTypeDocument(learner.getDocumentType());
+      certificate.setLearnerDocument(learner.getDocument());
       certificate.setLevel(course.getCourse());
       certificate.setIntensity(course.getIntensity());
       certificate.setDays(entity.getGroup().getDaysCourse());
@@ -483,23 +486,40 @@ public class InscriptionLogic implements IInscriptionLogic {
   }
 
   @Transactional(readOnly = true)
-  public Date validateCertificate(String codeCertificate) throws Exception {
+  public CertificateValidationDto validateCertificate(String codeCertificate, String document) throws Exception {
     log.debug("Validando un certificado");
     try {
-      List<Certificate> result = certificateDAO.findByProperty("code", codeCertificate);
+      List<Certificate> result = null;
+      if (StringUtils.isNotBlank(codeCertificate)) {
+        result = certificateDAO.findByProperty("code", codeCertificate);
+      }else if (StringUtils.isNotBlank(document)) {
+        result = certificateDAO.findByProperty("learnerDocument", document);
+      }
+      
       if (result == null || result.isEmpty()) {
         return null;
       }
-      Date dateExpiration = result.get(0).getDateExpiration();
+      
+      Certificate certificate = result.get(0);
+      Date dateExpiration = certificate.getDateExpiration();
       Date currentDate = DateProvider.getInstance().getCurrentDate();
       if (dateExpiration.after(currentDate)) {
-        return dateExpiration;
+        return new CertificateValidationDto(certificate.getDateExpiration(), certificate.getLearner(), certificate.getCode());
       }
       return null;
     } catch (Exception e) {
       log.error("Falló la validación del certificado", e);
       throw new ZMessManager().new FindingException("validación del certificado");
     } finally {
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public List<Inscription> getAllInscriptions() {
+    try {
+      return inscriptionDAO.findAll();
+    } catch (Exception e) {
+      throw e;
     }
   }
 }

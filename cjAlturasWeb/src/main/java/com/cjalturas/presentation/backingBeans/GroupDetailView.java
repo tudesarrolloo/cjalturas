@@ -433,7 +433,7 @@ public class GroupDetailView implements Serializable {
     HashMap<String, String> map = new HashMap<>();
     map.put("#-CERTIFICATION-#", certificate.getCertification());
     map.put("#-NAME-#", certificate.getLearner());
-    map.put("#-DOCUMENT-#", certificate.getLearnerDocument());
+    map.put("#-DOCUMENT-#", certificate.getLearnerTypeDocument() + " " + certificate.getLearnerDocument());
     map.put("#-LEVEL-#", certificate.getLevel().toUpperCase());
     map.put("#-INTENSITY-#", certificate.getIntensity());
     map.put("#-DAYS-#", certificate.getDays());

@@ -99,6 +99,18 @@ public class PageUtils {
   public static void disableTextbox(InputText inputText) {
     inputText.setDisabled(true);
   }
+  
+  /**
+   * Deshabilida un calendar
+   * @param calendar componente calendario que se desea deshabilitar
+   */
+  public static void disableCalendar(Calendar calendar) {
+    calendar.setDisabled(true);
+  }
+  
+  public static void enableCalendar(Calendar calendar) {
+    calendar.setDisabled(false);
+  }
 
   /**
    * Deshabilita un inputNumber
@@ -133,5 +145,7 @@ public class PageUtils {
       inputTextarea.setValue(null);
     }
   }
+
+  
 
 }

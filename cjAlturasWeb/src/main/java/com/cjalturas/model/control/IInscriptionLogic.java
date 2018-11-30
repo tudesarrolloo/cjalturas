@@ -1,10 +1,10 @@
 package com.cjalturas.model.control;
 
-import java.util.Date;
 import java.util.List;
 
 import com.cjalturas.model.Certificate;
 import com.cjalturas.model.Inscription;
+import com.cjalturas.model.dto.CertificateValidationDto;
 import com.cjalturas.model.dto.InscriptionDTO;
 
 
@@ -52,6 +52,8 @@ public interface IInscriptionLogic {
 
   public Certificate getCertificate(Integer idInscription) throws Exception;
 
-  public Date validateCertificate(String codeCertificate) throws Exception;
+  public CertificateValidationDto validateCertificate(String codeCertificate, String document) throws Exception;
+
+  public List<Inscription> getAllInscriptions();
   
 }

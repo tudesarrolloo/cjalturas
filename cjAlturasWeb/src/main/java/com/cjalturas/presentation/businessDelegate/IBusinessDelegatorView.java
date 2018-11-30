@@ -1,6 +1,5 @@
 package com.cjalturas.presentation.businessDelegate;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import com.cjalturas.model.Person;
 import com.cjalturas.model.Rol;
 import com.cjalturas.model.Status;
 import com.cjalturas.model.User;
+import com.cjalturas.model.dto.CertificateValidationDto;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.model.dto.CourseDTO;
 import com.cjalturas.model.dto.EconomicsectorDTO;
@@ -304,6 +304,8 @@ public interface IBusinessDelegatorView {
 
   public Certificate getCertificate(Integer idInscription) throws Exception;
 
-  public Date validateCertificate(String codeCertificate) throws Exception;
+  public CertificateValidationDto validateCertificate(String codeCertificate, String document) throws Exception;
+
+  public List<Inscription> getAllInscriptions();
 
 }

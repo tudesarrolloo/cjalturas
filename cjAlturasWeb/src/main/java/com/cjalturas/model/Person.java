@@ -2,6 +2,8 @@ package com.cjalturas.model;
 
 import org.hibernate.validator.constraints.*;
 
+import com.cjalturas.utilities.FormatUtils;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +40,7 @@ public class Person implements java.io.Serializable {
     map_fields.put("charge", "Cargo");
     map_fields.put("licenseSst", "Licencia SST");
     map_fields.put("sign", "Firma");
+    map_fields.put("birthDate", "Fecha Nacimiento");
   }
   
   @Id
@@ -55,6 +58,8 @@ public class Person implements java.io.Serializable {
   private String documentType;
 
   private String email;
+  
+  private Date birthDate;
 
   @NotNull
   @NotEmpty
@@ -178,5 +183,19 @@ public class Person implements java.io.Serializable {
   public String getFullName() {
     return this.name + " " + this.lastname;
   }
+
+  public Date getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
   
+  public String getBirthDateFormated() {
+    if (this.birthDate != null) {
+      return FormatUtils.convertDate(birthDate);
+    }
+    return "";
+  }
 }

@@ -11,11 +11,10 @@
         <p:menuitem value="Grupos"
           url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/page/group.xhtml" />
       </p:submenu>
-<!--       <p:submenu label="Reportes" icon="ui-icon-pencil"> -->
-<!--         <p:menuitem value="Aprendices inscritos" url="#" /> -->
-<!--         <p:menuitem value="Certificados" url="#" /> -->
-<!--         <p:menuitem value="Instructores" url="#" /> -->
-<!--       </p:submenu> -->
+      <p:submenu label="Reportes" icon="ui-icon-pencil">
+        <p:menuitem value="Inscripciones"
+          url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/page/inscriptions.xhtml" />
+      </p:submenu>
       <p:submenu label="Administración" icon="ui-icon-pencil">
         <p:menuitem value="Cursos de formación"
           url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/page/course.xhtml" />

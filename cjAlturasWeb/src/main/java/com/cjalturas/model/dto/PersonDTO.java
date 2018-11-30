@@ -1,6 +1,7 @@
 package com.cjalturas.model.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,8 @@ public class PersonDTO implements Serializable {
   private String name;
 
   private String phone;
+  
+  private Date birthDate;
 
   public String getDocument() {
     return document;
@@ -85,4 +88,13 @@ public class PersonDTO implements Serializable {
   public void setPhone(String phone) {
     this.phone = phone;
   }
+
+  public Date getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
+  
 }

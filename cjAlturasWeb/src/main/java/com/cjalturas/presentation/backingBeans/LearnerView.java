@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
@@ -57,6 +58,8 @@ public class LearnerView implements Serializable {
   private SelectOneMenu cmbEconomicSector;
 
   private SelectOneMenu cmbEnterprise;
+  
+  private Calendar calBirthDate;
 
   private CommandButton btnSave;
 
@@ -138,6 +141,7 @@ public class LearnerView implements Serializable {
     PageUtils.clearTextBox(txtEmail);
     PageUtils.clearComboBox(cmbEconomicSector);
     PageUtils.clearComboBox(cmbEnterprise);
+    PageUtils.clearCalendar(calBirthDate);
 
     PageUtils.enableTextbox(txtDocument);
     PageUtils.disableComboBox(cmbTypeId);
@@ -147,6 +151,7 @@ public class LearnerView implements Serializable {
     PageUtils.disableTextbox(txtEmail);
     PageUtils.disableComboBox(cmbEconomicSector);
     PageUtils.disableComboBox(cmbEnterprise);
+    PageUtils.disableCalendar(calBirthDate);
 
     PageUtils.disableButton(btnDelete);
     return "";
@@ -168,6 +173,7 @@ public class LearnerView implements Serializable {
     PageUtils.enableTextbox(txtEmail);
     PageUtils.enableComboBox(cmbEconomicSector);
     PageUtils.enableComboBox(cmbEnterprise);
+    PageUtils.enableCalendar(calBirthDate);
 
     if (entity != null) {
       PageUtils.disableTextbox(txtDocument);
@@ -182,6 +188,7 @@ public class LearnerView implements Serializable {
       txtEmail.setValue(person.getEmail());
       cmbEconomicSector.setValue(person.getDocumentType());
       cmbEnterprise.setValue(person.getDocumentType());
+      calBirthDate.setValue(person.getBirthDate());
     }
   }
 
@@ -217,6 +224,7 @@ public class LearnerView implements Serializable {
     txtEmail.setValue(person.getEmail());
     cmbEconomicSector.setValue(selectedLearner.getEconomicSector().getIdEconomicSector());
     cmbEnterprise.setValue(selectedLearner.getEnterprise().getIdEnterprise());
+    calBirthDate.setValue(person.getBirthDate());
 
     PageUtils.enableTextbox(txtDocument);
     PageUtils.enableComboBox(cmbTypeId);
@@ -226,6 +234,7 @@ public class LearnerView implements Serializable {
     PageUtils.enableTextbox(txtEmail);
     PageUtils.enableComboBox(cmbEconomicSector);
     PageUtils.enableComboBox(cmbEnterprise);
+    PageUtils.enableCalendar(calBirthDate);
 
     PageUtils.enableButton(btnSave);
     PageUtils.enableButton(btnDelete);
@@ -257,6 +266,7 @@ public class LearnerView implements Serializable {
       person.setLastname(FacesUtils.checkString(txtLastname));
       person.setPhone(FacesUtils.checkString(txtPhone));
       person.setEmail(FacesUtils.checkString(txtEmail));
+      person.setBirthDate(FacesUtils.checkDate(calBirthDate));
 
       entity = new Learner();
       entity.setEconomicsector(getEconomicSector());
@@ -314,6 +324,7 @@ public class LearnerView implements Serializable {
       person.setLastname(FacesUtils.checkString(txtLastname));
       person.setPhone(FacesUtils.checkString(txtPhone));
       person.setEmail(FacesUtils.checkString(txtEmail));
+      person.setBirthDate(FacesUtils.checkDate(calBirthDate));
 
       entity.setEconomicsector(getEconomicSector());
       entity.setEnterprise(getEnterprise());
@@ -546,4 +557,12 @@ public class LearnerView implements Serializable {
     this.idEconomicSectorSel = idEconomicSectorSel;
   }
 
+  public Calendar getCalBirthDate() {
+    return calBirthDate;
+  }
+
+  public void setCalBirthDate(Calendar calBirthDate) {
+    this.calBirthDate = calBirthDate;
+  }
+  
 }

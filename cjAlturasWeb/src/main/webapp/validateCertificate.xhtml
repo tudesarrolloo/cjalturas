@@ -4,7 +4,7 @@
   xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
   xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-  <title>Ingreso CJAlturas</title>
+  <title>Validación certificado</title>
   <meta name="content-type" content="text/html; charset=UTF-8" />
   <title>Bootstrap Admin Theme v3</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,8 +17,8 @@
   <link REL="SHORTCUT ICON"
     href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/icon.png" />
 </h:head>
-<h:body>
-  <h:form styleClass="form-signin">
+<h:body onload="showInput();">
+  <h:form id="validationForm" styleClass="form-signin">
     <p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
     <div class="validate-certificate page-content container">
       <div class="row">
@@ -27,8 +27,16 @@
             <div class="box">
               <div class="content-wrap">
                 <h6>Validación de certificado</h6>
-                <p:inputText value="#{validateCertificateView.codeCertificate}"
+                  <h:outputLabel value="¿Cómo desea validar el certificado?"></h:outputLabel>
+                <p:selectOneButton id="typeOption" widgetVar="typeOption" onchange="showInput(this)" value="codigo">
+                    <f:selectItem itemLabel="Código Certificado" itemValue="codigo" />
+                    <f:selectItem itemLabel="Documento Aprendiz" itemValue="documento" />
+                </p:selectOneButton>
+                <p><br/></p>
+                <p:inputText id="code" widgetVar="code" value="#{validateCertificateView.codeCertificate}"
                   placeholder="Ingrese el código del certificado" styleClass="form-control" />
+                <p:inputText id="document" widgetVar="document" value="#{validateCertificateView.documentCertificate}"
+                  placeholder="Ingrese el documento del aprendiz" styleClass="form-control" style="display:none;"/>
                 <p:commandButton styleClass="btn btn-primary signup" value="Validar"
                   actionListener="#{validateCertificateView.validate}" update="@form" />
               </div>
@@ -55,6 +63,19 @@
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script>
+  	function showInput(){
+  		var elCode = $("#validationForm\\:code");
+  		var elDocument = $("#validationForm\\:document");
+  		if ($("input:checked").val() === 'codigo'){
+  			elCode.show();
+  			elDocument.hide();
+  			elDocument.val('');
+  		}else{
+  			elCode.hide();
+  			elCode.val('');
+  			elDocument.show();
+  		}
+	}
   	function showDivResult(valid){
   		if (!valid){
   			$("#imgCert").attr("src","./images/invalid-certificate.png");
@@ -65,6 +86,7 @@
   	function hideDivResult(){
   		$("#divForm").show(500);
   		$("#divResult").hide();
+  		showInput();
   	}
   </script>
   

@@ -63,6 +63,14 @@
             </f:facet>
             <h:outputText value="#{learner.person.email}" />
           </p:column>
+          
+          <p:column filterBy="#{learner.person.birthDate}"
+            sortBy="#{learner.person.birthDate}">
+            <f:facet name="header">
+              <h:outputText value="Fecha Nacimiento" />
+            </f:facet>
+            <h:outputText value="#{learner.person.birthDateFormated}" />
+          </p:column>
 
           <p:column width="70">
             <p:commandLink id="btnEdit" title="Editar"
@@ -146,6 +154,12 @@
                   var="enterprise" itemLabel="#{enterprise.name}"
                   itemValue="#{enterprise.idEnterprise}" />
               </p:selectOneMenu>
+              
+              <h:outputText id="msgBirthDate" value="Fecha Nacimiento" />
+              <p:calendar id="calBirthDate" binding="#{learnerView.calBirthDate}"
+                styleClass="calendar" navigator="true" pattern="dd/MM/yyyy"/>
+                
+<!--               <p:calendar id="german" value="#{calendarView.date5}" locale="de" navigator="true" pattern="yyyy-MMM-dd" /> -->
 
             </h:panelGrid>
           </div>

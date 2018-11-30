@@ -1,6 +1,5 @@
 package com.cjalturas.presentation.businessDelegate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -34,6 +33,7 @@ import com.cjalturas.model.control.IPersonLogic;
 import com.cjalturas.model.control.IRolLogic;
 import com.cjalturas.model.control.IStatusLogic;
 import com.cjalturas.model.control.IUserLogic;
+import com.cjalturas.model.dto.CertificateValidationDto;
 import com.cjalturas.model.dto.CoachDTO;
 import com.cjalturas.model.dto.CourseDTO;
 import com.cjalturas.model.dto.EconomicsectorDTO;
@@ -751,8 +751,13 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
   }
 
   @Override
-  public Date validateCertificate(String codeCertificate) throws Exception {
-    return inscriptionLogic.validateCertificate(codeCertificate);
+  public CertificateValidationDto validateCertificate(String codeCertificate, String document) throws Exception {
+    return inscriptionLogic.validateCertificate(codeCertificate, document);
+  }
+
+  @Override
+  public List<Inscription> getAllInscriptions() {
+    return inscriptionLogic.getAllInscriptions();
   }
 
 }
