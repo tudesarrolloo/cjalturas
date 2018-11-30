@@ -48,3 +48,13 @@ ADD COLUMN `daysCourse` VARCHAR(100) NOT NULL COMMENT 'Días en los que se dicta
 ALTER TABLE `cjalturas`.`certificate` 
 ADD COLUMN `dateExpiration` DATE NOT NULL COMMENT 'Fecha en la que expira el certificado' AFTER `instructor2_sign`;
 
+--29Nov
+
+ALTER TABLE `cjalturas`.`person` 
+ADD COLUMN `birthDate` DATE NULL COMMENT 'Fecha de nacimiento' AFTER `email`;
+
+ALTER TABLE `cjalturas`.`certificate` 
+ADD COLUMN `learnerTypeDocument` VARCHAR(5) NOT NULL DEFAULT 'CC' AFTER `learner`;
+
+
+
