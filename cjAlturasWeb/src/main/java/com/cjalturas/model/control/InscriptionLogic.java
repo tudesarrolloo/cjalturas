@@ -1,6 +1,7 @@
 package com.cjalturas.model.control;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -434,22 +435,26 @@ public class InscriptionLogic implements IInscriptionLogic {
       certificate.setIntensity(course.getIntensity());
       certificate.setDays(entity.getGroup().getDaysCourse());
       certificate.setCity(messages.getMessage("certificate.city"));
+      
       certificate.setInstructor1(personCoach1.getFullName());
       certificate.setInstructor1Charge(coach1.getCharge());
+      certificate.setInstructor1Charge(messages.getMessage("certificate.charge",coach1.getCharge(),coach1.getLicenseSst()));
       certificate.setInstructor1Sign(coach1.getSign());
       
       Integer idCoach2= Integer.parseInt(messages.getMessage("certificate.instructor2"));
       Coach coach2 = coachDAO.findById(idCoach2);
       certificate.setInstructor2(coach2.getPerson().getFullName());
-      certificate.setInstructor2Charge(coach2.getCharge());
+      certificate.setInstructor2Charge(messages.getMessage("certificate.charge",coach2.getCharge(),coach2.getLicenseSst()));
       certificate.setInstructor2Sign(coach2.getSign());
       
       Date dateExpiration = DateUtils.addDays(currentDate, course.getValidityDaysCertificate());
       certificate.setDateExpiration(dateExpiration);
       certificateDAO.save(certificate);
-      
+
       String code = String.format("%03d", certificate.getIdCertificate());
-      certificate.setCode(messages.getMessage("certificate.code", code));
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(currentDate);
+      certificate.setCode(messages.getMessage("certificate.code", code, calendar.get(Calendar.YEAR)));
       
       certificateDAO.update(certificate);
       

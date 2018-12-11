@@ -2,6 +2,7 @@ package com.cjalturas.utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -32,7 +33,8 @@ public class FormatUtils {
    * @return cadena de texto con el formato de fecha recibido.
    */
   public static String convertDate(Date date, String formatDate) {
-    SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
+    Locale esLocale = new Locale("es", "CO");
+    SimpleDateFormat sdf = new SimpleDateFormat(formatDate, esLocale);
     return sdf.format(date);
   }
 

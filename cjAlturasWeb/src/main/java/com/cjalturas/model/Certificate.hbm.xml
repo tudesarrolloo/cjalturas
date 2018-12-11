@@ -72,7 +72,7 @@
       </column>
     </property>
     <property name="instructor1Charge" type="java.lang.String">
-      <column name="instructor1_charge" length="30" not-null="true">
+      <column name="instructor1_charge" length="100" not-null="true">
         <comment>Cargo del primer instructor que aprobó la certificación</comment>
       </column>
     </property>
@@ -87,7 +87,7 @@
       </column>
     </property>
     <property name="instructor2Charge" type="java.lang.String">
-      <column name="instructor2_charge" length="30" not-null="true">
+      <column name="instructor2_charge" length="100" not-null="true">
         <comment>Cargo del segundo instructor que aprobó la certificación</comment>
       </column>
     </property>

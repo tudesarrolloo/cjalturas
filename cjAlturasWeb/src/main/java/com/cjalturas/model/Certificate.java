@@ -85,7 +85,7 @@ public class Certificate implements java.io.Serializable {
 
   @NotNull
   @NotEmpty
-  @Size(max = 30)
+  @Size(max = 100)
   private String instructor1Charge;
 
   @NotNull
@@ -99,7 +99,7 @@ public class Certificate implements java.io.Serializable {
 
   @NotNull
   @NotEmpty
-  @Size(max = 30)
+  @Size(max = 100)
   private String instructor2Charge;
 
   @NotNull

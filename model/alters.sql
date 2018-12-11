@@ -56,5 +56,9 @@ ADD COLUMN `birthDate` DATE NULL COMMENT 'Fecha de nacimiento' AFTER `email`;
 ALTER TABLE `cjalturas`.`certificate` 
 ADD COLUMN `learnerTypeDocument` VARCHAR(5) NOT NULL DEFAULT 'CC' AFTER `learner`;
 
+--12 dic
+ALTER TABLE `cjalturas`.`certificate` 
+CHANGE COLUMN `instructor1_charge` `instructor1_charge` VARCHAR(100) NOT NULL COMMENT 'Cargo del primer instructor que aprobó la certificación' ,
+CHANGE COLUMN `instructor2_charge` `instructor2_charge` VARCHAR(100) NOT NULL COMMENT 'Cargo del segundo instructor que aprobó la certificación' ;
 
 
