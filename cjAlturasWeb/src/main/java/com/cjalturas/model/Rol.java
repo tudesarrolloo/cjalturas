@@ -35,6 +35,10 @@ public class Rol implements java.io.Serializable {
 
   public Rol() {
   }
+  
+  public Rol(String codeRol) {
+    this.codeRol = codeRol;
+  }
 
   public Rol(String codeRol, Set<Permit> permits, String rol, Set<User> users) {
     this.codeRol = codeRol;

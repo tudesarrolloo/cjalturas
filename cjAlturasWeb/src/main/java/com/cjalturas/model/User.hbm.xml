@@ -7,16 +7,16 @@
     optimistic-lock="version">
     <id name="idUser" type="java.lang.Integer">
       <column name="id_user" />
-      <generator class="assigned" />
+      <generator class="identity" />
     </id>
     <many-to-one name="person" class="com.cjalturas.model.Person"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="id_person" not-null="true">
         <comment>Persona popietaria del usuario</comment>
       </column>
     </many-to-one>
     <many-to-one name="rol" class="com.cjalturas.model.Rol"
-      fetch="select">
+      fetch="select" lazy="false">
       <column name="code_rol" length="5" not-null="true" />
     </many-to-one>
     <property name="username" type="java.lang.String">

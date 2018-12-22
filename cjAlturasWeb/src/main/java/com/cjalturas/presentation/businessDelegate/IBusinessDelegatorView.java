@@ -62,6 +62,14 @@ public interface IBusinessDelegatorView {
    */
   public List<Learner> findLearnerByProperty(String propertyName, String valueProperty) throws Exception;
   
+  /**
+   * Encuentra una lista de usuarios, filtrando por alguna de sus propiedades. 
+   * @param propertyName nombre de la propiedad.
+   * @param valueProperty valor de la propiedad.
+   * @return lista de usuarios que cumplen con el filtro.
+   */
+  public List<User> findUserByProperty(String propertyName, String valueProperty) throws Exception;
+  
   public List<Coach> findByCriteriaInCoach(Object[] variables, Object[] variablesBetween, Object[] variablesBetweenDates) throws Exception;
 
   public List<Coach> findPageCoach(String sortColumnName, boolean sortAscending, int startRow, int maxResults) throws Exception;

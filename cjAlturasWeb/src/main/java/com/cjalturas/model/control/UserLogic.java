@@ -109,10 +109,11 @@ public class UserLogic implements IUserLogic {
 
       validateUser(entity);
 
-      if (getUser(entity.getIdUser()) != null) {
+      if (entity.getIdUser() != null && getUser(entity.getIdUser()) != null) {
         throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
       }
 
+      logicPerson1.savePerson(entity.getPerson());
       userDAO.save(entity);
 
       log.debug("save User successful");
@@ -359,4 +360,17 @@ public class UserLogic implements IUserLogic {
 
     return list;
   }
+  
+  @Override
+  @Transactional(readOnly = true)
+  public List<User> findByProperty(String propertyName, Object propertyValue) throws Exception {
+    log.debug("Buscando usuarios por una propiedad");
+    try {
+      return userDAO.findByProperty(propertyName, propertyValue);
+    } catch (Exception e) {
+      log.error("Falló la búsqueda de usuarios", e);
+      throw new ZMessManager().new FindingException("User");
+    }
+  }
+
 }

@@ -61,4 +61,12 @@ ALTER TABLE `cjalturas`.`certificate`
 CHANGE COLUMN `instructor1_charge` `instructor1_charge` VARCHAR(100) NOT NULL COMMENT 'Cargo del primer instructor que aprobó la certificación' ,
 CHANGE COLUMN `instructor2_charge` `instructor2_charge` VARCHAR(100) NOT NULL COMMENT 'Cargo del segundo instructor que aprobó la certificación' ;
 
+-----------------------------------------------------------------------------------------------------------
+-- 21/12/2018
+
+ALTER TABLE `cjalturas`.`user` 
+ADD UNIQUE INDEX `username_UNIQUE` (`username` ASC);
+
+ALTER TABLE `cjalturas`.`user` 
+CHANGE COLUMN `id_user` `id_user` INT(11) NOT NULL AUTO_INCREMENT ;
 

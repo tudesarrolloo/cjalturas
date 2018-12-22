@@ -1,0 +1,195 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+  <ui:define name="content">
+
+
+    <h:form id="frm">
+
+      <p:panel id="panelDataTableuser">
+        <f:facet name="header">
+          <p:outputLabel>Administración de usuarios</p:outputLabel>
+          <p:commandButton id="btnNew" value="Crear usuario"
+            style="float:right;" action="#{userView.action_new()}"
+            update=":dialogUser" />
+        </f:facet>
+
+        <p:growl id="men" />
+        <p:dataTable value="#{userView.data}" var="user"
+          selectionMode="single"
+          selection="#{userView.selectedUser}"
+          rowKey="#{user.idUser}" paginator="true"
+          paginatorPosition="bottom" rows="8">
+          
+          <p:column filterBy="#{user.person.documentType}"
+            sortBy="#{user.person.documentType}">
+            <f:facet name="header">
+              <h:outputText value="Tipo Doc." />
+            </f:facet>
+            <h:outputText value="#{user.person.documentType}" />
+          </p:column>
+
+          <p:column filterBy="#{user.person.document}"
+            sortBy="#{user.person.document}">
+            <f:facet name="header">
+              <h:outputText value="Documento" />
+            </f:facet>
+            <h:outputText value="#{user.person.document}" />
+          </p:column>
+
+          <p:column filterBy="#{user.person.name}"
+            sortBy="#{user.person.name}">
+            <f:facet name="header">
+              <h:outputText value="Nombre" />
+            </f:facet>
+            <h:outputText value="#{user.person.name}" />
+          </p:column>
+
+          <p:column filterBy="#{user.person.lastname}"
+            sortBy="#{user.person.lastname}">
+            <f:facet name="header">
+              <h:outputText value="Apellidos" />
+            </f:facet>
+            <h:outputText value="#{user.person.lastname}" />
+          </p:column>
+
+          <p:column filterBy="#{user.username}"
+            sortBy="#{user.username}">
+            <f:facet name="header">
+              <h:outputText value="Nombre usuario" />
+            </f:facet>
+            <h:outputText value="#{user.username}" />
+          </p:column>
+          
+          <p:column filterBy="#{user.enabled}"
+            sortBy="#{user.enabled}">
+            <f:facet name="header">
+              <h:outputText value="Activo" />
+            </f:facet>
+            <h:outputText value="#{user.enabled}" />
+          </p:column>
+          
+          <p:column filterBy="#{user.rol.rol}"
+            sortBy="#{user.rol.rol}">
+            <f:facet name="header">
+              <h:outputText value="Activo" />
+            </f:facet>
+            <h:outputText value="#{user.rol.rol}" />
+          </p:column>
+
+          <p:column width="70">
+            <p:commandLink id="btnEdit" title="Editar"
+              update=":dialogUser"
+              actionListener="#{userView.action_edit}">
+              <f:attribute name="selectedUser" value="#{user}" />
+              <span class="icon-table border fa fa-edit"></span>
+            </p:commandLink>
+
+            <p:commandLink id="btnDelete" title="Eliminar"
+              actionListener="#{userView.action_delete_datatable}"
+              update="@form">
+              <p:confirm header="Confirmation"
+                message="#{msg['user.delete.confirm']}"
+                icon="ui-icon-alert" />
+              <f:attribute name="selectedUser" value="#{user}" />
+              <span class="icon-table fa fa-trash-o"></span>
+            </p:commandLink>
+          </p:column>
+        </p:dataTable>
+      </p:panel>
+    </h:form>
+    <p:dialog id="dialogUser" appendTo="@(body)" draggable="true"
+      closable="true" visible="#{userView.showDialog}"
+      resizable="false" modal="true" width="500"
+      header="Información del usuario">
+
+      <div id="user-dialog-container"
+        class="user-dialog-container">
+
+        <p:focus context="dialogUser" />
+        <h:form id="formDialog">
+          <p:messages id="msg" />
+          <div id="edit-content">
+            <h:panelGrid columns="2" id="panelGrid">
+              <h:outputText id="msgTypeId" value="Tipo de documento" />
+              <p:selectOneMenu id="cmbTypeId"
+                binding="#{userView.cmbTypeId}">
+                <f:selectItems value="#{userView.typesId}" />
+              </p:selectOneMenu>
+
+              <h:outputText id="msgDocument" value="Documento" />
+              <p:inputNumber id="txtDocument" disabled="true"
+                decimalPlaces="0" binding="#{userView.txtDocument}">
+                <p:ajax update=":dialogUser"
+                  listener="#{userView.listener_txtId}" />
+              </p:inputNumber>
+
+              <h:outputText id="msgName" value="Nombre" />
+              <p:inputText id="txtName" disabled="true"
+                binding="#{userView.txtName}" />
+
+              <h:outputText id="msgLastname" value="Apellidos" />
+              <p:inputText id="txtLastname" disabled="true"
+                binding="#{userView.txtLastname}" />
+
+              <h:outputText id="msgPhone" value="Teléfono" />
+              <p:inputText id="txtPhone" disabled="true"
+                binding="#{userView.txtPhone}" />
+                
+              <h:outputText id="msgBirthDate" value="Fecha Nacimiento" />
+              <p:calendar id="calBirthDate" binding="#{userView.calBirthDate}"
+                styleClass="calendar" navigator="true" pattern="dd/MM/yyyy"/>
+
+              <h:outputText id="msgEmail" value="E-mail" />
+              <p:inputText id="txtEmail" disabled="true"
+                binding="#{userView.txtEmail}" />
+                
+              <h:outputText value="Contraseña" />
+              <p:password id="txtPwd" disabled="true" binding="#{userView.txtPwd}" redisplay="true" />
+                
+              <h:outputText value="Rol" />
+              <p:selectOneMenu id="cmbRol" 
+                value="#{userView.codeRolSel}"
+                binding="#{userView.cmbRol}">
+                <f:selectItems value="#{userView.rols}"
+                  var="rol" itemLabel="#{rol.rol}"
+                  itemValue="#{rol.codeRol}" />
+              </p:selectOneMenu>
+                
+              <h:outputText value="Activo" />
+              <p:selectBooleanButton id="chkEnabled" binding="#{userView.chkEnabled}"
+                onLabel="Sí" offLabel="No" />
+
+            </h:panelGrid>
+          </div>
+
+          <div align="center" class="panel-boton">
+            <p:commandButton id="btnSave"
+              binding="#{userView.btnSave}" value="Guardar"
+              action="#{userView.action_save()}"
+              update=":dialogUser :frm:panelDataTableuser" />
+            <p:commandButton id="btnClear" value="Limpiar"
+              action="#{userView.action_clear()}"
+              update=":dialogUser" />
+            <p:commandButton id="btnExit" value="Salir"
+              action="#{userView.action_closeDialog()}"
+              update=":dialogUser" />
+          </div>
+        </h:form>
+
+      </div>
+    </p:dialog>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      <p:commandButton value="Yes" type="button"
+        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      <p:commandButton value="No" type="button"
+        styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+  </ui:define>
+</ui:composition>
+

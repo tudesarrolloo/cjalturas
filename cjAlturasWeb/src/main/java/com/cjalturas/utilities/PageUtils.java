@@ -5,6 +5,7 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputnumber.InputNumber;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
+import org.primefaces.component.password.Password;
 import org.primefaces.component.selectbooleanbutton.SelectBooleanButton;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 
@@ -25,6 +26,16 @@ public class PageUtils {
   public static void clearTextBox(InputText inputText) {
     if (inputText != null) {
       inputText.setValue(null);
+    }
+  }
+  
+  /**
+   * Limpia el valor de un componente password.
+   * passwordText componente password que se quiere limpiar.
+   */
+  public static void clear(Password component) {
+    if (component != null) {
+      component.setValue(null);
     }
   }
 
@@ -67,6 +78,26 @@ public class PageUtils {
       button.setDisabled(false);
     }
   }
+  
+  /**
+   * Habilita un componente SelectBooleanButton
+   * @param componente SelectBooleanButton que se desea habilitar.
+   */
+  public static void enableComponent(SelectBooleanButton component) {
+    if (component != null) {
+      component.setDisabled(false);
+    }
+  }
+  
+  /**
+   * Habilita un componente Password
+   * @param componente Password que se desea habilitar.
+   */
+  public static void enableComponent(Password component) {
+    if (component != null) {
+      component.setDisabled(false);
+    }
+  }
 
   /**
    * Habilita un inputText
@@ -90,6 +121,14 @@ public class PageUtils {
    */
   public static void enableComboBox(SelectOneMenu comboBox) {
     comboBox.setDisabled(false);
+  }
+  
+  /**
+   * Deshabilita un componente de contraseña
+   * @param componente de contraseña a deshabilitar.
+   */
+  public static void disableComponent(Password component) {
+    component.setDisabled(true);
   }
 
   /**
@@ -145,6 +184,10 @@ public class PageUtils {
       inputTextarea.setValue(null);
     }
   }
+
+  
+
+  
 
   
 

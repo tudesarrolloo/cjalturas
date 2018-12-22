@@ -45,4 +45,13 @@ public interface IUserLogic {
   public List<UserDTO> getDataUser() throws Exception;
 
   public void validateUser(User user) throws Exception;
+
+  /**
+   * Encuentra una lista de usuarios por alguna de sus propiedades.
+   * @param propertyName nombre de la propiedad.
+   * @param propertyValue valor de la propiedad.
+   * @return lista de usuarios que cumplen con el filtro.
+   * @throws Exception
+   */
+  public List<User> findByProperty(String propertyName, Object valueProperty) throws Exception;
 }

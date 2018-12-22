@@ -2,39 +2,28 @@ package com.cjalturas.model.dto;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.cjalturas.model.Person;
+import com.cjalturas.model.Rol;
 
 
 /**
- *
- * @author Zathura Code Generator http://zathuracode.org www.zathuracode.org
- *
+ * Dto para trasportar los datos relacionados con un usuario.
+ * @author Edison
  */
 public class UserDTO implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private static final Logger log = LoggerFactory.getLogger(UserDTO.class);
-
-  private String enabled;
-
   private Integer idUser;
-
-  private String password;
 
   private String username;
 
-  private Integer idPerson_Person;
+  private String password;
 
-  private String codeRol_Rol;
+  private boolean enabled;
 
-  public String getEnabled() {
-    return enabled;
-  }
+  private Person person;
 
-  public void setEnabled(String enabled) {
-    this.enabled = enabled;
-  }
+  private Rol rol;
 
   public Integer getIdUser() {
     return idUser;
@@ -42,14 +31,6 @@ public class UserDTO implements Serializable {
 
   public void setIdUser(Integer idUser) {
     this.idUser = idUser;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getUsername() {
@@ -60,19 +41,36 @@ public class UserDTO implements Serializable {
     this.username = username;
   }
 
-  public Integer getIdPerson_Person() {
-    return idPerson_Person;
+  public String getPassword() {
+    return password;
   }
 
-  public void setIdPerson_Person(Integer idPerson_Person) {
-    this.idPerson_Person = idPerson_Person;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
-  public String getCodeRol_Rol() {
-    return codeRol_Rol;
+  public boolean isEnabled() {
+    return enabled;
   }
 
-  public void setCodeRol_Rol(String codeRol_Rol) {
-    this.codeRol_Rol = codeRol_Rol;
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
+
+  public Person getPerson() {
+    return person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
+  }
+
+  public Rol getRol() {
+    return rol;
+  }
+
+  public void setRol(Rol rol) {
+    this.rol = rol;
+  }
+
 }
