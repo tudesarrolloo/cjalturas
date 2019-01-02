@@ -6,7 +6,8 @@
         <div class="col-md-5">
           <!-- Logo -->
           <div class="logo">
-            <a href="index.jsp"> <img src="../images/logo-cjt-header.png" />
+            <a href="./XHTML/initialMenu.xhtml"> <img
+              src="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/logo-cjt-header.png" />
               <h3>Portal de administración</h3>
             </a>
           </div>
@@ -18,7 +19,7 @@
                 class="dropdown-toggle" data-toggle="dropdown">Mi cuenta <b class="caret"></b>
               </a>
                 <ul class="dropdown-menu animated fadeInUp">
-<!--                   <li><a href="#">Cambiar contraseña</a></li> -->
+                  <!--                   <li><a href="#">Cambiar contraseña</a></li> -->
                   <li><a
                     href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/j_spring_security_logout">Cerrar
                       sesión</a></li>
